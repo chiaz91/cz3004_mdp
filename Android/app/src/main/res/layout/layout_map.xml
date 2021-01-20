@@ -25,5 +25,12 @@
 
             <!-- Alternate Map view (2.5D or 3D) goes here -->
         </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="@dimen/ratio_controls"
+            android:layout_marginBottom="49dp">
+            <include layout="@layout/layout_control"/>
+        </FrameLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

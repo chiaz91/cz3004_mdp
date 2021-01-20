@@ -6,5 +6,17 @@
         <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
     </style>
 
+    <style name="MDPButtonBorderless" >
+        <item name="android:textColor">@color/tint_selectable_color</item>
+        <item name="android:tint">@color/tint_selectable_color</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    </style>
 
+    <style name="MDPButtonBorderless.Large" parent="@style/MDPButtonBorderless">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:minWidth">50dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
 </resources>

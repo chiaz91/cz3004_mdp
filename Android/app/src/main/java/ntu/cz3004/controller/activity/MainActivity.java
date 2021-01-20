@@ -16,9 +16,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -36,7 +40,7 @@ import ntu.cz3004.controller.util.MdpLog;
 import ntu.cz3004.controller.util.PrefUtility;
 import ntu.cz3004.controller.view.MapView;
 
-public class MainActivity extends AppCompatActivity implements BluetoothStatusListener, Map.OnMapChangedListener {
+public class MainActivity extends AppCompatActivity implements BluetoothStatusListener, Map.OnMapChangedListener, View.OnClickListener {
     private static final String TAG = "mdp.act.main";
     private BluetoothController controller;
     // pager
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     // map
     private MapView mv;
     private Map map;
+    private ImageButton btnGetUpdate;
     // BT chat
     private BTMessageAdapter btMessageAdapter;
     private EditText etMessage;
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
 
         initPager();
         initMap();
+        initRobotControls();
         initBTChat();
         loadTestData();
     }
@@ -87,6 +93,24 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         mv = viewMain.findViewById(R.id.map);
         mv.setMap(map);
     }
+
+    private void initRobotControls(){
+        ViewGroup vgControls = viewMain.findViewById(R.id.container_controls);
+
+        // controls
+        vgControls.findViewById(R.id.btn_ctrl_up).setOnClickListener(this);
+        vgControls.findViewById(R.id.btn_ctrl_down).setOnClickListener(this);
+        vgControls.findViewById(R.id.btn_ctrl_left).setOnClickListener(this);
+        vgControls.findViewById(R.id.btn_ctrl_right).setOnClickListener(this);
+        vgControls.findViewById(R.id.btn_ctrl_f1).setOnClickListener(this);
+        vgControls.findViewById(R.id.btn_ctrl_f2).setOnClickListener(this);
+        vgControls.findViewById(R.id.btn_ctrl_explore).setOnClickListener(this);
+        vgControls.findViewById(R.id.btn_ctrl_fastest).setOnClickListener(this);
+        vgControls.findViewById(R.id.btn_ctrl_stop).setOnClickListener(this);
+        btnGetUpdate = vgControls.findViewById(R.id.btn_ctrl_get_map);
+        btnGetUpdate.setOnClickListener(this);
+
+    };
 
     private void initBTChat(){
         rvChatHistory = viewBtChat.findViewById(R.id.rv_messages);
@@ -136,6 +160,25 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     protected void onDestroy() {
         controller.stopService();
         super.onDestroy();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            // robot control
+            case R.id.btn_ctrl_up: controller.sendMessage("w"); break;
+            case R.id.btn_ctrl_left: controller.sendMessage("a"); break;
+            case R.id.btn_ctrl_right: controller.sendMessage("d"); break;
+            case R.id.btn_ctrl_down: controller.sendMessage("s"); break;
+            case R.id.btn_ctrl_f1: controller.sendMessage("f1"); break;
+            case R.id.btn_ctrl_f2: controller.sendMessage("f2"); break;
+            case R.id.btn_ctrl_explore: controller.sendMessage("explore"); break;
+            case R.id.btn_ctrl_fastest: controller.sendMessage("fastest"); break;
+            case R.id.btn_ctrl_stop: controller.sendMessage("stop"); break;
+            case R.id.btn_ctrl_get_map: controller.sendMessage("requestMap"); break;
+
+            default: showSnackbar("work in progress"); break;
+        }
     }
 
     @Override
@@ -200,6 +243,20 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
     }
+
+    Snackbar snackbar;
+    private  void showSnackbar(String message){
+        if (snackbar==null){
+            View rootView = findViewById(android.R.id.content);
+            snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT);
+        } else {
+            TextView tvMessage = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+            tvMessage.setText(message);
+        }
+        snackbar.show();
+    }
+
+
     // map
     @Override
     public void onMapChanged() {
@@ -236,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     public void onToastMessage(String message) {
         showToast(message);
     }
+
 
 
 }
