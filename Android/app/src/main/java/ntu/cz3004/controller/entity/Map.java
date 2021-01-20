@@ -154,7 +154,27 @@ public class Map {
         notifyChanges();
     }
 
-
+    public void imagesFromString(String strImages){
+        try{
+            MdpLog.d(TAG, "update images from string");
+            MdpLog.d(TAG, "Images: "+strImages);
+            HashMap<String, MapAnnotation> newImages = new HashMap<>();
+            String[] data = strImages.split("(?<=\\))(,\\s*)(?=\\()");
+            for (String img: data){
+                    if (img.trim().length()>0){
+                        MapAnnotation annotation = MapAnnotation.createImageFromString(img);
+                        MdpLog.d(TAG, String.format("%s --> %s", img, annotation));
+                        newImages.put(annotation.getName(), annotation);
+                }
+            }
+            images = newImages;
+            this.strImages = strImages;
+            notifyChanges();
+        } catch (Exception e){
+            MdpLog.w(TAG, "parseImages: Error parsing");
+            e.printStackTrace();
+        }
+    }
 
     /**
      * get cell state at given position
@@ -287,6 +307,23 @@ public class Map {
             p2 = "";
         }
         return p2;
+    }
+
+    public String getImagesString(){
+        if (strImages != null){
+            return strImages;
+        }
+        String result = "";
+        MapAnnotation annotation;
+        for (String key: images.keySet()) {
+            annotation = images.get(key);
+            result += String.format(",(%s,%d,%d)", key, annotation.getX(), annotation.getY());
+        }
+        if (result.length()>0){
+            result = result.substring(1);
+        }
+        strImages = result;
+        return strImages;
     }
 
     /**

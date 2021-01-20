@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
 
         // TODO: remove testing code
         map.mapFromString(getString(R.string.part_one_default), getString(R.string.test_pii_2));
+        map.imagesFromString(getString(R.string.test_images_1));
     }
     @Override
     protected void onResume() {

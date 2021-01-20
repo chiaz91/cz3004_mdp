@@ -2,6 +2,8 @@ package ntu.cz3004.controller.entity;
 
 import android.graphics.Point;
 
+import ntu.cz3004.controller.R;
+
 
 /**
  * Entity to hold annotation information, which is used to denote any object to be shown on the map
@@ -70,5 +72,48 @@ public class MapAnnotation {
     @Override
     public String toString() {
         return String.format("(%s,%d,%d)",name,position.x,position.y);
+    }
+
+
+    /**
+     * factory create image annotation based on string given
+     * @param imgStr assume format is (id,x,y) with no spaces.
+     * @return created annotation object
+     */
+    public static MapAnnotation createImageFromString(String imgStr){
+        MapAnnotation annotation = null;
+        try{
+            // assume format is (#,#,#) with no spaces.
+            imgStr = imgStr.substring(1, imgStr.length()-1);
+            String[] data = imgStr.split(",");
+            int id = Integer.parseInt(data[0]);
+            int x =Integer.parseInt(data[1]);
+            int y =Integer.parseInt(data[2]);
+            int icon = MapAnnotation.ICON_NONE;
+            switch (id){
+                case 1: icon = R.drawable.ic_map_1; break;
+                case 2: icon = R.drawable.ic_map_2; break;
+                case 3: icon = R.drawable.ic_map_3; break;
+                case 4: icon = R.drawable.ic_map_4; break;
+                case 5: icon = R.drawable.ic_map_5; break;
+                case 6: icon = R.drawable.ic_map_6; break;
+                case 7: icon = R.drawable.ic_map_7; break;
+                case 8: icon = R.drawable.ic_map_8; break;
+                case 9: icon = R.drawable.ic_map_9; break;
+                case 10: icon = R.drawable.ic_map_10; break;
+                case 11: icon = R.drawable.ic_map_11; break;
+                case 12: icon = R.drawable.ic_map_12; break;
+                case 13: icon = R.drawable.ic_map_13; break;
+                case 14: icon = R.drawable.ic_map_14; break;
+                case 15: icon = R.drawable.ic_map_15; break;
+            }
+            annotation = new MapAnnotation(x,y,icon,data[0]);
+        } catch (Exception e){
+            // encounter issue when parsing
+            e.printStackTrace();
+            return null;
+        }
+
+        return annotation;
     }
 }
