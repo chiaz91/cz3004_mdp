@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_to_bt_device"
+        android:visible="true"
+        android:icon="@android:drawable/stat_sys_data_bluetooth"
+        app:showAsAction="ifRoom"
+        android:title="@string/pick_device" />
+
+    <item
+        android:id="@+id/action_bt_reconnect"
+        android:visible="true"
+        android:title="@string/reconnect_last_device"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_bt_disconnect"
+        android:visible="true"
+        android:title="@string/disconnect"
+        app:showAsAction="never" />
+</menu>
