@@ -17,20 +17,12 @@
             android:layout_height="?attr/actionBarSize" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
+    <androidx.viewpager.widget.ViewPager
+
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/layout_chat"/>
-
-    </FrameLayout>
-
-
-<!--    <androidx.viewpager.widget.ViewPager-->
-<!--        android:id="@+id/pager"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="horizontal">-->
-<!--    </androidx.viewpager.widget.ViewPager>-->
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>

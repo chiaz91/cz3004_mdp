@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ratio_map">0.75</dimen>
+    <dimen name="ratio_controls">0.25</dimen>
+    <dimen name="map_padding">25dp</dimen>
+    <dimen name="ctrl_btn_width">120dp</dimen>
+    <dimen name="map_status_text_size">14sp</dimen>
+</resources>
