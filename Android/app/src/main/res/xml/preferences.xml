@@ -58,6 +58,11 @@
             app:key="@string/cmd_stop"
             app:defaultValue="@string/cmd_stop_default"
             app:useSimpleSummaryProvider="true"/>
+        <EditTextPreference
+            app:title="Request Map Update"
+            app:key="@string/cmd_req_map"
+            app:defaultValue="@string/cmd_req_map_default"
+            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory

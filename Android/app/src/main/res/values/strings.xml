@@ -98,6 +98,8 @@
     <string name="cmd_f2_default">f2</string>
     <string name="cmd_stop">stop</string>
     <string name="cmd_stop_default">stop</string>
+    <string name="cmd_req_map">req_map</string>
+    <string name="cmd_req_map_default">sendArena</string>
     <string name="bt_last_address">bt_last_address</string>
 
     <!-- Debug -->

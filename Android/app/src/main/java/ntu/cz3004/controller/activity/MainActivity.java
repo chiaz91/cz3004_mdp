@@ -32,6 +32,7 @@ import ntu.cz3004.controller.adapter.MDPPagerAdapter;
 import ntu.cz3004.controller.common.Constants;
 import ntu.cz3004.controller.control.BluetoothController;
 import ntu.cz3004.controller.entity.BTMessage;
+import ntu.cz3004.controller.entity.Command;
 import ntu.cz3004.controller.entity.Map;
 import ntu.cz3004.controller.listener.BluetoothStatusListener;
 import ntu.cz3004.controller.service.BluetoothChatService;
@@ -43,6 +44,7 @@ import ntu.cz3004.controller.view.MapView;
 public class MainActivity extends AppCompatActivity implements BluetoothStatusListener, Map.OnMapChangedListener, View.OnClickListener {
     private static final String TAG = "mdp.act.main";
     private BluetoothController controller;
+    private Command cmd;
     // pager
     private View viewMain, viewBtChat;
     // map
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         initRobotControls();
         initBTChat();
         loadTestData();
+        cmd = PrefUtility.getCommand(this);
     }
     private void initPager(){
         ViewPager pager = findViewById(R.id.pager);
@@ -167,16 +170,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     public void onClick(View v) {
         switch (v.getId()){
             // robot control
-            case R.id.btn_ctrl_up: controller.sendMessage("w"); break;
-            case R.id.btn_ctrl_left: controller.sendMessage("a"); break;
-            case R.id.btn_ctrl_right: controller.sendMessage("d"); break;
-            case R.id.btn_ctrl_down: controller.sendMessage("s"); break;
-            case R.id.btn_ctrl_f1: controller.sendMessage("f1"); break;
-            case R.id.btn_ctrl_f2: controller.sendMessage("f2"); break;
-            case R.id.btn_ctrl_explore: controller.sendMessage("explore"); break;
-            case R.id.btn_ctrl_fastest: controller.sendMessage("fastest"); break;
-            case R.id.btn_ctrl_stop: controller.sendMessage("stop"); break;
-            case R.id.btn_ctrl_get_map: controller.sendMessage("requestMap"); break;
+            case R.id.btn_ctrl_up: controller.sendMessage(cmd.up); break;
+            case R.id.btn_ctrl_left: controller.sendMessage(cmd.left); break;
+            case R.id.btn_ctrl_right: controller.sendMessage(cmd.right); break;
+            case R.id.btn_ctrl_down: controller.sendMessage(cmd.down); break;
+            case R.id.btn_ctrl_f1: controller.sendMessage(cmd.f1); break;
+            case R.id.btn_ctrl_f2: controller.sendMessage(cmd.f2); break;
+            case R.id.btn_ctrl_explore: controller.sendMessage(cmd.explore); break;
+            case R.id.btn_ctrl_fastest: controller.sendMessage(cmd.fastest); break;
+            case R.id.btn_ctrl_stop: controller.sendMessage(cmd.stop); break;
+            case R.id.btn_ctrl_get_map: controller.sendMessage(cmd.reqMap); break;
 
             default: showSnackbar("work in progress"); break;
         }
@@ -234,11 +237,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 break;
 
             case Constants.REQUEST_SETTING:
-                if (resultCode == Activity.RESULT_OK) {
-                    showSnackbar("Setting changed");
-                } else {
-                    showSnackbar("Setting not changed");
-                }
+                cmd = PrefUtility.getCommand(this);
                 break;
 
             default:
