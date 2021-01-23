@@ -17,8 +17,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +59,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     private ImageButton btnSend;
     private RecyclerView rvChatHistory;
 
+    // BT edit map
+    private CheckBox cbMapEdit;
+
+    ViewGroup vgControls, vgMapEditMode;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         initPager();
         initMap();
         initRobotControls();
+        initMapEdit();
         initBTChat();
         loadTestData();
         cmd = PrefUtility.getCommand(this);
@@ -98,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     private void initRobotControls(){
-        ViewGroup vgControls = viewMain.findViewById(R.id.container_controls);
+        vgControls = viewMain.findViewById(R.id.container_controls);
 
         // controls
         vgControls.findViewById(R.id.btn_ctrl_up).setOnClickListener(this);
@@ -114,6 +123,19 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         btnGetUpdate.setOnClickListener(this);
 
     };
+
+    private void initMapEdit(){
+        cbMapEdit = viewMain.findViewById(R.id.cb_edit_map);
+        cbMapEdit.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                switchToMapEdit();
+            } else {
+                switchToControl();
+                // TODO: Edit is completed, send update to RPi
+            }
+        });
+        vgMapEditMode =  viewMain.findViewById(R.id.container_map_edit);
+    }
 
     private void initBTChat(){
         rvChatHistory = viewBtChat.findViewById(R.id.rv_messages);
@@ -165,6 +187,18 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         controller.stopService();
         super.onDestroy();
     }
+
+    private void switchToControl(){
+        vgControls.setVisibility(View.VISIBLE);
+        vgMapEditMode.setVisibility(View.GONE);
+    }
+
+    private void switchToMapEdit(){
+        vgControls.setVisibility(View.GONE);
+        vgMapEditMode.setVisibility(View.VISIBLE);
+        ((RadioButton) vgMapEditMode.findViewById(R.id.rb_set_robot)).setChecked(true);
+    }
+
 
     @Override
     public void onClick(View v) {

@@ -31,6 +31,16 @@
             android:layout_weight="@dimen/ratio_controls"
             android:layout_marginBottom="49dp">
             <include layout="@layout/layout_control"/>
+            <include layout="@layout/layout_map_edit" android:visibility="gone"/>
         </FrameLayout>
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_edit_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="-16dp"
+            android:layout_gravity="right"
+            android:button="@drawable/selector_edit"
+            android:visibility="visible"
+            app:buttonTint="@color/selector_color" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

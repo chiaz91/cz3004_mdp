@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView
+    android:id="@+id/container_map_edit"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:overScrollMode="never">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <RadioGroup
+            android:id="@+id/rg_map_edit_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@+id/rb_set_robot">
+
+            <RadioButton
+                style="@style/MDPButton.Radio"
+                android:id="@+id/rb_set_robot"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/ic_robot"
+                android:text="@string/edit_robot" />
+            <RadioButton
+                style="@style/MDPButton.Radio"
+                android:id="@+id/rb_set_way_point"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/ic_way_point"
+                android:text="@string/edit_way_point"/>
+            <RadioButton
+                style="@style/MDPButton.Radio"
+                android:id="@+id/rb_set_unknown"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/ic_box_unknown"
+                android:text="@string/edit_cell_unknown" />
+            <RadioButton
+                style="@style/MDPButton.Radio"
+                android:id="@+id/rb_set_explored"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/ic_box_border"
+                android:text="@string/edit_cell_explored" />
+            <RadioButton
+                style="@style/MDPButton.Radio"
+                android:id="@+id/rb_set_obstacle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/ic_box_solid"
+                android:text="@string/edit_cell_obstacle" />
+        </RadioGroup>
+        <Button
+            style="@style/MDPButton"
+            android:id="@+id/btn_set_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_map"
+            android:drawableTop="@drawable/ic_grid" />
+        <Button
+            style="@style/MDPButton"
+            android:id="@+id/btn_map_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_reset_map"
+            android:drawableTop="@drawable/ic_refresh" />
+    </LinearLayout>
+</HorizontalScrollView>
