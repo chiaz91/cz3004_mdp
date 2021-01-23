@@ -1,0 +1,173 @@
+package ntu.cz3004.controller.control;
+
+import android.content.Context;
+import android.graphics.Point;
+import android.text.InputFilter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
+
+import ntu.cz3004.controller.R;
+import ntu.cz3004.controller.common.Direction;
+import ntu.cz3004.controller.entity.Map;
+import ntu.cz3004.controller.entity.Robot;
+import ntu.cz3004.controller.util.Utility;
+import ntu.cz3004.controller.view.MapView;
+
+/** Assist in map editing
+ * <ul>
+ *     <li>save edit mode, perform respective edition when a position given</li>
+ *     <li>update map view when map/robot is modified</li>
+ * </ul>
+ */
+public class MapEditor implements View.OnClickListener, View.OnLongClickListener, RadioGroup.OnCheckedChangeListener {
+    public enum Mode {
+        NONE, ROBOT, WAY_POINT, CELL_UNKNOWN, CELL_EXPLORED, CELL_OBSTACLE;
+    }
+    private Context context;
+    private Map map;
+    private MapView mv;
+    private Mode mode;
+
+    public MapEditor( MapView mapView, View viewEditModes){
+        this.context = mapView.getContext();
+        this.map = mapView.getMap();
+        this.mv = mapView;
+        this.mode = Mode.NONE;
+        // init
+        RadioGroup rgEditMode = viewEditModes.findViewById(R.id.rg_map_edit_mode);
+        rgEditMode.setOnCheckedChangeListener(this);
+        viewEditModes.findViewById(R.id.btn_set_map).setOnClickListener(this);
+        viewEditModes.findViewById(R.id.btn_map_reset).setOnClickListener(this);
+        viewEditModes.findViewById(R.id.rb_set_robot).setOnLongClickListener(this);
+        viewEditModes.findViewById(R.id.rb_set_way_point).setOnLongClickListener(this);
+        viewEditModes.findViewById(R.id.rb_set_unknown).setOnLongClickListener(this);
+        viewEditModes.findViewById(R.id.rb_set_explored).setOnLongClickListener(this);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        mv.setSelection(null);
+        switch (checkedId){
+            case R.id.rb_set_robot: setMode(Mode.ROBOT); break;
+            case R.id.rb_set_way_point: setMode(Mode.WAY_POINT); break;
+            case R.id.rb_set_unknown: setMode(Mode.CELL_UNKNOWN); break;
+            case R.id.rb_set_explored: setMode(Mode.CELL_EXPLORED); break;
+            case R.id.rb_set_obstacle: setMode(Mode.CELL_OBSTACLE); break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_map_reset: resetMap(); break;
+            case R.id.btn_set_map: copyMapDescriptor(); break;
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        switch (v.getId()){
+            case R.id.rb_set_way_point: promptClearWayPoint(); return true;
+        }
+        return false;
+    }
+
+    public Map getMap(){
+        return map;
+    }
+
+    public void highlightRobot(){
+        Robot robot = map.getRobot();
+        mv.setSelection(robot.getPosition());
+    }
+
+
+    public void setMode(Mode mode){
+        this.mode = mode;
+    }
+
+    public boolean editOn(Point position){
+        mv.setSelection(position);
+        switch (mode){
+            case ROBOT: return moveRobotTo(position, true);
+            case WAY_POINT: return moveWayPointTo(position);
+            case CELL_UNKNOWN: return editCellAs(position, Map.STATE_UNEXPLORED);
+            case CELL_EXPLORED: return editCellAs(position, Map.STATE_EXPLORED);
+            case CELL_OBSTACLE: return editCellAs(position, Map.STATE_OBSTACLE);
+            default: return true;
+        }
+    }
+
+
+
+
+    public boolean moveRobotTo(Point position, boolean showWarning){
+        Robot robot = map.getRobot();
+        if (map.isSafeMove(position.y, position.x, true)){
+            robot.setPosition(position);
+            map.notifyChanges();
+            return true;
+        } else {
+            if (showWarning){
+                mv.setSelection(position, MapView.FLAG_COLOR_WARN|MapView.FLAG_HIGHLIGHT_SURROUNDING);
+                mv.invalidate();
+            }
+            return false;
+        }
+    }
+
+    public boolean moveWayPointTo(Point position){
+        boolean success = map.createWayPointAt(position.y, position.x);
+        if (!success){
+            mv.setSelection(position, MapView.FLAG_COLOR_WARN|MapView.FLAG_HIGHLIGHT_SURROUNDING);
+        }
+        return success;
+    }
+
+    public boolean editCellAs(Point position, int toState){
+        map.setCellAs(position.y, position.x, toState);
+        map.notifyChanges();
+        return true;
+    }
+
+    public void resetMap(){
+        mv.clear();
+        map.reset();
+    }
+
+
+    private void copyMapDescriptor(){
+        String strMap = String.format("P1: %s\nP2: %s\nImg: %s", map.getPartI(), map.getPartII(), map.getImagesString());
+        Utility.copyToClipboard(context, strMap);
+        Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+//        showSnackbar("Copied to clipboard");
+    }
+
+
+    // dialogs
+    public void promptClearWayPoint(){
+        if (map.getWayPoint() == null){
+            Toast.makeText(context, R.string.msg_way_point_not_set,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        AlertDialog alert = new MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.clear_way_point_title)
+                .setMessage(R.string.clear_way_point_msg)
+                .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                    map.clearWayPoint();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setCancelable(true)
+                .create();
+        alert.show();
+    }
+
+
+}

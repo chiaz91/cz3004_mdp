@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import ntu.cz3004.controller.adapter.BTMessageAdapter;
 import ntu.cz3004.controller.adapter.MDPPagerAdapter;
 import ntu.cz3004.controller.common.Constants;
 import ntu.cz3004.controller.control.BluetoothController;
+import ntu.cz3004.controller.control.MapEditor;
 import ntu.cz3004.controller.entity.BTMessage;
 import ntu.cz3004.controller.entity.Command;
 import ntu.cz3004.controller.entity.Map;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
 
     // BT edit map
     private CheckBox cbMapEdit;
+    private MapEditor mapEditor;
 
     ViewGroup vgControls, vgMapEditMode;
 
@@ -135,6 +138,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             }
         });
         vgMapEditMode =  viewMain.findViewById(R.id.container_map_edit);
+        mapEditor = new MapEditor(mv, vgMapEditMode);
+        mv.setOnClickListener(v -> {
+            // click action on cell
+            Point position = (Point) v.getTag();
+            mapEditor.editOn(position);
+        });
     }
 
     private void initBTChat(){
@@ -191,11 +200,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     private void switchToControl(){
         vgControls.setVisibility(View.VISIBLE);
         vgMapEditMode.setVisibility(View.GONE);
+        mapEditor.setMode(MapEditor.Mode.NONE);
     }
 
     private void switchToMapEdit(){
         vgControls.setVisibility(View.GONE);
         vgMapEditMode.setVisibility(View.VISIBLE);
+        mapEditor.setMode(MapEditor.Mode.ROBOT);
         ((RadioButton) vgMapEditMode.findViewById(R.id.rb_set_robot)).setChecked(true);
     }
 
