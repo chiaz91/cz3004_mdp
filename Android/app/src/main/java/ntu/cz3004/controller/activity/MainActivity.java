@@ -206,7 +206,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case R.id.action_to_bt_device:
                 startActivityForResult(IntentBuilder.toPickBtDevice(this), Constants.REQUEST_PICK_BT_DEVICE);
                 return true;
-
+            case R.id.action_to_setting:
+                startActivityForResult(IntentBuilder.toSetting(this), Constants.REQUEST_SETTING);
+                return true;
             case R.id.action_bt_disconnect:
                 controller.stopService();
                 return true;
@@ -230,6 +232,15 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                     // save as last connected
                 }
                 break;
+
+            case Constants.REQUEST_SETTING:
+                if (resultCode == Activity.RESULT_OK) {
+                    showSnackbar("Setting changed");
+                } else {
+                    showSnackbar("Setting not changed");
+                }
+                break;
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
                 break;

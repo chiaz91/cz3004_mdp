@@ -10,6 +10,13 @@
         android:title="@string/pick_device" />
 
     <item
+        android:id="@+id/action_to_setting"
+        android:visible="true"
+        android:icon="@drawable/ic_setting"
+        android:title="@string/setting"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_bt_reconnect"
         android:visible="true"
         android:title="@string/reconnect_last_device"

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        app:title="Direction"
+        app:icon="@drawable/ic_dir_all">
+
+        <EditTextPreference
+            app:title="Up"
+            app:key="@string/cmd_up"
+            app:defaultValue="@string/cmd_up_default"
+            app:useSimpleSummaryProvider="true"/>
+        <EditTextPreference
+            app:title="Left"
+            app:key="@string/cmd_left"
+            app:defaultValue="@string/cmd_left__default"
+            app:useSimpleSummaryProvider="true"/>
+        <EditTextPreference
+            app:title="Right"
+            app:key="@string/cmd_right"
+            app:defaultValue="@string/cmd_right_default"
+            app:useSimpleSummaryProvider="true"/>
+        <EditTextPreference
+            app:title="Down"
+            app:key="@string/cmd_down"
+            app:defaultValue="@string/cmd_down_default"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Actions"
+        app:icon="@drawable/ic_code">
+
+        <EditTextPreference
+            app:title="Explore"
+            app:key="@string/cmd_explore"
+            app:defaultValue="@string/cmd_explore_default"
+            app:useSimpleSummaryProvider="true"/>
+        <EditTextPreference
+            app:title="Fastest"
+            app:key="@string/cmd_fastest"
+            app:defaultValue="@string/cmd_fastest_default"
+            app:useSimpleSummaryProvider="true"/>
+        <EditTextPreference
+            app:title="F1"
+            app:key="@string/cmd_f1"
+            app:defaultValue="@string/cmd_f1_default"
+            app:useSimpleSummaryProvider="true"/>
+        <EditTextPreference
+            app:title="F2"
+            app:key="@string/cmd_f2"
+            app:defaultValue="@string/cmd_f2_default"
+            app:useSimpleSummaryProvider="true"/>
+        <EditTextPreference
+            app:title="Stop"
+            app:key="@string/cmd_stop"
+            app:defaultValue="@string/cmd_stop_default"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="About"
+        app:icon="@drawable/ic_info">
+
+        <Preference
+            android:key="info_version"
+            android:selectable="false"
+            android:persistent="false"
+            android:title="Version"/>
+        <Preference
+            android:key="info_build"
+            android:selectable="false"
+            android:persistent="false"
+            android:title="Build"/>
+
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>

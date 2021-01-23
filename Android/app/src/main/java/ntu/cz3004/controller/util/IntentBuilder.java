@@ -14,6 +14,11 @@ import ntu.cz3004.controller.common.Constants;
 
 public class IntentBuilder {
 
+    public static Intent toSetting(Context context){
+        return new Intent(context, DynamicActivity.class)
+                .putExtra(Constants.EXTRA_FRAGMENT, Constants.REQUEST_SETTING);
+    }
+
     public static Intent toPickBtDevice(Activity activity){
         return new Intent(activity, DynamicActivity.class)
                 .putExtra(Constants.EXTRA_FRAGMENT, Constants.REQUEST_PICK_BT_DEVICE);

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.common.Constants;
 import ntu.cz3004.controller.fragment.BTDeviceFragment;
+import ntu.cz3004.controller.fragment.SettingsFragment;
 
 public class DynamicActivity extends AppCompatActivity {
 
@@ -59,6 +60,9 @@ public class DynamicActivity extends AppCompatActivity {
             case Constants.REQUEST_PICK_BT_DEVICE:
                 fragment = new BTDeviceFragment();
                 break;
+			case Constants.REQUEST_SETTING:
+                    fragment = new SettingsFragment();
+                    break;
         }
         return fragment;
     }
