@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="release_notes">
+        <item>v1.1.0:BT communication</item>
+        <item>v1.2.0:Map visualization\nBasic interaction controls</item>
+        <item>v1.3.0:Persistent user configurable buttons</item>
+        <item>v1.4.0:Map editing mode</item>
+    </string-array>
+
+</resources>

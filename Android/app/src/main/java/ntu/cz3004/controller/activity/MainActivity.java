@@ -173,14 +173,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
 
     private void loadTestData(){
         // TODO remove debug messages
-        btMessageAdapter.add(new BTMessage(BTMessage.Type.SYSTEM, "sys", "TEST START\n(FORMAT TO BE CONFIRMED)"));
-        btMessageAdapter.add(new BTMessage(BTMessage.Type.OUTGOING, "Me", "update"));
-        btMessageAdapter.add(new BTMessage(BTMessage.Type.INCOMING, "RPI", String.format("{'map':{'p1':'%s','p2':'%s','images':'%s'},'robot':{'pos':'%s'.'dir':%s} }",getString(R.string.part_one_default), getString(R.string.test_pii_2), getString(R.string.test_images_1),"(1,1)","N")));
-        btMessageAdapter.add(new BTMessage(BTMessage.Type.OUTGOING, "Me", String.format("{'robot':'(1,1)','dir':'N','way-pt':'(6,14)'}")));
-        btMessageAdapter.add(new BTMessage(BTMessage.Type.OUTGOING, "Me", "update"));
-        btMessageAdapter.add(new BTMessage(BTMessage.Type.INCOMING, "RPI", String.format("{'map':{'p1':'%s','p2':'%s','images':'%s'},'robot':{'pos':'%s'.'dir':%s} }",getString(R.string.part_one_default), getString(R.string.test_pii_2), getString(R.string.test_images_2),"(1,1)","N")));
-        btMessageAdapter.add(new BTMessage(BTMessage.Type.SYSTEM, "sys", "TEST END"));
-
+        btMessageAdapter.add(new BTMessage(BTMessage.Type.SYSTEM, "sys", "AY20/21S2 Group1"));
+        String[] notes = getResources().getStringArray(R.array.release_notes);
+        for(String note: notes){
+            String[] parts = note.split(":");
+            btMessageAdapter.add(new BTMessage(BTMessage.Type.OUTGOING, parts[0], parts[1]));
+        }
         // TODO: remove testing code
         map.mapFromString(getString(R.string.part_one_default), getString(R.string.test_pii_2));
         map.imagesFromString(getString(R.string.test_images_1));
