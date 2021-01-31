@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     private MapEditViewHolder vhMapEdit;
     private InfoViewHolder vhInfo;
     private BTChatViewHolder vhBTChat;
+    // multi-threading
+    final Handler handler = new Handler();
+    private Runnable taskUpdateMap;
 
 
     @Override
@@ -167,6 +171,19 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     protected void onResume() {
         super.onResume();
         MdpLog.logVersion();
+
+        boolean autoUpdate = PrefUtility.getBoolPreference(this, R.string.state_auto_update, R.bool.state_auto_update_default);
+        vhControls.btnGetMap.setEnabled(!autoUpdate);
+        if (autoUpdate){
+            startAutoUpdateTask();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        stopAutoUpdateTask();
+
+        super.onPause();
     }
 
     @Override
@@ -333,6 +350,30 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         showToast(message);
     }
 
+
+
+    // multi-threading tasks
+    public void startAutoUpdateTask(){
+        if (taskUpdateMap == null){
+            taskUpdateMap = new Runnable() {
+                @Override
+                public void run() {
+                    MdpLog.d("mdp.threads", "req map");
+                    controller.sendMessage(cmd.reqMap);
+                    handler.postDelayed(this, Constants.MAP_UPDATE_INTERVAL_MS);
+                }
+            };
+        }
+        if (handler.hasCallbacks(taskUpdateMap)){
+            handler.removeCallbacks(taskUpdateMap);
+        }
+        handler.post(taskUpdateMap);
+    }
+    public void stopAutoUpdateTask(){
+        if (taskUpdateMap != null && handler.hasCallbacks(taskUpdateMap)){
+            handler.removeCallbacks(taskUpdateMap);
+        }
+    }
 
 
 }

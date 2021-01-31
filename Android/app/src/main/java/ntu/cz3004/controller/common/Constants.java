@@ -5,6 +5,7 @@ public interface Constants {
     int SCAN_DURATION_SEC = 30;
     int DISCOVERABLE_DURATION_SEC = 60;
     int MESSAGE_INTERVAL_MS = 500;
+    int MAP_UPDATE_INTERVAL_MS = 1000;
 
     // request codes
     int REQUEST_ENABLE_BT = 1001;

@@ -13,6 +13,13 @@ public class PrefUtility {
         return context.getApplicationContext().getSharedPreferences(perfName, Context.MODE_PRIVATE);
     }
 
+    public static boolean getBoolPreference(Context context, int keyId, int defaultValueId){
+        SharedPreferences preferences = getSharePreferences(context);
+        String key = context.getString(keyId);
+        Boolean defaultValue = context.getResources().getBoolean(defaultValueId);
+        return preferences.getBoolean(key, defaultValue);
+    }
+
     public static String getLastConnectedBtDevice(Context context){
         return getSharePreferences(context).getString(context.getString(R.string.bt_last_address), null);
     }
