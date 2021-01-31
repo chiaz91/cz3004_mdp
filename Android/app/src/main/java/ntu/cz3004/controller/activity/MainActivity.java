@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         controller.registerListener(this);
         String lastConnect = PrefUtility.getLastConnectedBtDevice(this);
         if (lastConnect!=null){
-            controller.connectDevice(lastConnect, true);
+            controller.connectDevice(lastConnect, Constants.SECURE_BLUETOOTH_CONNECTION);
         } else {
             getSupportActionBar().setSubtitle(getString(R.string.not_connected));
         }
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 return true;
             case R.id.action_bt_reconnect:
                 String lastConnect = PrefUtility.getLastConnectedBtDevice(this);
-                controller.connectDevice(lastConnect, true);
+                controller.connectDevice(lastConnect, Constants.SECURE_BLUETOOTH_CONNECTION);
             default:
                 return super.onContextItemSelected(item);
         }
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case Constants.REQUEST_PICK_BT_DEVICE:
                 if (resultCode == Activity.RESULT_OK) {
                     String address = data.getExtras().getString(Constants.EXTRA_DEVICE_ADDRESS);
-                    controller.connectDevice(address, true);
+                    controller.connectDevice(address, Constants.SECURE_BLUETOOTH_CONNECTION);
                     PrefUtility.setLastConnectedBtDevice(this, address);
                     // connect to device
                     // save as last connected

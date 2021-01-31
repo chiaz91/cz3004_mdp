@@ -1,6 +1,7 @@
 package ntu.cz3004.controller.common;
 
 public interface Constants {
+    boolean SECURE_BLUETOOTH_CONNECTION = false;
     int SCAN_DURATION_SEC = 30;
     int DISCOVERABLE_DURATION_SEC = 60;
     int MESSAGE_INTERVAL_MS = 500;
