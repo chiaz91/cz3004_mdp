@@ -61,11 +61,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     private ImageButton btnSend;
     private RecyclerView rvChatHistory;
 
-    // BT edit map
+    // edit map
     private CheckBox cbMapEdit;
     private MapEditor mapEditor;
 
-    ViewGroup vgControls, vgMapEditMode;
+    // BS info display
+    TextView tvStatusMain, tvStatusSub, tvRobotPos, tvRobotDir, tvWayPtPos, tvMapP1, tvMapP2, tvMapImages;
+
+    ViewGroup vgControls, vgMapEditMode, vgStatus;
 
 
     @Override
@@ -88,8 +91,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         initRobotControls();
         initMapEdit();
         initBTChat();
+        initInfoSheet();
         loadTestData();
         cmd = PrefUtility.getCommand(this);
+        updateInfo();
     }
     private void initPager(){
         ViewPager pager = findViewById(R.id.pager);
@@ -144,6 +149,39 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             Point position = (Point) v.getTag();
             mapEditor.editOn(position);
         });
+    }
+
+    private void initInfoSheet(){
+        vgStatus = viewMain.findViewById(R.id.bottom_sheet);
+        tvStatusMain = vgStatus.findViewById(R.id.tv_status_title);
+        tvStatusSub = vgStatus.findViewById(R.id.tv_status_subtitle);
+        tvRobotPos = vgStatus.findViewById(R.id.tv_status_robot_pos);
+        tvRobotDir = vgStatus.findViewById(R.id.tv_status_robot_dir);
+        tvWayPtPos = vgStatus.findViewById(R.id.tv_status_way_pt_pos);
+        tvMapP1 = vgStatus.findViewById(R.id.tv_status_p1);
+        tvMapP2 = vgStatus.findViewById(R.id.tv_status_p2);
+        tvMapImages = vgStatus.findViewById(R.id.tv_status_images);
+    }
+
+    private void updateInfo(){
+        tvRobotPos.setText(String.format("(%d, %d)", map.getRobot().getX(), map.getRobot().getY()));
+        tvRobotDir.setText(map.getRobot().getDirection()+"");
+        String temp= "N/A";
+        if (map.getWayPoint()!=null){
+            temp = String.format("(%d, %d)", map.getWayPoint().getX(), map.getWayPoint().getY());
+        }
+        tvWayPtPos.setText(temp);
+        tvMapP1.setText(map.getPartI());
+        temp = map.getPartII();
+        if (temp.length()==0){
+            temp = "(empty)";
+        }
+        tvMapP2.setText(temp);
+        temp = map.getImagesString();
+        if (temp.length()==0){
+            temp = "(empty)";
+        }
+        tvMapImages.setText(temp);
     }
 
     private void initBTChat(){
@@ -315,6 +353,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     @Override
     public void onMapChanged() {
         mv.invalidate();
+        updateInfo();
     }
 
     // BT communication related

@@ -30,4 +30,25 @@
         <item name="android:checked">false</item>
         <item name="android:button">@null</item>
     </style>
+
+    <style name="MDPStatusCategory"  >
+        <item name="android:minHeight">?listPreferredItemHeightSmall</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/secondaryColor</item>
+        <item name="android:drawableTint">@color/secondaryColor</item>
+        <item name="android:drawablePadding">32dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="MDPStatusLabel"  >
+        <item name="android:textSize">9sp</item>
+    </style>
+    <style name="MDPStatusValue"  >
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
 </resources>
