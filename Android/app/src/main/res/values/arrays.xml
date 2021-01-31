@@ -5,6 +5,7 @@
         <item>v1.2.0:Map visualization\nBasic interaction controls</item>
         <item>v1.3.0:Persistent user configurable buttons</item>
         <item>v1.4.0:Map editing mode</item>
+        <item>v1.5.0:Status information display</item>
     </string-array>
 
 </resources>
