@@ -18,18 +18,6 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <include layout="@layout/layout_d_pad" />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-
-            <ImageButton
-                style="@style/MDPButtonBorderless"
-                android:id="@+id/btn_ctrl_get_map"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_download" />
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -46,11 +34,18 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/btn_ctrl_f1"
+                android:id="@+id/btn_ctrl_fastest"
                 style="@style/MDPButtonBorderless.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_f1" />
+                android:src="@drawable/ic_fastest" />
+
+            <ImageButton
+                android:id="@+id/btn_ctrl_img_search"
+                style="@style/MDPButtonBorderless.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_img_search" />
 
             <ImageButton
                 android:id="@+id/btn_ctrl_explore"
@@ -60,18 +55,28 @@
                 android:src="@drawable/ic_explore" />
 
 
+
+
             <ImageButton
                 android:id="@+id/btn_ctrl_stop"
                 style="@style/MDPButtonBorderless.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_cross" />
+                android:src="@drawable/ic_cross"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_ctrl_f1"
+                style="@style/MDPButtonBorderless.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_f1" />
 
             <ImageButton
                 android:id="@+id/btn_ctrl_f2"
@@ -81,15 +86,15 @@
                 android:src="@drawable/ic_f2" />
 
             <ImageButton
-                android:id="@+id/btn_ctrl_fastest"
-                style="@style/MDPButtonBorderless.Large"
+                style="@style/MDPButtonBorderless"
+                android:id="@+id/btn_ctrl_get_map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_fastest" />
-
-
+                android:src="@drawable/ic_download" />
         </LinearLayout>
     </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

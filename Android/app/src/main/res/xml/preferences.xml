@@ -4,6 +4,34 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
+        app:title="General"
+        app:icon="@drawable/ic_switches">
+
+        <SwitchPreference
+            android:key="@string/state_bluetooth_retry"
+            android:title="Bluetooth reconnect"
+            android:defaultValue="@bool/state_bluetooth_retry_default"
+            app:isPreferenceVisible="false" />
+
+        <SwitchPreference
+            android:key="@string/state_auto_update"
+            android:title="Map auto update"
+            android:defaultValue="@bool/state_auto_update_default" />
+
+        <SwitchPreference
+            android:key="@string/state_robot_simulation"
+            android:title="Robot movement simulation"
+            android:defaultValue="@bool/state_robot_simulation_default"
+            app:isPreferenceVisible="false" />
+
+
+        <SwitchPreference
+            android:key="@string/state_use_accelerometer"
+            android:title="Use accelerometer"
+            android:defaultValue="@bool/state_use_accelerometer_default"
+            app:isPreferenceVisible="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
         app:title="Direction"
         app:icon="@drawable/ic_dir_all">
 
@@ -39,10 +67,17 @@
             app:defaultValue="@string/cmd_explore_default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
-            app:title="Fastest"
-            app:key="@string/cmd_fastest"
-            app:defaultValue="@string/cmd_fastest_default"
+        app:title="Fastest"
+        app:key="@string/cmd_fastest"
+        app:defaultValue="@string/cmd_fastest_default"
+        app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
+            app:title="Image Recognition"
+            app:key="@string/cmd_img_search"
+            app:defaultValue="@string/cmd_img_search_default"
             app:useSimpleSummaryProvider="true"/>
+
         <EditTextPreference
             app:title="F1"
             app:key="@string/cmd_f1"

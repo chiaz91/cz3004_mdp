@@ -76,32 +76,6 @@
     <string name="edit_reset_map">RESET</string>
     <string name="part_one_default">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</string>
 
-    <!-- Preferences -->
-    <string name="pref_name">mdp_pref</string>
-    <string name="cmd_up">up</string>
-    <string name="cmd_up_default">up</string>
-    <string name="cmd_left">left</string>
-    <string name="cmd_left__default">left</string>
-    <string name="cmd_right">right</string>
-    <string name="cmd_right_default">right</string>
-    <string name="cmd_down">down</string>
-    <string name="cmd_down_default">down</string>
-    <string name="cmd_calibrate">calibrate</string>
-    <string name="cmd_calibrate_default">calibrate</string>
-    <string name="cmd_explore">explore</string>
-    <string name="cmd_explore_default">explore</string>
-    <string name="cmd_fastest">fastest</string>
-    <string name="cmd_fastest_default">fastest</string>
-    <string name="cmd_f1">f1</string>
-    <string name="cmd_f1_default">f1</string>
-    <string name="cmd_f2">f2</string>
-    <string name="cmd_f2_default">f2</string>
-    <string name="cmd_stop">stop</string>
-    <string name="cmd_stop_default">stop</string>
-    <string name="cmd_req_map">req_map</string>
-    <string name="cmd_req_map_default">sendArena</string>
-    <string name="bt_last_address">bt_last_address</string>
-
     <!-- Debug -->
     <string name="test_long_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed elementum tempus egestas sed sed risus pretium quam. Luctus venenatis lectus magna fringilla urna porttitor rhoncus dolor. Laoreet sit amet cursus sit amet dictum sit amet justo. Facilisi nullam vehicula ipsum a arcu cursus vitae congue mauris. Vivamus arcu felis bibendum ut tristique et egestas quis ipsum. Ultrices in iaculis nunc sed augue lacus viverra vitae. Euismod nisi porta lorem mollis aliquam ut. At risus viverra adipiscing at in tellus integer feugiat. Posuere lorem ipsum dolor sit amet. Eget mauris pharetra et ultrices neque ornare aenean euismod elementum. Bibendum est ultricies integer quis auctor elit sed vulputate. Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam. Enim nulla aliquet porttitor lacus luctus accumsan. Vulputate sapien nec sagittis aliquam malesuada. Netus et malesuada fames ac turpis. Erat nam at lectus urna. Odio ut sem nulla pharetra. Semper auctor neque vitae tempus quam pellentesque nec nam aliquam. Posuere urna nec tincidunt praesent semper.</string>
     <string name="test_pii_1">00000000000000007061C0400080010001E000400000000200044438F8C0000000000000080</string>

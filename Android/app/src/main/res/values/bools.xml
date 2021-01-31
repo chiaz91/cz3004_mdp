@@ -1,3 +1,9 @@
 <resources>
     <bool name="is_tablet">false</bool>
+
+    <!-- Setting Preference -->
+    <bool name="state_auto_update_default">false</bool>
+    <bool name="state_bluetooth_retry_default">false</bool>
+    <bool name="state_robot_simulation_default">false</bool>
+    <bool name="state_use_accelerometer_default">false</bool>
 </resources>
