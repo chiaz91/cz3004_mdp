@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
@@ -17,11 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,32 +36,28 @@ import ntu.cz3004.controller.service.BluetoothChatService;
 import ntu.cz3004.controller.util.IntentBuilder;
 import ntu.cz3004.controller.util.MdpLog;
 import ntu.cz3004.controller.util.PrefUtility;
+import ntu.cz3004.controller.view.BTChatViewHolder;
+import ntu.cz3004.controller.view.ControlsViewHolder;
+import ntu.cz3004.controller.view.InfoViewHolder;
+import ntu.cz3004.controller.view.MapEditViewHolder;
 import ntu.cz3004.controller.view.MapView;
 
 public class MainActivity extends AppCompatActivity implements BluetoothStatusListener, Map.OnMapChangedListener, View.OnClickListener {
     private static final String TAG = "mdp.act.main";
     private BluetoothController controller;
     private Command cmd;
-    // pager
-    private View viewMain, viewBtChat;
     // map
     private MapView mv;
     private Map map;
-    private ImageButton btnGetUpdate;
+    private MapEditor mapEditor;
     // BT chat
     private BTMessageAdapter btMessageAdapter;
-    private EditText etMessage;
-    private ImageButton btnSend;
-    private RecyclerView rvChatHistory;
-
-    // edit map
-    private CheckBox cbMapEdit;
-    private MapEditor mapEditor;
-
-    // BS info display
-    TextView tvStatusMain, tvStatusSub, tvRobotPos, tvRobotDir, tvWayPtPos, tvMapP1, tvMapP2, tvMapImages;
-
-    ViewGroup vgControls, vgMapEditMode, vgStatus;
+    // views & holder
+    private View viewMain, viewBtChat;
+    private ControlsViewHolder vhControls;
+    private MapEditViewHolder vhMapEdit;
+    private InfoViewHolder vhInfo;
+    private BTChatViewHolder vhBTChat;
 
 
     @Override
@@ -94,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         initInfoSheet();
         loadTestData();
         cmd = PrefUtility.getCommand(this);
-        updateInfo();
     }
+
     private void initPager(){
         ViewPager pager = findViewById(R.id.pager);
         boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
@@ -115,35 +104,15 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     private void initRobotControls(){
-        vgControls = viewMain.findViewById(R.id.container_controls);
-
-        // controls
-        vgControls.findViewById(R.id.btn_ctrl_up).setOnClickListener(this);
-        vgControls.findViewById(R.id.btn_ctrl_down).setOnClickListener(this);
-        vgControls.findViewById(R.id.btn_ctrl_left).setOnClickListener(this);
-        vgControls.findViewById(R.id.btn_ctrl_right).setOnClickListener(this);
-        vgControls.findViewById(R.id.btn_ctrl_f1).setOnClickListener(this);
-        vgControls.findViewById(R.id.btn_ctrl_f2).setOnClickListener(this);
-        vgControls.findViewById(R.id.btn_ctrl_explore).setOnClickListener(this);
-        vgControls.findViewById(R.id.btn_ctrl_fastest).setOnClickListener(this);
-        vgControls.findViewById(R.id.btn_ctrl_stop).setOnClickListener(this);
-        btnGetUpdate = vgControls.findViewById(R.id.btn_ctrl_get_map);
-        btnGetUpdate.setOnClickListener(this);
-
+        View vControls = viewMain.findViewById(R.id.container_controls);
+        vhControls = new ControlsViewHolder(vControls);
+        vhControls.setOnClickListener(this);
     };
 
     private void initMapEdit(){
-        cbMapEdit = viewMain.findViewById(R.id.cb_edit_map);
-        cbMapEdit.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked){
-                switchToMapEdit();
-            } else {
-                switchToControl();
-                // TODO: Edit is completed, send update to RPi
-            }
-        });
-        vgMapEditMode =  viewMain.findViewById(R.id.container_map_edit);
-        mapEditor = new MapEditor(mv, vgMapEditMode);
+        View vMapEditMode =  viewMain.findViewById(R.id.container_map_edit);
+        vhMapEdit = new MapEditViewHolder(vMapEditMode);
+        mapEditor = new MapEditor(mv, vhMapEdit);
         mv.setOnClickListener(v -> {
             // click action on cell
             Point position = (Point) v.getTag();
@@ -152,52 +121,25 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     private void initInfoSheet(){
-        vgStatus = viewMain.findViewById(R.id.bottom_sheet);
-        tvStatusMain = vgStatus.findViewById(R.id.tv_status_title);
-        tvStatusSub = vgStatus.findViewById(R.id.tv_status_subtitle);
-        tvRobotPos = vgStatus.findViewById(R.id.tv_status_robot_pos);
-        tvRobotDir = vgStatus.findViewById(R.id.tv_status_robot_dir);
-        tvWayPtPos = vgStatus.findViewById(R.id.tv_status_way_pt_pos);
-        tvMapP1 = vgStatus.findViewById(R.id.tv_status_p1);
-        tvMapP2 = vgStatus.findViewById(R.id.tv_status_p2);
-        tvMapImages = vgStatus.findViewById(R.id.tv_status_images);
-    }
-
-    private void updateInfo(){
-        tvRobotPos.setText(String.format("(%d, %d)", map.getRobot().getX(), map.getRobot().getY()));
-        tvRobotDir.setText(map.getRobot().getDirection()+"");
-        String temp= "N/A";
-        if (map.getWayPoint()!=null){
-            temp = String.format("(%d, %d)", map.getWayPoint().getX(), map.getWayPoint().getY());
-        }
-        tvWayPtPos.setText(temp);
-        tvMapP1.setText(map.getPartI());
-        temp = map.getPartII();
-        if (temp.length()==0){
-            temp = "(empty)";
-        }
-        tvMapP2.setText(temp);
-        temp = map.getImagesString();
-        if (temp.length()==0){
-            temp = "(empty)";
-        }
-        tvMapImages.setText(temp);
+        View vStatus = viewMain.findViewById(R.id.bottom_sheet);
+        vhInfo = new InfoViewHolder(vStatus);
+        vhInfo.updateAs(map);
+        vhInfo.cbMapEdit.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                switchToMapEdit();
+            } else {
+                switchToControl();
+                // TODO: Edit is completed, send update to RPi
+            }
+        });
     }
 
     private void initBTChat(){
-        rvChatHistory = viewBtChat.findViewById(R.id.rv_messages);
-        etMessage = viewBtChat.findViewById(R.id.et_msg);
-        btnSend = viewBtChat.findViewById(R.id.btn_send);
-
         ArrayList<BTMessage> messages = new ArrayList();
         btMessageAdapter = new BTMessageAdapter(messages);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvChatHistory.setLayoutManager(linearLayoutManager);
-        rvChatHistory.setAdapter(btMessageAdapter);
-
-        btnSend.setOnClickListener((v)->{
-            String msg = etMessage.getText().toString();
+        vhBTChat = new BTChatViewHolder(viewBtChat, btMessageAdapter);
+        vhBTChat.setOnSendClickListener((v)->{
+            String msg = vhBTChat.etMessage.getText().toString();
             if (msg!=null && msg.length()>0){
                 // send message
                 if (controller.isConnected()){
@@ -234,16 +176,18 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     private void switchToControl(){
-        vgControls.setVisibility(View.VISIBLE);
-        vgMapEditMode.setVisibility(View.GONE);
+        vhControls.setVisible(true);
+        vhMapEdit.setVisible(false);
         mapEditor.setMode(MapEditor.Mode.NONE);
+
+        // TODO: finish edit, send update to RPi
     }
 
     private void switchToMapEdit(){
-        vgControls.setVisibility(View.GONE);
-        vgMapEditMode.setVisibility(View.VISIBLE);
+        vhControls.setVisible(false);
+        vhMapEdit.setVisible(true);
+        vhMapEdit.returnToStart();
         mapEditor.setMode(MapEditor.Mode.ROBOT);
-        ((RadioButton) vgMapEditMode.findViewById(R.id.rb_set_robot)).setChecked(true);
     }
 
 
@@ -259,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case R.id.btn_ctrl_f2: controller.sendMessage(cmd.f2); break;
             case R.id.btn_ctrl_explore: controller.sendMessage(cmd.explore); break;
             case R.id.btn_ctrl_fastest: controller.sendMessage(cmd.fastest); break;
+            case R.id.btn_ctrl_img_search: controller.sendMessage(cmd.imgRecognition); break;
             case R.id.btn_ctrl_stop: controller.sendMessage(cmd.stop); break;
             case R.id.btn_ctrl_get_map: controller.sendMessage(cmd.reqMap); break;
 
@@ -309,16 +254,18 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         switch (requestCode) {
             case Constants.REQUEST_PICK_BT_DEVICE:
                 if (resultCode == Activity.RESULT_OK) {
+                    // connect to device
                     String address = data.getExtras().getString(Constants.EXTRA_DEVICE_ADDRESS);
                     controller.connectDevice(address, Constants.SECURE_BLUETOOTH_CONNECTION);
-                    PrefUtility.setLastConnectedBtDevice(this, address);
-                    // connect to device
                     // save as last connected
+                    PrefUtility.setLastConnectedBtDevice(this, address);
                 }
                 break;
 
             case Constants.REQUEST_SETTING:
                 cmd = PrefUtility.getCommand(this);
+
+                // TODO: check states, update multithreading events
                 break;
 
             default:
@@ -353,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     @Override
     public void onMapChanged() {
         mv.invalidate();
-        updateInfo();
+        vhInfo.updateAs(map);
     }
 
     // BT communication related
@@ -376,8 +323,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     @Override
     public void onCommunicate(BTMessage message) {
         btMessageAdapter.add(message);
-        rvChatHistory.scrollToPosition(btMessageAdapter.getItemCount() -1);
-
+        vhBTChat.scrollToEnd();
 
         // TODO: decode on receiving message
     }

@@ -18,6 +18,7 @@ import ntu.cz3004.controller.common.Direction;
 import ntu.cz3004.controller.entity.Map;
 import ntu.cz3004.controller.entity.Robot;
 import ntu.cz3004.controller.util.Utility;
+import ntu.cz3004.controller.view.MapEditViewHolder;
 import ntu.cz3004.controller.view.MapView;
 
 /** Assist in map editing
@@ -35,21 +36,16 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
     private MapView mv;
     private Mode mode;
 
-    public MapEditor( MapView mapView, View viewEditModes){
+    public MapEditor(MapView mapView, MapEditViewHolder viewHolder){
         this.context = mapView.getContext();
         this.map = mapView.getMap();
         this.mv = mapView;
         this.mode = Mode.NONE;
+
         // init
-        RadioGroup rgEditMode = viewEditModes.findViewById(R.id.rg_map_edit_mode);
-        rgEditMode.setOnCheckedChangeListener(this);
-        viewEditModes.findViewById(R.id.btn_set_map).setOnClickListener(this);
-        viewEditModes.findViewById(R.id.btn_set_map).setOnLongClickListener(this);
-        viewEditModes.findViewById(R.id.btn_map_reset).setOnClickListener(this);
-        viewEditModes.findViewById(R.id.rb_set_robot).setOnLongClickListener(this);
-        viewEditModes.findViewById(R.id.rb_set_way_point).setOnLongClickListener(this);
-        viewEditModes.findViewById(R.id.rb_set_unknown).setOnLongClickListener(this);
-        viewEditModes.findViewById(R.id.rb_set_explored).setOnLongClickListener(this);
+        viewHolder.setOnCheckedChangeListener(this);
+        viewHolder.setOnClickListener(this);
+        viewHolder.setOnLongClickListener(this);
     }
 
     @Override
@@ -152,7 +148,6 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         String strMap = String.format("P1: %s\nP2: %s\nImg: %s", map.getPartI(), map.getPartII(), map.getImagesString());
         Utility.copyToClipboard(context, strMap);
         Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show();
-//        showSnackbar("Copied to clipboard");
     }
 
 

@@ -11,6 +11,7 @@ public class Command {
     public String down;
     public String explore;
     public String fastest;
+    public String imgRecognition;
     public String f1;
     public String f2;
     public String stop;
