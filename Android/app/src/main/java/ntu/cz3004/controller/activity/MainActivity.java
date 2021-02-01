@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     private BTChatViewHolder vhBTChat;
     // multi-threading
     final Handler handler = new Handler();
-    private Runnable taskUpdateMap;
+    private Runnable taskUpdateMap, taskReconnectBT;
 
 
     @Override
@@ -172,6 +172,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         super.onResume();
         MdpLog.logVersion();
 
+        // bt reconnect
+        boolean btReconnect = PrefUtility.getBoolPreference(this, R.string.state_bluetooth_retry, R.bool.state_bluetooth_retry_default );
+        if (btReconnect){
+            startBTReconnectTask();
+        }
+
+        // auto map update
         boolean autoUpdate = PrefUtility.getBoolPreference(this, R.string.state_auto_update, R.bool.state_auto_update_default);
         vhControls.btnGetMap.setEnabled(!autoUpdate);
         if (autoUpdate){
@@ -181,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
 
     @Override
     protected void onPause() {
+        stopBTReconnectTask();
         stopAutoUpdateTask();
 
         super.onPause();
@@ -372,6 +380,31 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     public void stopAutoUpdateTask(){
         if (taskUpdateMap != null && handler.hasCallbacks(taskUpdateMap)){
             handler.removeCallbacks(taskUpdateMap);
+        }
+    }
+
+    public void startBTReconnectTask(){
+        if (taskReconnectBT == null){
+            taskReconnectBT = new Runnable() {
+                @Override
+                public void run() {
+                    MdpLog.d("mdp.threads", "bt reconnect");
+                    String lastAddress = PrefUtility.getLastConnectedBtDevice(MainActivity.this);
+                    if (lastAddress!=null && controller.shouldReconnect()){
+                        controller.connectDevice(lastAddress, Constants.SECURE_BLUETOOTH_CONNECTION);
+                    }
+                    handler.postDelayed(this, Constants.BT_RECONNECT_INTERVAL_MS);
+                }
+            };
+        }
+        if (handler.hasCallbacks(taskReconnectBT)){
+            handler.removeCallbacks(taskReconnectBT);
+        }
+        handler.post(taskReconnectBT);
+    }
+    public void stopBTReconnectTask(){
+        if (taskReconnectBT != null && handler.hasCallbacks(taskReconnectBT)){
+            handler.removeCallbacks(taskReconnectBT);
         }
     }
 

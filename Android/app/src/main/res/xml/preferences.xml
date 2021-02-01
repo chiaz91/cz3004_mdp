@@ -10,8 +10,7 @@
         <SwitchPreference
             android:key="@string/state_bluetooth_retry"
             android:title="Bluetooth reconnect"
-            android:defaultValue="@bool/state_bluetooth_retry_default"
-            app:isPreferenceVisible="false" />
+            android:defaultValue="@bool/state_bluetooth_retry_default" />
 
         <SwitchPreference
             android:key="@string/state_auto_update"

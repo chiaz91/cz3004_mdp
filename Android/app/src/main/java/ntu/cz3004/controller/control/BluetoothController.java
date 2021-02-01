@@ -61,6 +61,9 @@ public class BluetoothController {
         return service.getState() == BluetoothChatService.STATE_CONNECTED;
     }
 
+    public boolean shouldReconnect(){
+        return isSupported() && (service.getState()==BluetoothChatService.STATE_NONE || service.getState()==BluetoothChatService.STATE_LISTEN);
+    }
 
     /***
      * start a connection with Bluetooth device

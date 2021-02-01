@@ -6,6 +6,7 @@ public interface Constants {
     int DISCOVERABLE_DURATION_SEC = 60;
     int MESSAGE_INTERVAL_MS = 500;
     int MAP_UPDATE_INTERVAL_MS = 1000;
+    int BT_RECONNECT_INTERVAL_MS = 3000;
 
     // request codes
     int REQUEST_ENABLE_BT = 1001;
