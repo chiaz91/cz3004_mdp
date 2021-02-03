@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     // BT chat
     private BTMessageAdapter btMessageAdapter;
     // views & holder
+    private ViewPager pager;
     private View viewMain, viewBtChat;
     private ControlsViewHolder vhControls;
     private MapEditViewHolder vhMapEdit;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     private void initPager(){
-        ViewPager pager = findViewById(R.id.pager);
+        pager = findViewById(R.id.pager);
         boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
         viewMain = LayoutInflater.from(this).inflate(R.layout.layout_map, pager, false);
         viewBtChat = LayoutInflater.from(this).inflate(R.layout.layout_chat, pager, false);
@@ -192,6 +193,26 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         stopAutoUpdateTask();
 
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (pager.getCurrentItem() != 0){
+            pager.setCurrentItem(0, true);
+        } else {
+            super.onBackPressed();
+            // TODO: show prevent exit dialog?
+//            AlertDialog alert = new MaterialAlertDialogBuilder(this)
+//                    .setTitle("Exiting")
+//                    .setMessage("Exit the app will break bluetooth connection")
+//                    .setPositiveButton(R.string.confirm, (dialog, which) -> {
+//                        finish();
+//                    })
+//                    .setNegativeButton(R.string.cancel, null)
+//                    .setCancelable(true)
+//                    .create();
+//            alert.show();
+        }
     }
 
     @Override
