@@ -7,13 +7,6 @@
         app:title="General"
         app:icon="@drawable/ic_switches">
 
-        <ListPreference
-            android:key="@string/key_debug_map"
-            android:title="Debug map data"
-            android:dialogTitle="Debug map data"
-            android:entries="@array/map_titles"
-            android:entryValues="@array/map_values"
-            app:useSimpleSummaryProvider="true"/>
 
         <SwitchPreference
             android:key="@string/state_bluetooth_retry"
@@ -122,5 +115,12 @@
             android:persistent="false"
             android:title="Build"/>
 
+        <ListPreference
+            android:key="@string/key_debug_map"
+            android:title="Debug map data"
+            android:dialogTitle="Debug map data"
+            android:entries="@array/map_titles"
+            android:entryValues="@array/map_values"
+            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
