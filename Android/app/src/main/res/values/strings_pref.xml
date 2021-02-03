@@ -32,4 +32,5 @@
 
     <!-- Others -->
     <string name="bt_last_address">bt_last_address</string>
+    <string name="key_debug_map">debug_map</string>
 </resources>

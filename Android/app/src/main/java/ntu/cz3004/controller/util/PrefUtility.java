@@ -20,6 +20,12 @@ public class PrefUtility {
         return preferences.getBoolean(key, defaultValue);
     }
 
+
+    public static String getDebugMap(Context context){
+        return getSharePreferences(context).getString(context.getString(R.string.key_debug_map), "");
+    }
+
+
     public static String getLastConnectedBtDevice(Context context){
         return getSharePreferences(context).getString(context.getString(R.string.bt_last_address), null);
     }
