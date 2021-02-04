@@ -7,6 +7,16 @@
         app:title="General"
         app:icon="@drawable/ic_switches">
 
+        <EditTextPreference
+            app:title="Last connected device"
+            app:key="@string/bt_last_address"
+            android:enabled="false"
+            app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreference
+            android:key="@string/state_secure_connection"
+            android:title="Secure connection"
+            android:defaultValue="@bool/state_bluetooth_retry_default" />
 
         <SwitchPreference
             android:key="@string/state_bluetooth_retry"

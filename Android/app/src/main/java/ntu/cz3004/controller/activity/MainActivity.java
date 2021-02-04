@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         controller.registerListener(this);
         String lastConnect = PrefUtility.getLastConnectedBtDevice(this);
         if (lastConnect!=null){
-            controller.connectDevice(lastConnect, Constants.SECURE_BLUETOOTH_CONNECTION);
+            boolean isSecure = PrefUtility.isSecureConnection(MainActivity.this);
+            controller.connectDevice(lastConnect, isSecure);
         } else {
             getSupportActionBar().setSubtitle(getString(R.string.not_connected));
         }
@@ -182,13 +183,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         MdpLog.logVersion();
 
         // bt reconnect
-        boolean btReconnect = PrefUtility.getBoolPreference(this, R.string.state_bluetooth_retry, R.bool.state_bluetooth_retry_default );
+        boolean btReconnect = PrefUtility.isAutoReconnect(this);
         if (btReconnect){
             startBTReconnectTask();
         }
 
         // auto map update
-        boolean autoUpdate = PrefUtility.getBoolPreference(this, R.string.state_auto_update, R.bool.state_auto_update_default);
+        boolean autoUpdate = PrefUtility.isAutoUpdate(this);
         vhControls.btnGetMap.setEnabled(!autoUpdate);
         if (autoUpdate){
             startAutoUpdateTask();
@@ -297,7 +298,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 return true;
             case R.id.action_bt_reconnect:
                 String lastConnect = PrefUtility.getLastConnectedBtDevice(this);
-                controller.connectDevice(lastConnect, Constants.SECURE_BLUETOOTH_CONNECTION);
+                boolean isSecure = PrefUtility.isSecureConnection(this);
+                controller.connectDevice(lastConnect, isSecure);
             default:
                 return super.onContextItemSelected(item);
         }
@@ -310,7 +312,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 if (resultCode == Activity.RESULT_OK) {
                     // connect to device
                     String address = data.getExtras().getString(Constants.EXTRA_DEVICE_ADDRESS);
-                    controller.connectDevice(address, Constants.SECURE_BLUETOOTH_CONNECTION);
+                    boolean isSecure = PrefUtility.isSecureConnection(this);
+                    controller.connectDevice(address, isSecure);
                     // save as last connected
                     PrefUtility.setLastConnectedBtDevice(this, address);
                 }
@@ -418,9 +421,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 @Override
                 public void run() {
                     MdpLog.d("mdp.threads", "bt reconnect");
-                    String lastAddress = PrefUtility.getLastConnectedBtDevice(MainActivity.this);
-                    if (lastAddress!=null && controller.shouldReconnect()){
-                        controller.connectDevice(lastAddress, Constants.SECURE_BLUETOOTH_CONNECTION);
+                    String lastConnect = PrefUtility.getLastConnectedBtDevice(MainActivity.this);
+                    if (lastConnect!=null && controller.shouldReconnect()){
+                        boolean isSecure = PrefUtility.isSecureConnection(MainActivity.this);
+                        controller.connectDevice(lastConnect, isSecure);
                     }
                     handler.postDelayed(this, Constants.BT_RECONNECT_INTERVAL_MS);
                 }

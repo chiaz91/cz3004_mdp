@@ -1,6 +1,7 @@
 <resources>
     <string name="pref_name">mdp_pref</string>
     <!-- States -->
+    <string name="state_secure_connection">secure_connect</string>
     <string name="state_auto_update">map_auto_update</string>
     <string name="state_robot_simulation">robot_simulation</string>
     <string name="state_bluetooth_retry">bt_retry</string>

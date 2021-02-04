@@ -20,6 +20,18 @@ public class PrefUtility {
         return preferences.getBoolean(key, defaultValue);
     }
 
+    public static boolean isSecureConnection(Context context){
+        return getBoolPreference(context, R.string.state_secure_connection, R.bool.state_secure_connection_default);
+    }
+
+    public static boolean isAutoReconnect(Context context){
+        return getBoolPreference(context, R.string.state_bluetooth_retry, R.bool.state_bluetooth_retry_default);
+    }
+    
+    public static boolean isAutoUpdate(Context context){
+        return getBoolPreference(context, R.string.state_auto_update, R.bool.state_auto_update_default);
+    }
+
 
     public static String getDebugMap(Context context){
         return getSharePreferences(context).getString(context.getString(R.string.key_debug_map), "");
