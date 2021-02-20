@@ -15,6 +15,7 @@ import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.common.Constants;
 import ntu.cz3004.controller.fragment.BTDeviceFragment;
 import ntu.cz3004.controller.fragment.SettingsFragment;
+import ntu.cz3004.controller.util.DialogUtil;
 
 public class DynamicActivity extends AppCompatActivity {
 
@@ -43,14 +44,7 @@ public class DynamicActivity extends AppCompatActivity {
             fragmentTransaction.add(R.id.container, fragment);
             fragmentTransaction.commit();
         } else {
-            new AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.page_not_found))
-                    .setMessage(getString(R.string.page_not_found_msg))
-                    .setPositiveButton(getString(R.string.confirm),(dialog, which) -> {
-                        finish();
-                    })
-                    .setCancelable(false)
-                    .show();
+            DialogUtil.promptPageNotFound(this);
         }
     }
 

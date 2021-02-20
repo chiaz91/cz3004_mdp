@@ -34,6 +34,7 @@ import ntu.cz3004.controller.entity.Command;
 import ntu.cz3004.controller.entity.Map;
 import ntu.cz3004.controller.listener.BluetoothStatusListener;
 import ntu.cz3004.controller.service.BluetoothChatService;
+import ntu.cz3004.controller.util.DialogUtil;
 import ntu.cz3004.controller.util.IntentBuilder;
 import ntu.cz3004.controller.util.MdpLog;
 import ntu.cz3004.controller.util.PrefUtility;
@@ -71,15 +72,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setSubtitle(getString(R.string.not_connected));
         controller = new BluetoothController(this);
         controller.registerListener(this);
-        String lastConnect = PrefUtility.getLastConnectedBtDevice(this);
-        if (lastConnect!=null){
-            boolean isSecure = PrefUtility.isSecureConnection(MainActivity.this);
-            controller.connectDevice(lastConnect, isSecure);
-        } else {
-            getSupportActionBar().setSubtitle(getString(R.string.not_connected));
-        }
 
         initPager();
         initMap();
@@ -89,6 +84,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         initInfoSheet();
         loadTestData();
         cmd = PrefUtility.getCommand(this);
+
+        if (!controller.isSupported()){
+            DialogUtil.promptBluetoothNotAvailable(this);
+        } else {
+            reconnectLastDevice();
+        }
     }
 
     private void initPager(){
@@ -209,18 +210,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         if (pager.getCurrentItem() != 0){
             pager.setCurrentItem(0, true);
         } else {
-            super.onBackPressed();
-            // TODO: show prevent exit dialog?
-//            AlertDialog alert = new MaterialAlertDialogBuilder(this)
-//                    .setTitle("Exiting")
-//                    .setMessage("Exit the app will break bluetooth connection")
-//                    .setPositiveButton(R.string.confirm, (dialog, which) -> {
-//                        finish();
-//                    })
-//                    .setNegativeButton(R.string.cancel, null)
-//                    .setCancelable(true)
-//                    .create();
-//            alert.show();
+            if (controller.isConnected()){
+                DialogUtil.promptExitAppWarming(this);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -297,9 +291,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 controller.stopService();
                 return true;
             case R.id.action_bt_reconnect:
-                String lastConnect = PrefUtility.getLastConnectedBtDevice(this);
-                boolean isSecure = PrefUtility.isSecureConnection(this);
-                controller.connectDevice(lastConnect, isSecure);
+                reconnectLastDevice();
             default:
                 return super.onContextItemSelected(item);
         }
@@ -308,6 +300,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
+            case Constants.REQUEST_ENABLE_BT:
+                if (resultCode == Activity.RESULT_OK) {
+                    reconnectLastDevice();
+                }
+                break;
             case Constants.REQUEST_PICK_BT_DEVICE:
                 if (resultCode == Activity.RESULT_OK) {
                     // connect to device
@@ -391,6 +388,18 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
 
+    public void reconnectLastDevice(){
+        if (!controller.isEnabled()){
+            Intent intent = IntentBuilder.enableBluetooth();
+            startActivityForResult(intent, Constants.REQUEST_ENABLE_BT);
+        } else {
+            String lastConnect = PrefUtility.getLastConnectedBtDevice(MainActivity.this);
+            if (lastConnect!=null && controller.shouldReconnect()){
+                boolean isSecure = PrefUtility.isSecureConnection(MainActivity.this);
+                controller.connectDevice(lastConnect, isSecure);
+            }
+        }
+    }
 
     // multi-threading tasks
     public void startAutoUpdateTask(){
@@ -404,14 +413,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 }
             };
         }
-        if (handler.hasCallbacks(taskUpdateMap)){
-            handler.removeCallbacks(taskUpdateMap);
-        }
         handler.post(taskUpdateMap);
     }
     public void stopAutoUpdateTask(){
-        if (taskUpdateMap != null && handler.hasCallbacks(taskUpdateMap)){
+        if (taskUpdateMap != null ){
             handler.removeCallbacks(taskUpdateMap);
+            taskUpdateMap = null;
         }
     }
 
@@ -421,25 +428,21 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 @Override
                 public void run() {
                     MdpLog.d("mdp.threads", "bt reconnect");
-                    String lastConnect = PrefUtility.getLastConnectedBtDevice(MainActivity.this);
-                    if (lastConnect!=null && controller.shouldReconnect()){
-                        boolean isSecure = PrefUtility.isSecureConnection(MainActivity.this);
-                        controller.connectDevice(lastConnect, isSecure);
+                    if (!controller.isEnabled()){
+                        showToast("bluetooth is not enabled.");
+                    } else {
+                        reconnectLastDevice();
                     }
                     handler.postDelayed(this, Constants.BT_RECONNECT_INTERVAL_MS);
                 }
             };
         }
-        if (handler.hasCallbacks(taskReconnectBT)){
-            handler.removeCallbacks(taskReconnectBT);
-        }
         handler.post(taskReconnectBT);
     }
     public void stopBTReconnectTask(){
-        if (taskReconnectBT != null && handler.hasCallbacks(taskReconnectBT)){
+        if (taskReconnectBT != null){
             handler.removeCallbacks(taskReconnectBT);
+            taskReconnectBT = null;
         }
     }
-
-
 }

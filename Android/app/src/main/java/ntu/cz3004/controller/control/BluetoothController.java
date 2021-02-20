@@ -49,6 +49,18 @@ public class BluetoothController {
         this.listeners.remove(listener);
     }
 
+    public void setEnabled(boolean enabling){
+        if (enabling){
+            btAdapter.enable();
+        } else {
+            btAdapter.disable();
+        }
+    }
+
+    public boolean isEnabled(){
+        return btAdapter.isEnabled();
+    }
+
     public boolean isSupported(){
         return btAdapter != null;
     }

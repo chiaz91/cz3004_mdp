@@ -25,21 +25,33 @@
         app:title="Bluetooth"
         app:icon="@drawable/ic_bluetooth">
 
-        <EditTextPreference
-            app:title="Last connected device"
-            app:key="@string/bt_last_address"
-            android:enabled="true"
-            app:useSimpleSummaryProvider="true"/>
+        <SwitchPreference
+            android:key="bt_enabled"
+            android:title="Enabled"
+            android:defaultValue="false"
+            android:persistent="false" />
+
+        <SwitchPreference
+            android:key="@string/state_bluetooth_retry"
+            android:title="Auto Reconnect"
+            android:defaultValue="@bool/state_bluetooth_retry_default" />
 
         <SwitchPreference
             android:key="@string/state_secure_connection"
             android:title="Secure Connection"
             android:defaultValue="@bool/state_bluetooth_retry_default" />
 
-        <SwitchPreference
-            android:key="@string/state_bluetooth_retry"
-            android:title="Auto Reconnect"
-            android:defaultValue="@bool/state_bluetooth_retry_default" />
+        <Preference
+            android:key="bt_discoverable"
+            android:title="Enable discoverable Mode"
+            android:persistent="false" />
+
+        <EditTextPreference
+            app:title="Last connected device"
+            app:key="@string/bt_last_address"
+            android:enabled="true"
+            app:useSimpleSummaryProvider="true"/>
+
 
 
     </PreferenceCategory>

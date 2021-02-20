@@ -3,6 +3,7 @@ package ntu.cz3004.controller.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -19,10 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +37,7 @@ import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.adapter.BTDeviceAdapter;
 import ntu.cz3004.controller.common.Constants;
 import ntu.cz3004.controller.listener.OnRecyclerViewInteractedListener;
+import ntu.cz3004.controller.util.DialogUtil;
 import ntu.cz3004.controller.util.IntentBuilder;
 import ntu.cz3004.controller.util.MdpLog;
 import ntu.cz3004.controller.util.Utility;
@@ -68,13 +70,7 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
 
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         if(btAdapter == null) {
-            AlertDialog alert = new AlertDialog.Builder(getContext())
-                    .setTitle("Bluetooth not available")
-                    .setMessage("This device does not support bluetooth service.")
-                    .setPositiveButton(getString(R.string.confirm), (dialog, which) -> getActivity().finish())
-                    .setCancelable(false)
-                    .create();
-            alert.show();
+            DialogUtil.promptBluetoothNotAvailable(getContext());
         } else {
             enableBluetooth();
         }
@@ -178,6 +174,8 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
 
         if (btAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             startActivityForResult(IntentBuilder.enableBtDiscoverable(), Constants.REQUEST_DISCOVER_BT);
+        } else {
+            showToast("In discoverable mode");
         }
     }
 
@@ -290,14 +288,14 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         }
     }
 
-//    Toast toast;
-//    private void showToast(String message){
-//        if (toast!=null){
-//            toast.cancel();
-//        }
-//        toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
-//        toast.show();
-//    }
+    Toast toast;
+    private void showToast(String message){
+        if (toast!=null){
+            toast.cancel();
+        }
+        toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
     Snackbar snackbar;
     private  void showSnackbar(String message){
@@ -310,7 +308,6 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
             tvMessage.setText(message);
         }
     }
-
 
     private class BtDeviceFoundReceiver extends BroadcastReceiver{
 
