@@ -30,23 +30,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.adapter.BTDeviceAdapter;
 import ntu.cz3004.controller.common.Constants;
+import ntu.cz3004.controller.listener.OnRecyclerViewInteractedListener;
 import ntu.cz3004.controller.util.IntentBuilder;
 import ntu.cz3004.controller.util.MdpLog;
 import ntu.cz3004.controller.util.Utility;
 
-public class BTDeviceFragment extends Fragment {
+public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteractedListener {
     private static final String TAG = "mdp.frag.bt_devices";
     private static final int DURATION_ONE_SEC = 1000;
     private BluetoothAdapter btAdapter;
     private BTDeviceAdapter adaptorPairedDevices, adapterNearbyDevices;
-    private ArrayList<BluetoothDevice> pairedDevices = new ArrayList<>();
-    private ArrayList<BluetoothDevice> nearbyDevices = new ArrayList<>();
 
     // progress count down
     Handler handler = new Handler();
@@ -77,11 +75,8 @@ public class BTDeviceFragment extends Fragment {
                     .setCancelable(false)
                     .create();
             alert.show();
-            return;
-        }
-        if(btAdapter !=null && !btAdapter.isEnabled()) {
-            Intent intent = IntentBuilder.enableBluetooth();
-            startActivityForResult(intent, Constants.REQUEST_ENABLE_BT);
+        } else {
+            enableBluetooth();
         }
     }
 
@@ -92,27 +87,15 @@ public class BTDeviceFragment extends Fragment {
         // for paired devices
         RecyclerView rvDevices  = view.findViewById(R.id.rvDevicesPaired);
         rvDevices.setLayoutManager(new LinearLayoutManager(getContext()));
-        adaptorPairedDevices = new BTDeviceAdapter(pairedDevices);
-        adaptorPairedDevices.setOnRecyclerViewInteractListener((itemView, holder, action)->{
-            int pos = holder.getAdapterPosition();
-            BluetoothDevice device = pairedDevices.get(pos);
-            MdpLog.d(TAG, String.format("click on %s(%s)", device.getAddress(), device.getName()!=null? device.getName():"unknown"));
-
-            pickDevice(device);
-        });
+        adaptorPairedDevices = new BTDeviceAdapter();
+        adaptorPairedDevices.setOnRecyclerViewInteractListener(this);
         rvDevices.setAdapter(adaptorPairedDevices);
 
         // for nearby devices
         RecyclerView rvNearByDevices = view.findViewById(R.id.rvDevicesNearby);
         rvNearByDevices.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterNearbyDevices = new BTDeviceAdapter(nearbyDevices);
-        adapterNearbyDevices.setOnRecyclerViewInteractListener((itemView, holder, action)->{
-            int pos = holder.getAdapterPosition();
-            BluetoothDevice device = nearbyDevices.get(pos);
-            MdpLog.d(TAG, String.format("click on %s(%s)", device.getAddress(), device.getName()!=null? device.getName():"unknown"));
-            pickDevice(device);
-
-        });
+        adapterNearbyDevices = new BTDeviceAdapter();
+        adapterNearbyDevices.setOnRecyclerViewInteractListener(this);
         rvNearByDevices.setAdapter(adapterNearbyDevices);
 
         refreshPairDevices();
@@ -123,6 +106,13 @@ public class BTDeviceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.activity_bt_devices));
+    }
+
+    @Override
+    public void onViewInteracted(View itemView, RecyclerView.ViewHolder holder, int action) {
+        BluetoothDevice device = (BluetoothDevice) itemView.getTag();
+        MdpLog.d(TAG, String.format("click on %s(%s)", device.getAddress(), device.getName()!=null? device.getName():"unknown"));
+        pickDevice(device);
     }
 
     private void pickDevice(BluetoothDevice device){
@@ -168,7 +158,6 @@ public class BTDeviceFragment extends Fragment {
         checkPermissionForScanDevice();
     }
 
-
     private void enableBluetooth(){
         if (!btAdapter.isEnabled()){
             Intent intent = IntentBuilder.enableBluetooth();
@@ -196,15 +185,9 @@ public class BTDeviceFragment extends Fragment {
         if (btAdapter ==null){
             return;
         }
-        pairedDevices.clear();
-        adaptorPairedDevices.notifyDataSetChanged();
         Set<BluetoothDevice> set  = btAdapter.getBondedDevices();
         if (!set.isEmpty()) {
-            for (BluetoothDevice device: set) {
-                pairedDevices.add(device);
-                MdpLog.logBTDevice(device);
-            }
-            adaptorPairedDevices.notifyDataSetChanged();
+            adaptorPairedDevices.setDevices(set);
         }
     }
 
@@ -234,8 +217,7 @@ public class BTDeviceFragment extends Fragment {
         showSnackbar(getString(R.string.discovering, Constants.SCAN_DURATION_SEC));
 
 
-        nearbyDevices.clear();
-        adapterNearbyDevices.notifyDataSetChanged();
+        adapterNearbyDevices.clear();
         if (deviceFoundReceiver == null){
             deviceFoundReceiver = new BtDeviceFoundReceiver();
             IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -337,13 +319,7 @@ public class BTDeviceFragment extends Fragment {
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-                if (!nearbyDevices.contains(device)){
-                    MdpLog.d(TAG, "New device found: "+device.getAddress());
-                    MdpLog.logBTDevice(device);
-                    nearbyDevices.add( device );
-                }
-                adapterNearbyDevices.notifyDataSetChanged();
+                adapterNearbyDevices.add(device);
             }
         }
     }

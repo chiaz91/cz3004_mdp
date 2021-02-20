@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.listener.OnRecyclerViewInteractedListener;
@@ -20,11 +21,12 @@ public class BTDeviceAdapter extends RecyclerView.Adapter {
     private ArrayList<BluetoothDevice> devices;
     private OnRecyclerViewInteractedListener listener;
 
-    public BTDeviceAdapter(ArrayList<BluetoothDevice> devices) {
-        this.devices = devices;
+    public BTDeviceAdapter() {
+        this.devices = new ArrayList<>();
     }
-    public void setDevices(ArrayList<BluetoothDevice> devices){
-        this.devices = devices;
+    public void setDevices(Collection<BluetoothDevice> devices){
+        this.devices.size();
+        this.devices.addAll(devices);
         notifyDataSetChanged();
     }
     public void setOnRecyclerViewInteractListener(OnRecyclerViewInteractedListener listener){
@@ -36,6 +38,11 @@ public class BTDeviceAdapter extends RecyclerView.Adapter {
             devices.add(device);
             notifyDataSetChanged();
         }
+    }
+
+    public void clear(){
+        devices.clear();
+        notifyDataSetChanged();
     }
 
     @Override
