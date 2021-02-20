@@ -25,7 +25,7 @@ public class BTDeviceAdapter extends RecyclerView.Adapter {
         this.devices = new ArrayList<>();
     }
     public void setDevices(Collection<BluetoothDevice> devices){
-        this.devices.size();
+        this.devices.clear();
         this.devices.addAll(devices);
         notifyDataSetChanged();
     }
