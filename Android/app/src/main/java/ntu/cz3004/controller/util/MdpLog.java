@@ -1,6 +1,7 @@
 package ntu.cz3004.controller.util;
 
 import android.bluetooth.BluetoothDevice;
+import android.os.Bundle;
 import android.util.Log;
 
 import ntu.cz3004.controller.BuildConfig;
@@ -51,9 +52,10 @@ public class MdpLog {
     }
 
     public static void logBTDevice(BluetoothDevice btDevice){
-        String msg = "Bluetooth device info\n";
-        msg+= String.format("%s: %s\n", "name", btDevice.getName());
-        msg+= String.format("%s: %s\n", "addr", btDevice.getAddress());
+        String msg = String.format("[BT device] addr: %s, name: %s",btDevice.getAddress(), btDevice.getName());
+//        String msg = "Bluetooth device info\n";
+//        msg+= String.format("%s: %s\n", "name", btDevice.getName());
+//        msg+= String.format("%s: %s\n", "addr", btDevice.getAddress());
         /** Other information:
          * Type     : classic / low energy / dual(classic+low energy)
          * BondState: none / bonding / bonded
@@ -62,6 +64,19 @@ public class MdpLog {
          * UUIDs    : get list of UUIDs
          */
         v(TAG, msg);
+    }
+
+
+    /**
+     * Useful to read intent.getExtras()
+     */
+    public static void logBundle(Bundle bundle) {
+        String msg = "Bundle info\n";
+
+        for (String key : bundle.keySet()) {
+            msg += String.format("[%s]:%s\n", key, bundle.get(key));
+        }
+        MdpLog.d(TAG, msg);
     }
 
     public static void logVersion(){

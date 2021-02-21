@@ -29,6 +29,10 @@ public class BTDeviceAdapter extends RecyclerView.Adapter {
         this.devices.addAll(devices);
         notifyDataSetChanged();
     }
+
+    public ArrayList<BluetoothDevice> getDevices(){
+        return (ArrayList<BluetoothDevice>) devices.clone();
+    }
     public void setOnRecyclerViewInteractListener(OnRecyclerViewInteractedListener listener){
         this.listener = listener;
     }
@@ -93,11 +97,13 @@ public class BTDeviceAdapter extends RecyclerView.Adapter {
 
     public class DeviceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         View view;
+        TextView tvPos;
         TextView tvTextMain;
         TextView tvTextSub;
         DeviceViewHolder(View view) {
             super(view);
             this.view = view;
+            tvPos = view.findViewById(R.id.tv_device_pos);
             tvTextMain = view.findViewById(R.id.tv_text_main);
             tvTextSub = view.findViewById(R.id.tv_text_sub);
             view.setOnClickListener(this);
@@ -105,6 +111,7 @@ public class BTDeviceAdapter extends RecyclerView.Adapter {
 
         void updateAs(BluetoothDevice device){
             view.setTag(device);
+            tvPos.setText(""+(getAdapterPosition()+1));
             tvTextMain.setText(device.getAddress());
             tvTextSub.setText(device.getName());
             tvTextSub.setVisibility(device.getName()!=null ? View.VISIBLE:View.GONE);

@@ -29,7 +29,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Set;
 
@@ -45,6 +44,7 @@ import ntu.cz3004.controller.util.Utility;
 public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteractedListener {
     private static final String TAG = "mdp.frag.bt_devices";
     private static final int DURATION_ONE_SEC = 1000;
+    private TextView tvPaired, tvNearBy;
     private BluetoothAdapter btAdapter;
     private BTDeviceAdapter adaptorPairedDevices, adapterNearbyDevices;
 
@@ -57,11 +57,15 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
             if (++curTimerSec > Constants.SCAN_DURATION_SEC){
                 doEndScanning();
             } else {
-                showSnackbar(getString(R.string.discovering, (Constants.SCAN_DURATION_SEC-curTimerSec) ));
+                updateSubtitle(getString(R.string.discovering, (Constants.SCAN_DURATION_SEC-curTimerSec)));
                 handler.postDelayed(this, DURATION_ONE_SEC);
             }
         }
     };
+
+    private void updateSubtitle(String subtitle){
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(subtitle);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,15 +84,18 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_select_device, container, false);
+        tvPaired = view.findViewById(R.id.tv_paired);
+        tvNearBy = view.findViewById(R.id.tv_nearby);
+
         // for paired devices
-        RecyclerView rvDevices  = view.findViewById(R.id.rvDevicesPaired);
+        RecyclerView rvDevices  = view.findViewById(R.id.rv_paired);
         rvDevices.setLayoutManager(new LinearLayoutManager(getContext()));
         adaptorPairedDevices = new BTDeviceAdapter();
         adaptorPairedDevices.setOnRecyclerViewInteractListener(this);
         rvDevices.setAdapter(adaptorPairedDevices);
 
         // for nearby devices
-        RecyclerView rvNearByDevices = view.findViewById(R.id.rvDevicesNearby);
+        RecyclerView rvNearByDevices = view.findViewById(R.id.rv_nearby);
         rvNearByDevices.setLayoutManager(new LinearLayoutManager(getContext()));
         adapterNearbyDevices = new BTDeviceAdapter();
         adapterNearbyDevices.setOnRecyclerViewInteractListener(this);
@@ -150,6 +157,8 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
             enableBluetooth();
             return;
         }
+        tvPaired.setText("Paired");
+        tvNearBy.setText("Nearby");
         refreshPairDevices();
         checkPermissionForScanDevice();
     }
@@ -183,19 +192,20 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         if (btAdapter ==null){
             return;
         }
+        adaptorPairedDevices.clear();
         Set<BluetoothDevice> set  = btAdapter.getBondedDevices();
         if (!set.isEmpty()) {
             adaptorPairedDevices.setDevices(set);
         }
+        // update label
+        int size = adaptorPairedDevices.getDevices().size();
+        tvPaired.setText("Paired "+(size==0?"":"("+size+")"));
     }
 
 
     private BtDeviceFoundReceiver deviceFoundReceiver;
     private void doEndScanning(){
-        if (snackbar!=null){
-            snackbar.dismiss();
-            snackbar=null;
-        }
+        updateSubtitle(null);
         handler.removeCallbacks(runnableScanCountdown);
         if (btAdapter!= null && btAdapter.isDiscovering()){
             MdpLog.d(TAG, "End bluetooth scanning");
@@ -212,8 +222,7 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         handler.removeCallbacks(runnableScanCountdown);
         handler.postDelayed(runnableScanCountdown, DURATION_ONE_SEC);
         curTimerSec = 0;
-        showSnackbar(getString(R.string.discovering, Constants.SCAN_DURATION_SEC));
-
+        updateSubtitle(getString(R.string.discovering, Constants.SCAN_DURATION_SEC));
 
         adapterNearbyDevices.clear();
         if (deviceFoundReceiver == null){
@@ -297,18 +306,6 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         toast.show();
     }
 
-    Snackbar snackbar;
-    private  void showSnackbar(String message){
-        if (snackbar==null){
-            snackbar = Snackbar.make(getView(), message, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.cancel), (v)-> doEndScanning());
-            snackbar.show();
-        } else {
-            TextView tvMessage =  snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
-            tvMessage.setText(message);
-        }
-    }
-
     private class BtDeviceFoundReceiver extends BroadcastReceiver{
 
         @Override
@@ -316,7 +313,11 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                MdpLog.logBTDevice(device);
                 adapterNearbyDevices.add(device);
+                // update label
+                int size = adapterNearbyDevices.getDevices().size();
+                tvNearBy.setText("Nearby "+(size==0?"":"("+size+")"));
             }
         }
     }

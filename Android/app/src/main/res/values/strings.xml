@@ -21,7 +21,7 @@
     <string name="fastest_cap">FASTEST</string>
     <string name="refresh">Refresh</string>
     <string name="discoverable">Discoverable</string>
-    <string name="discovering">Discovering(%1$d) …</string>
+    <string name="discovering">Discovering (%1$d) …</string>
     <string name="paired_devices">Paired</string>
     <string name="nearby_devices">Nearby</string>
     <string name="no_device_found">No device found</string>

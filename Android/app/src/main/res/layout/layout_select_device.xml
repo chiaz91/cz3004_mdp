@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_paired"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
@@ -18,7 +19,7 @@
         android:textColor="@color/secondaryColor" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDevicesPaired"
+        android:id="@+id/rv_paired"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
@@ -26,6 +27,7 @@
         />
 
     <TextView
+        android:id="@+id/tv_nearby"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
@@ -36,7 +38,7 @@
         android:textColor="@color/secondaryColor" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDevicesNearby"
+        android:id="@+id/rv_nearby"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
