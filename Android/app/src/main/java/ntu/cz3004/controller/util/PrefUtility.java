@@ -32,6 +32,10 @@ public class PrefUtility {
         return getBoolPreference(context, R.string.state_auto_update, R.bool.state_auto_update_default);
     }
 
+    public static boolean isEnableSimulation(Context context){
+        return getBoolPreference(context, R.string.state_robot_simulation, R.bool.state_robot_simulation_default);
+    }
+
 
     public static String getDebugMap(Context context){
         return getSharePreferences(context).getString(context.getString(R.string.key_debug_map), "");
@@ -39,7 +43,8 @@ public class PrefUtility {
 
 
     public static String getLastConnectedBtDevice(Context context){
-        return getSharePreferences(context).getString(context.getString(R.string.bt_last_address), null);
+        String lastConnect = getSharePreferences(context).getString(context.getString(R.string.bt_last_address), null);
+        return (lastConnect==null)?null:lastConnect.toUpperCase();
     }
 
     public static void setLastConnectedBtDevice(Context context, String address){

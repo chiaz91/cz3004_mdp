@@ -25,6 +25,7 @@ import java.util.zip.ZipOutputStream;
 public class Utility {
     public static final String PATTERN_PART_I  = "^(\\s*|[0-9A-F]{76})$";
     public static final String PATTERN_PART_II = "^(\\s*|[0-9A-F]{0,75})$";
+    public static final String BT_ADDRESS = "^[0-9A-F]{2}(:[0-9A-F]{2}){5}$";
     private static final int BUFFER_SIZE = 2048;
 
     public static boolean validate(String reqEx, String str){

@@ -23,6 +23,7 @@ import ntu.cz3004.controller.BuildConfig;
 import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.common.Constants;
 import ntu.cz3004.controller.util.IntentBuilder;
+import ntu.cz3004.controller.util.Utility;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
@@ -56,6 +57,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         prefBtEnabled.setOnPreferenceChangeListener((preference, newValue) -> false);
         prefBtEnabled.setOnPreferenceClickListener(this);
         findPreference("bt_discoverable").setOnPreferenceClickListener(this);
+        findPreference("bt_last_address").setOnPreferenceChangeListener((preference, newValue) -> {
+            if (Utility.validate(Utility.BT_ADDRESS, (String) newValue)){
+                return true;
+            } else {
+                showToast("Invalid Bluetooth address");
+                return false;
+            }
+        });
     }
 
     @Override

@@ -90,6 +90,38 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         mv.setSelection(robot.getPosition());
     }
 
+    public boolean robotMoveFront(){
+        Robot robot = map.getRobot();
+        Point nextPosition = robot.getForwardPosition();
+        boolean success = moveRobotTo(nextPosition, false);
+        if (success){
+            highlightRobot();
+        }
+        return success;
+    }
+
+    public boolean robotMoveBack(){
+        Robot robot = map.getRobot();
+        Point nextPosition = robot.getBackwardPosition();
+        boolean success = moveRobotTo(nextPosition, false);
+        if (success){
+            highlightRobot();
+        }
+        return success;
+    }
+
+    public void robotTurnLeft(){
+        map.getRobot().turnLeft();
+        map.notifyChanges();
+        highlightRobot();
+    }
+
+    public void robotTurnRight(){
+        map.getRobot().turnRight();
+        map.notifyChanges();
+        highlightRobot();
+    }
+
 
     public void setMode(Mode mode){
         this.mode = mode;
