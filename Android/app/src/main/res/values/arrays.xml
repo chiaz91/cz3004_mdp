@@ -8,6 +8,7 @@
         <item>v1.5.0:Status information display</item>
         <item>v1.6.0:Auto/Manual map update</item>
         <item>v1.7.0:Revised BT connection and display</item>
+        <item>v1.8.0:Robot simulation\nAccelerometer controlling</item>
     </string-array>
 
     <string-array name="map_titles">
