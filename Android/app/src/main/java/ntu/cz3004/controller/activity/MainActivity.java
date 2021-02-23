@@ -39,7 +39,6 @@ import ntu.cz3004.controller.util.DialogUtil;
 import ntu.cz3004.controller.util.IntentBuilder;
 import ntu.cz3004.controller.util.MdpLog;
 import ntu.cz3004.controller.util.PrefUtility;
-import ntu.cz3004.controller.util.Utility;
 import ntu.cz3004.controller.view.BTChatViewHolder;
 import ntu.cz3004.controller.view.ControlsViewHolder;
 import ntu.cz3004.controller.view.InfoViewHolder;
@@ -48,8 +47,7 @@ import ntu.cz3004.controller.view.MapView;
 
 public class MainActivity extends AppCompatActivity implements BluetoothStatusListener, Map.OnMapChangedListener, View.OnClickListener {
     private static final String TAG = "mdp.act.main";
-    private BluetoothController controller;
-    private BTRobotController robotController;
+    private BTRobotController controller;
     // map
     private MapView mv;
     private Map map;
@@ -67,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     final Handler handler = new Handler();
     private Runnable taskUpdateMap, taskReconnectBT;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +72,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setSubtitle(getString(R.string.not_connected));
-        controller = new BluetoothController(this);
-        controller.registerListener(this);
 
+        // init ui
         initPager();
         initMap();
         initRobotControls();
@@ -85,11 +81,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         initBTChat();
         initInfoSheet();
         loadTestData();
+
+        // set up controller
         Command cmd = PrefUtility.getCommand(this);
         boolean enableSimulation = PrefUtility.isEnableSimulation(this);
-        robotController = new BTRobotController(controller, mapEditor, cmd);
-        robotController.setEnableSimulation(enableSimulation);
-
+        controller = new BTRobotController(this, mapEditor, cmd);
+        controller.registerListener(this);
+        controller.setEnableSimulation(enableSimulation);
         if (!controller.isSupported()){
             DialogUtil.promptBluetoothNotAvailable(this);
         } else {
@@ -183,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             map.imagesFromString(mapData[2]);
         } catch (Exception e){ }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -251,16 +250,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     public void onClick(View v) {
         switch (v.getId()){
             // robot control
-            case R.id.btn_ctrl_up: robotController.up(); break;
-            case R.id.btn_ctrl_left: robotController.left(); break;
-            case R.id.btn_ctrl_right: robotController.right(); break;
-            case R.id.btn_ctrl_down: robotController.down(); break;
-            case R.id.btn_ctrl_f1: robotController.f1(); break;
-            case R.id.btn_ctrl_f2: robotController.f2(); break;
-            case R.id.btn_ctrl_explore: robotController.explore(); break;
-            case R.id.btn_ctrl_fastest: robotController.fastest(); break;
-            case R.id.btn_ctrl_img_search: robotController.imgRecognition(); break;
-            case R.id.btn_ctrl_get_map: robotController.requestMap(); break;
+            case R.id.btn_ctrl_up: controller.up(); break;
+            case R.id.btn_ctrl_left: controller.left(); break;
+            case R.id.btn_ctrl_right: controller.right(); break;
+            case R.id.btn_ctrl_down: controller.down(); break;
+            case R.id.btn_ctrl_f1: controller.f1(); break;
+            case R.id.btn_ctrl_f2: controller.f2(); break;
+            case R.id.btn_ctrl_explore: controller.explore(); break;
+            case R.id.btn_ctrl_fastest: controller.fastest(); break;
+            case R.id.btn_ctrl_img_search: controller.imgRecognition(); break;
+            case R.id.btn_ctrl_get_map: controller.requestMap(); break;
 
             default: showSnackbar("work in progress"); break;
         }
@@ -325,8 +324,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case Constants.REQUEST_SETTING:
                 Command cmd = PrefUtility.getCommand(this);
                 boolean enableSimulation = PrefUtility.isEnableSimulation(this);
-                robotController.setCommand(cmd);
-                robotController.setEnableSimulation(enableSimulation);
+                controller.setCommand(cmd);
+                controller.setEnableSimulation(enableSimulation);
                 break;
 
             default:
@@ -416,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 @Override
                 public void run() {
                     MdpLog.d("mdp.threads", "req map");
-                    robotController.requestMap();
+                    controller.requestMap();
                     handler.postDelayed(this, Constants.MAP_UPDATE_INTERVAL_MS);
                 }
             };
