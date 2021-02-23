@@ -84,10 +84,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
 
         // set up controller
         Command cmd = PrefUtility.getCommand(this);
-        boolean enableSimulation = PrefUtility.isEnableSimulation(this);
         controller = new BTRobotController(this, mapEditor, cmd);
         controller.registerListener(this);
-        controller.setEnableSimulation(enableSimulation);
+        controller.setMessageIntervalMs(Constants.MESSAGE_INTERVAL_MS);
         if (!controller.isSupported()){
             DialogUtil.promptBluetoothNotAvailable(this);
         } else {
@@ -200,6 +199,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             startAutoUpdateTask();
         }
 
+        // use accelerometer
+        boolean enableAccelerometer = PrefUtility.isEnableAccelerometer(this);
+        controller.setEnableAccelerometer(enableAccelerometer);
+        controller.startSensor();
+
         invalidateOptionsMenu();
     }
 
@@ -207,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     protected void onPause() {
         stopBTReconnectTask();
         stopAutoUpdateTask();
+        controller.endSensor();
 
         super.onPause();
     }

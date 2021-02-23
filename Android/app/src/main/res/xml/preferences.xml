@@ -3,23 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- To be implement later -->
-    <PreferenceCategory
-        app:title="General"
-        app:icon="@drawable/ic_switches"
-        app:isPreferenceVisible="true">
-        <SwitchPreference
-            android:key="@string/state_robot_simulation"
-            android:title="Robot simulation"
-            android:defaultValue="@bool/state_robot_simulation_default" />
-
-        <SwitchPreference
-            android:key="@string/state_use_accelerometer"
-            android:title="Use accelerometer"
-            android:defaultValue="@bool/state_use_accelerometer_default"
-            app:isPreferenceVisible="false" />
-    </PreferenceCategory>
-
     <PreferenceCategory
         app:title="Bluetooth"
         app:icon="@drawable/ic_bluetooth">
@@ -28,7 +11,8 @@
             android:key="bt_enabled"
             android:title="Enabled"
             android:defaultValue="false"
-            android:persistent="false" />
+            android:persistent="false"
+            app:isPreferenceVisible="false"/>
 
         <SwitchPreference
             android:key="@string/state_bluetooth_retry"
@@ -42,11 +26,11 @@
 
         <Preference
             android:key="bt_discoverable"
-            android:title="Enable discoverable Mode"
+            android:title="Enable Discoverable Mode"
             android:persistent="false" />
 
         <EditTextPreference
-            app:title="Last connected device"
+            app:title="Last Connected Device"
             app:key="@string/bt_last_address"
             android:enabled="true"
             app:useSimpleSummaryProvider="true"/>
@@ -56,13 +40,23 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="Map"
-        app:icon="@drawable/ic_grid">
+        app:title="Controls"
+        app:icon="@drawable/ic_controller">
 
         <SwitchPreference
             android:key="@string/state_auto_update"
             android:title="Auto Map Update"
             android:defaultValue="@bool/state_auto_update_default" />
+
+        <SwitchPreference
+            android:key="@string/state_robot_simulation"
+            android:title="Robot simulation"
+            android:defaultValue="@bool/state_robot_simulation_default" />
+
+        <SwitchPreference
+            android:key="@string/state_use_accelerometer"
+            android:title="Use Accelerometer"
+            android:defaultValue="@bool/state_use_accelerometer_default"/>
 
         <ListPreference
             android:key="@string/key_debug_map"

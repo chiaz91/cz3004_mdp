@@ -36,6 +36,9 @@ public class PrefUtility {
         return getBoolPreference(context, R.string.state_robot_simulation, R.bool.state_robot_simulation_default);
     }
 
+    public static boolean isEnableAccelerometer(Context context){
+        return getBoolPreference(context, R.string.state_use_accelerometer, R.bool.state_use_accelerometer_default);
+    }
 
     public static String getDebugMap(Context context){
         return getSharePreferences(context).getString(context.getString(R.string.key_debug_map), "");

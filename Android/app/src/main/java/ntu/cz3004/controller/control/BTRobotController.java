@@ -1,19 +1,33 @@
 package ntu.cz3004.controller.control;
 
 import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
 import ntu.cz3004.controller.entity.Command;
+import ntu.cz3004.controller.util.MdpLog;
 
-public class BTRobotController extends BluetoothController{
+public class BTRobotController extends BluetoothController implements SensorEventListener {
     private static final String TAG = "mdp.ctrl.bt_robot";
+    private static final double THRESHOLD = 2.5;
     private MapEditor mapEditor;
     private Command command;
     private boolean enableSimulation = false;
+    private boolean enableAccelerometer = false;
+    // sensor
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+    private int messageIntervalMs = 0;
+    private long nextMessageTime = 0;
 
     public BTRobotController(Context context, MapEditor mapEditor, Command command) {
         super(context);
         this.mapEditor = mapEditor;
         this.command = command;
+        this.mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        this.mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     public MapEditor getMapEditor() {
@@ -38,6 +52,22 @@ public class BTRobotController extends BluetoothController{
 
     public void setEnableSimulation(boolean enableSimulation) {
         this.enableSimulation = enableSimulation;
+    }
+
+    public boolean isEnableAccelerometer() {
+        return enableAccelerometer;
+    }
+
+    public void setEnableAccelerometer(boolean enableAccelerometer) {
+        this.enableAccelerometer = enableAccelerometer;
+    }
+
+    public int getMessageIntervalMs() {
+        return messageIntervalMs;
+    }
+
+    public void setMessageIntervalMs(int messageIntervalMs) {
+        this.messageIntervalMs = messageIntervalMs;
     }
 
     public boolean up(){
@@ -114,5 +144,56 @@ public class BTRobotController extends BluetoothController{
 
     public void requestMap(){
         sendMessage(command.reqMap);
+    }
+
+
+    // Accelerometer related
+    public void startSensor(){
+        if(enableAccelerometer){
+            mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    public void endSensor(){
+        if(enableAccelerometer) {
+            mSensorManager.unregisterListener(this);
+        }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (System.currentTimeMillis() < nextMessageTime){
+            return;
+        }
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER ) {
+            float xAcc = event.values[0];
+            float yAcc = -event.values[1];
+
+            if (Math.abs(xAcc)>=Math.abs(yAcc)){
+                if (xAcc > THRESHOLD) {
+                    left();
+                    nextMessageTime = System.currentTimeMillis() + messageIntervalMs;
+                    MdpLog.v(TAG, String.format("xAcc: %.2f, yAcc: %.2f, action: left",xAcc,yAcc));
+                } else if (xAcc < -THRESHOLD) {
+                    right();
+                    nextMessageTime = System.currentTimeMillis() + messageIntervalMs;
+                    MdpLog.v(TAG, String.format("xAcc: %.2f, yAcc: %.2f, action: right",xAcc,yAcc));
+                }
+            } else {
+                if (yAcc > THRESHOLD) {
+                    up();
+                    nextMessageTime = System.currentTimeMillis() + messageIntervalMs;
+                    MdpLog.v(TAG, String.format("xAcc: %.2f, yAcc: %.2f, action: up",xAcc,yAcc));
+                } else if (yAcc < -THRESHOLD) {
+                    down();
+                    nextMessageTime = System.currentTimeMillis() + messageIntervalMs;
+                    MdpLog.v(TAG, String.format("xAcc: %.2f, yAcc: %.2f, action: down",xAcc,yAcc));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 }
