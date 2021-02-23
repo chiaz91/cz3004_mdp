@@ -7,42 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_paired"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:gravity="center_vertical"
-        android:text="@string/paired_devices"
-        android:textColor="@color/secondaryColor" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_paired"
+        android:id="@+id/rv_bt_devices"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="1"
         android:fadeScrollbars="false"
         />
 
-    <TextView
-        android:id="@+id/tv_nearby"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:gravity="center_vertical"
-        android:text="@string/nearby_devices"
-        android:textColor="@color/secondaryColor" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_nearby"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        />
 </LinearLayout>

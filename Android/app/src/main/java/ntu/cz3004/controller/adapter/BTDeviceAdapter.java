@@ -16,51 +16,67 @@ import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.listener.OnRecyclerViewInteractedListener;
 
 public class BTDeviceAdapter extends RecyclerView.Adapter {
-    private static int VIEW_TYPE_EMPTY = 0;
+    private static int VIEW_TYPE_INFO = 0;
     private static int VIEW_TYPE_DEVICE = 1;
-    private ArrayList<BluetoothDevice> devices;
+    private ArrayList<BluetoothDevice> devicesPaired;
+    private ArrayList<BluetoothDevice> devicesNearBy;
     private OnRecyclerViewInteractedListener listener;
 
     public BTDeviceAdapter() {
-        this.devices = new ArrayList<>();
+        this.devicesPaired = new ArrayList<>();
+        this.devicesNearBy = new ArrayList<>();
     }
-    public void setDevices(Collection<BluetoothDevice> devices){
-        this.devices.clear();
-        this.devices.addAll(devices);
+    public void setDevicesPaired(Collection<BluetoothDevice> devicesPaired){
+        this.devicesPaired.clear();
+        this.devicesPaired.addAll(devicesPaired);
         notifyDataSetChanged();
     }
 
-    public ArrayList<BluetoothDevice> getDevices(){
-        return (ArrayList<BluetoothDevice>) devices.clone();
+    public int getPairedCount(){
+        return this.devicesPaired.size();
     }
+
+    public int getNearbyCount(){
+        return this.devicesNearBy.size();
+    }
+
     public void setOnRecyclerViewInteractListener(OnRecyclerViewInteractedListener listener){
         this.listener = listener;
     }
 
-    public void add(BluetoothDevice device){
-        if (!devices.contains(device)){
-            devices.add(device);
+    public void addPaired(BluetoothDevice device){
+        if (!devicesPaired.contains(device)){
+            devicesPaired.add(device);
             notifyDataSetChanged();
         }
     }
 
-    public void clear(){
-        devices.clear();
+    public void addNearby(BluetoothDevice device){
+        if (!devicesNearBy.contains(device)){
+            devicesNearBy.add(device);
+            notifyDataSetChanged();
+        }
+    }
+
+    public void clearPaired(){
+        devicesPaired.clear();
+        notifyDataSetChanged();
+    }
+
+    public void clearNearby(){
+        devicesNearBy.clear();
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (devices.size() == 0){
-            return 1;
-        }
-        return devices.size();
+        return devicesPaired.size()+devicesNearBy.size()+1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (devices.size() == 0){
-            return VIEW_TYPE_EMPTY;
+        if (position==0){
+            return VIEW_TYPE_INFO;
         } else {
             return VIEW_TYPE_DEVICE;
         }
@@ -70,9 +86,9 @@ public class BTDeviceAdapter extends RecyclerView.Adapter {
     @NonNull
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if (viewType == VIEW_TYPE_EMPTY){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_no_device, parent, false);
-            return new EmptyViewHolder(view);
+        if (viewType == VIEW_TYPE_INFO){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_info, parent, false);
+            return new InfoViewHolder(view);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_bt_device, parent, false);
             return new DeviceViewHolder(view);
@@ -82,15 +98,42 @@ public class BTDeviceAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder.getItemViewType() == VIEW_TYPE_DEVICE){
-            ((DeviceViewHolder)holder).updateAs(devices.get(position));
+            if (position>devicesPaired.size()){
+                ((DeviceViewHolder)holder).updateAs(devicesNearBy.get(position-devicesPaired.size()-1));
+            } else {
+                ((DeviceViewHolder)holder).updateAs(devicesPaired.get(position-1));
+            }
+        }else {
+            ((InfoViewHolder)holder).update();
         }
-
     }
 
 
-    public class EmptyViewHolder extends RecyclerView.ViewHolder{
-        public EmptyViewHolder(@NonNull View itemView) {
-            super(itemView);
+    public class InfoViewHolder extends RecyclerView.ViewHolder{
+        TextView tvTextMain;
+        public InfoViewHolder(@NonNull View view) {
+            super(view);
+            tvTextMain = view.findViewById(R.id.tv_text_main);
+        }
+
+        public void update(){
+            int paired = getPairedCount();
+            int nearby = getNearbyCount();
+            if (paired + nearby==0){
+                tvTextMain.setText("No device found!");
+            } else {
+                String msg = "";
+                if (paired>0){
+                    msg+= "Paired ("+paired+")";
+                }
+                if (nearby>0){
+                    if (msg.length()>0){
+                        msg+=", ";
+                    }
+                    msg+= "Nearby ("+nearby+")";
+                }
+                tvTextMain.setText(msg);
+            }
         }
     }
 
@@ -111,8 +154,8 @@ public class BTDeviceAdapter extends RecyclerView.Adapter {
 
         void updateAs(BluetoothDevice device){
             view.setTag(device);
-            tvPos.setText(""+(getAdapterPosition()+1));
-            tvTextMain.setText(device.getAddress());
+            tvPos.setText(""+(getAdapterPosition()));
+            tvTextMain.setText(device.getAddress()+String.format(" %s", devicesPaired.contains(device)?"(paired)":""));
             tvTextSub.setText(device.getName());
             tvTextSub.setVisibility(device.getName()!=null ? View.VISIBLE:View.GONE);
         }

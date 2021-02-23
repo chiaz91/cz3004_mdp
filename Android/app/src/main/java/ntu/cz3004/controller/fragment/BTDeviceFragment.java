@@ -44,9 +44,8 @@ import ntu.cz3004.controller.util.Utility;
 public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteractedListener {
     private static final String TAG = "mdp.frag.bt_devices";
     private static final int DURATION_ONE_SEC = 1000;
-    private TextView tvPaired, tvNearBy;
     private BluetoothAdapter btAdapter;
-    private BTDeviceAdapter adaptorPairedDevices, adapterNearbyDevices;
+    private BTDeviceAdapter btDeviceAdapter;
 
     // progress count down
     Handler handler = new Handler();
@@ -84,22 +83,14 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_select_device, container, false);
-        tvPaired = view.findViewById(R.id.tv_paired);
-        tvNearBy = view.findViewById(R.id.tv_nearby);
+
 
         // for paired devices
-        RecyclerView rvDevices  = view.findViewById(R.id.rv_paired);
+        RecyclerView rvDevices  = view.findViewById(R.id.rv_bt_devices);
         rvDevices.setLayoutManager(new LinearLayoutManager(getContext()));
-        adaptorPairedDevices = new BTDeviceAdapter();
-        adaptorPairedDevices.setOnRecyclerViewInteractListener(this);
-        rvDevices.setAdapter(adaptorPairedDevices);
-
-        // for nearby devices
-        RecyclerView rvNearByDevices = view.findViewById(R.id.rv_nearby);
-        rvNearByDevices.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterNearbyDevices = new BTDeviceAdapter();
-        adapterNearbyDevices.setOnRecyclerViewInteractListener(this);
-        rvNearByDevices.setAdapter(adapterNearbyDevices);
+        btDeviceAdapter = new BTDeviceAdapter();
+        btDeviceAdapter.setOnRecyclerViewInteractListener(this);
+        rvDevices.setAdapter(btDeviceAdapter);
 
         refreshPairDevices();
         return view;
@@ -157,8 +148,6 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
             enableBluetooth();
             return;
         }
-        tvPaired.setText("Paired");
-        tvNearBy.setText("Nearby");
         refreshPairDevices();
         checkPermissionForScanDevice();
     }
@@ -192,14 +181,11 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         if (btAdapter ==null){
             return;
         }
-        adaptorPairedDevices.clear();
+        btDeviceAdapter.clearPaired();
         Set<BluetoothDevice> set  = btAdapter.getBondedDevices();
         if (!set.isEmpty()) {
-            adaptorPairedDevices.setDevices(set);
+            btDeviceAdapter.setDevicesPaired(set);
         }
-        // update label
-        int size = adaptorPairedDevices.getDevices().size();
-        tvPaired.setText("Paired "+(size==0?"":"("+size+")"));
     }
 
 
@@ -224,7 +210,7 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         curTimerSec = 0;
         updateSubtitle(getString(R.string.discovering, Constants.SCAN_DURATION_SEC));
 
-        adapterNearbyDevices.clear();
+        btDeviceAdapter.clearNearby();
         if (deviceFoundReceiver == null){
             deviceFoundReceiver = new BtDeviceFoundReceiver();
             IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -314,10 +300,7 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 MdpLog.logBTDevice(device);
-                adapterNearbyDevices.add(device);
-                // update label
-                int size = adapterNearbyDevices.getDevices().size();
-                tvNearBy.setText("Nearby "+(size==0?"":"("+size+")"));
+                btDeviceAdapter.addNearby(device);
             }
         }
     }
