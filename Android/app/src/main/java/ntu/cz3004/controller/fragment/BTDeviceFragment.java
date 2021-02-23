@@ -27,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import java.util.Set;
@@ -41,12 +40,11 @@ import ntu.cz3004.controller.util.IntentBuilder;
 import ntu.cz3004.controller.util.MdpLog;
 import ntu.cz3004.controller.util.Utility;
 
-public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteractedListener, SwipeRefreshLayout.OnRefreshListener {
+public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteractedListener {
     private static final String TAG = "mdp.frag.bt_devices";
     private static final int DURATION_ONE_SEC = 1000;
     private BluetoothAdapter btAdapter;
     private BTDeviceAdapter btDeviceAdapter;
-    SwipeRefreshLayout srlDevices;
 
     // progress count down
     Handler handler = new Handler();
@@ -85,10 +83,7 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_select_device, container, false);
 
-        // listener for pull to refresh
-        srlDevices = (SwipeRefreshLayout) view.findViewById(R.id.srl_devices);
-        srlDevices.setOnRefreshListener(this);
-        srlDevices.setEnabled(false);
+
 
         // for paired devices
         RecyclerView rvDevices  = view.findViewById(R.id.rv_bt_devices);
@@ -145,13 +140,6 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         }
     }
 
-
-    @Override
-    public void onRefresh() {
-        doRefresh();
-        srlDevices.setRefreshing(false);
-    }
-
     private void doRefresh(){
         if (btAdapter == null){
             return;
@@ -203,7 +191,6 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
 
     private BtDeviceFoundReceiver deviceFoundReceiver;
     private void doEndScanning(){
-        srlDevices.setRefreshing(false);
         updateSubtitle(null);
         handler.removeCallbacks(runnableScanCountdown);
         if (btAdapter!= null && btAdapter.isDiscovering()){

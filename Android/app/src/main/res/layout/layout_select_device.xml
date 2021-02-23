@@ -8,18 +8,12 @@
     android:orientation="vertical">
 
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/srl_devices"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_bt_devices"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fadeScrollbars="false"
-            />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bt_devices"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="false"
+        />
 
 </LinearLayout>
