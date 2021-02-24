@@ -28,7 +28,6 @@ import ntu.cz3004.controller.adapter.BTMessageAdapter;
 import ntu.cz3004.controller.adapter.MDPPagerAdapter;
 import ntu.cz3004.controller.common.Constants;
 import ntu.cz3004.controller.control.BTRobotController;
-import ntu.cz3004.controller.control.BluetoothController;
 import ntu.cz3004.controller.control.MapEditor;
 import ntu.cz3004.controller.entity.BTMessage;
 import ntu.cz3004.controller.entity.Command;
@@ -284,28 +283,26 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        switch (pager.getCurrentItem()){
-            case 0: inflater.inflate(R.menu.main, menu);break;
-            case 1: inflater.inflate(R.menu.bt_chat, menu);break;
+        inflater.inflate(R.menu.main, menu);
+        if (pager.getCurrentItem() == 1){
+            inflater.inflate(R.menu.bt_chat, menu);
         }
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        switch (pager.getCurrentItem()){
-            case 0: // main menu
-                boolean showReconnect = true;
-                if (!controller.isSupported() || controller.isConnected() || PrefUtility.getLastConnectedBtDevice(this) == null){
-                    showReconnect = false;
-                }
-                menu.findItem(R.id.action_bt_reconnect).setVisible(showReconnect);
-                menu.findItem(R.id.action_bt_disconnect).setVisible(controller.isConnected());
-                break;
-            case 1: // bt chat menu
-                menu.findItem(R.id.action_show_received).setChecked(btMessageAdapter.isShowReceived());
-                menu.findItem(R.id.action_show_sent).setChecked(btMessageAdapter.isShowSent());
-                break;
+        // main menu
+        boolean showReconnect = true;
+        if (!controller.isSupported() || controller.isConnected() || PrefUtility.getLastConnectedBtDevice(this) == null){
+            showReconnect = false;
+        }
+        menu.findItem(R.id.action_bt_reconnect).setVisible(showReconnect);
+        menu.findItem(R.id.action_bt_disconnect).setVisible(controller.isConnected());
+        // bt chat menu
+        if (pager.getCurrentItem() == 1){
+             menu.findItem(R.id.action_show_received).setChecked(btMessageAdapter.isShowReceived());
+             menu.findItem(R.id.action_show_sent).setChecked(btMessageAdapter.isShowSent());
         }
         return super.onPrepareOptionsMenu(menu);
     }
