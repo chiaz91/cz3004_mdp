@@ -101,7 +101,21 @@ public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.Mess
     }
 
     public void add(BTMessage message){
+        if (messages.size()>0){
+            BTMessage lastMsg = messages.get(messages.size()-1);
+            if (message.equals(lastMsg)){
+                lastMsg.increaseCount();
+                notifyDataSetChanged();
+                return;
+            }
+        }
+
         messages.add(message);
+        addToFiltered(message);
+        notifyDataSetChanged();
+    }
+
+    private void addToFiltered(BTMessage message){
         switch (message.getType()){
             case SYSTEM:
                 if (showSystem){ messagesFiltered.add(message); }
@@ -113,7 +127,6 @@ public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.Mess
                 if (showSent){ messagesFiltered.add(message); }
                 break;
         }
-        notifyDataSetChanged();
     }
 
     public void clear(){
@@ -125,17 +138,7 @@ public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.Mess
     public void doFiltering(){
         this.messagesFiltered.clear();
         for (BTMessage msg:messages) {
-            switch (msg.getType()){
-                case SYSTEM:
-                    if (showSystem){ messagesFiltered.add(msg); }
-                    break;
-                case INCOMING:
-                    if (showReceived){ messagesFiltered.add(msg); }
-                    break;
-                case OUTGOING:
-                    if (showSent){ messagesFiltered.add(msg); }
-                    break;
-            }
+            addToFiltered(msg);
         }
         notifyDataSetChanged();
     }
@@ -157,10 +160,11 @@ public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.Mess
 
 
     public class UserMessageViewHolder extends MessageViewHolder implements View.OnClickListener {
-        TextView tvSender, tvTimestamp;
+        TextView tvSender, tvTimestamp, tvCount;
         UserMessageViewHolder(View view) {
             super(view);
             tvSender = view.findViewById(R.id.tv_sender);
+            tvCount = view.findViewById(R.id.tv_count);
             tvTimestamp = view.findViewById(R.id.tv_timestamp);
 //            view.setOnClickListener(this);
         }
@@ -169,6 +173,8 @@ public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.Mess
             super.updateAs(message);
             tvSender.setText(message.getSender());
             tvTimestamp.setText(sdf.format(message.getTime()));
+            tvCount.setText(String.format("x %d", message.getCount()));
+            tvCount.setVisibility(message.getCount()>1?View.VISIBLE:View.INVISIBLE);
 
             // TEST LAYOUT
             if (message.getType()== BTMessage.Type.INCOMING){

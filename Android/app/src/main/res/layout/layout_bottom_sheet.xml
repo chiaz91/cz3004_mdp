@@ -49,18 +49,12 @@
                 android:layout_height="wrap_content"
                 android:textColor="#8FFF"
                 android:textSize="9sp"
-                android:visibility="gone"
+                android:visibility="visible"
+                android:text="[display robot status]"
                 tools:ignore="SmallSp" />
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            style="@style/MDPButtonBorderless"
-            android:id="@+id/btn_end_chronometer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_cross"
-            android:visibility="gone" />
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cb_edit_map"
             android:layout_width="wrap_content"

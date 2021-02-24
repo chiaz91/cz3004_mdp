@@ -1,6 +1,9 @@
 package ntu.cz3004.controller.entity;
 
+import androidx.annotation.Nullable;
+
 import java.util.Date;
+import java.util.Objects;
 
 public class BTMessage {
     public enum Type {
@@ -11,12 +14,14 @@ public class BTMessage {
     private Date time;
     private String sender;
     private String content;
+    private int count;
 
     public BTMessage(Type type, String sender, String content) {
         this.type = type;
         this.sender = sender;
         this.content = content;
         this.time = new Date();
+        this.count = 1;
     }
 
     public Type getType() {
@@ -49,5 +54,32 @@ public class BTMessage {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void increaseCount(){
+        count++;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BTMessage btMessage = (BTMessage) o;
+        return type == btMessage.type &&
+                sender.equals(btMessage.sender) &&
+                content.equals(btMessage.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, sender, content);
     }
 }

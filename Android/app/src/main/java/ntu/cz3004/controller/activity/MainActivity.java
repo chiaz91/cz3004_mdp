@@ -102,6 +102,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         View[] views = new View[]{viewMain, viewBtChat};
         MDPPagerAdapter adapter = new MDPPagerAdapter(isTablet, views);
         pager.setAdapter(adapter);
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                invalidateOptionsMenu();
+            }
+        });
     }
 
     private void initMap(){
@@ -239,6 +246,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhControls.setVisible(true);
         vhMapEdit.setVisible(false);
         mapEditor.setMode(MapEditor.Mode.NONE);
+        vhInfo.tvStatusMain.setText("Controller");
+        vhInfo.tvStatusSub.setVisibility(View.VISIBLE);
 
         // TODO: finish edit, send update to RPi
     }
@@ -248,6 +257,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhMapEdit.setVisible(true);
         vhMapEdit.returnToStart();
         mapEditor.setMode(MapEditor.Mode.ROBOT);
+        vhInfo.tvStatusMain.setText("Map Editing");
+        vhInfo.tvStatusSub.setVisibility(View.GONE);
     }
 
 
@@ -273,24 +284,36 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        switch (pager.getCurrentItem()){
+            case 0: inflater.inflate(R.menu.main, menu);break;
+            case 1: inflater.inflate(R.menu.bt_chat, menu);break;
+        }
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean showReconnect = true;
-        if (!controller.isSupported() || controller.isConnected() || PrefUtility.getLastConnectedBtDevice(this) == null){
-            showReconnect = false;
+        switch (pager.getCurrentItem()){
+            case 0: // main menu
+                boolean showReconnect = true;
+                if (!controller.isSupported() || controller.isConnected() || PrefUtility.getLastConnectedBtDevice(this) == null){
+                    showReconnect = false;
+                }
+                menu.findItem(R.id.action_bt_reconnect).setVisible(showReconnect);
+                menu.findItem(R.id.action_bt_disconnect).setVisible(controller.isConnected());
+                break;
+            case 1: // bt chat menu
+                menu.findItem(R.id.action_show_received).setChecked(btMessageAdapter.isShowReceived());
+                menu.findItem(R.id.action_show_sent).setChecked(btMessageAdapter.isShowSent());
+                break;
         }
-        menu.findItem(R.id.action_bt_reconnect).setVisible(showReconnect);
-        menu.findItem(R.id.action_bt_disconnect).setVisible(controller.isConnected());
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            // main menu
             case R.id.action_to_bt_device:
                 startActivityForResult(IntentBuilder.toPickBtDevice(this), Constants.REQUEST_PICK_BT_DEVICE);
                 return true;
@@ -302,6 +325,18 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 return true;
             case R.id.action_bt_reconnect:
                 reconnectLastDevice();
+            // bt chat menu
+            case R.id.action_show_sent:
+                item.setChecked(!item.isChecked());
+                btMessageAdapter.setShowSent(item.isChecked());
+                return true;
+            case R.id.action_show_received:
+                item.setChecked(!item.isChecked());
+                btMessageAdapter.setShowReceived(item.isChecked());
+                return true;
+            case R.id.action_clear_history:
+                btMessageAdapter.clear();
+                return true;
             default:
                 return super.onContextItemSelected(item);
         }
