@@ -92,27 +92,27 @@
 
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:src="@drawable/ic_position"/>
                 <TextView
                     style="@style/MDPStatusValue"
                     android:id="@+id/tv_status_robot_pos"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"/>
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:src="@drawable/ic_angle"/>
                 <TextView
                     style="@style/MDPStatusValue"
                     android:id="@+id/tv_status_robot_dir"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"/>
             </LinearLayout>
 
@@ -134,8 +134,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:src="@drawable/ic_position"/>
                 <TextView
@@ -160,8 +160,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:src="@drawable/ic_num_1"/>
                 <TextView
@@ -177,8 +177,8 @@
                 android:layout_marginTop="10dp">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:src="@drawable/ic_num_2"/>
                 <TextView
@@ -194,8 +194,8 @@
                 android:layout_marginTop="10dp">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/ic_images"/>
