@@ -42,6 +42,10 @@ public class MapAnnotation {
         this.position = position;
     }
 
+    public void setPosition(int x, int y){
+        setPosition(new Point(x,y));
+    }
+
     public int getX() {
         return this.position.x;
     }

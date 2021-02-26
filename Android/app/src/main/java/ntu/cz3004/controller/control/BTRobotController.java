@@ -21,6 +21,7 @@ public class BTRobotController extends BluetoothController implements SensorEven
     private Sensor mSensor;
     private int messageIntervalMs = 0;
     private long nextMessageTime = 0;
+    private boolean pauseSensor = false;
 
     public BTRobotController(Context context, MapEditor mapEditor, Command command) {
         super(context);
@@ -60,6 +61,14 @@ public class BTRobotController extends BluetoothController implements SensorEven
 
     public void setEnableAccelerometer(boolean enableAccelerometer) {
         this.enableAccelerometer = enableAccelerometer;
+    }
+
+    public boolean isPauseSensor() {
+        return pauseSensor;
+    }
+
+    public void setPauseSensor(boolean pauseSensor) {
+        this.pauseSensor = pauseSensor;
     }
 
     public int getMessageIntervalMs() {
@@ -162,6 +171,9 @@ public class BTRobotController extends BluetoothController implements SensorEven
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (pauseSensor){
+            return;
+        }
         if (System.currentTimeMillis() < nextMessageTime){
             return;
         }

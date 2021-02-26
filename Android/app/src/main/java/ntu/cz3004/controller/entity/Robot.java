@@ -19,6 +19,11 @@ public class Robot extends MapAnnotation {
         this.direction = direction;
     }
 
+    public void set(int x, int y, int direction){
+        setPosition(x,y);
+        this.direction = direction;
+    }
+
     public int getDirection() {
         return direction;
     }
@@ -71,5 +76,10 @@ public class Robot extends MapAnnotation {
         Point position = getForwardPosition();
         turnBack();
         return position;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d,%d,%d",getX(), getY(),getDirection()/90);
     }
 }

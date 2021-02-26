@@ -11,6 +11,22 @@
         <item>v1.8.0:Robot simulation\nAccelerometer controlling</item>
     </string-array>
 
+    <string-array name="test_msg">
+        <item>MOV|F</item>
+        <item>MOV|B</item>
+        <item>MOV|L</item>
+        <item>MOV|R</item>
+        <item>STATUS|Idling</item>
+        <item>STATUS|Moving Forward</item>
+        <item>STATUS|Turning Left</item>
+        <item>STATUS|Turning Right</item>
+        <item>IMG|(1,3,4)</item>
+        <item>IMG|(2,5,8)</item>
+        <item>IMGS|[]</item>
+        <item>IMGS|[(1,14,0),(2,13,0)]</item>
+        <item>IMGS|[(1,3,3),(2,7,3),(3,11,3),(4,3,7),(5,7,7),(6,11,7),(7,3,11),(8,7,11),(9,11,11),(10,3,15),(11,7,15),(12,11,15),(13,3,19),(14,7,19),(15,11,19)]</item>
+    </string-array>
+
     <string-array name="map_titles">
         <item>Not set</item>
         <item>Map 1</item>
@@ -21,6 +37,7 @@
         <item>Image Map 2</item>
         <item>Image Map 3</item>
     </string-array>
+    
     <string-array name="map_values">
         <item></item>
         <item>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF|0000000000077002A01D402A8055000001D5D6A93C725AA4FD5C80007700A201DC02A807500</item>

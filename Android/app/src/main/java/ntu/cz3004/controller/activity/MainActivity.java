@@ -33,6 +33,8 @@ import ntu.cz3004.controller.control.MapEditor;
 import ntu.cz3004.controller.entity.BTMessage;
 import ntu.cz3004.controller.entity.Command;
 import ntu.cz3004.controller.entity.Map;
+import ntu.cz3004.controller.entity.MapAnnotation;
+import ntu.cz3004.controller.entity.Robot;
 import ntu.cz3004.controller.listener.BluetoothStatusListener;
 import ntu.cz3004.controller.service.BluetoothChatService;
 import ntu.cz3004.controller.util.DialogUtil;
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 switchToMapEdit();
             } else {
                 switchToControl();
-                // TODO: Edit is completed, send update to RPi
+                sendConfigMessage();
             }
         });
     }
@@ -166,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 }
             }
         });
+        vhBTChat.setOnLongClickSendClickListener((v -> {
+            DialogUtil.promptDialogTestMessages(this, controller);
+            return true;
+        }));
     }
 
     private void loadTestData(){
@@ -244,16 +250,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     private void switchToControl(){
+        controller.setPauseSensor(false);
         vhControls.setVisible(true);
         vhMapEdit.setVisible(false);
         mapEditor.setMode(MapEditor.Mode.NONE);
         vhInfo.tvStatusMain.setText("Controller");
         vhInfo.tvStatusSub.setVisibility(View.VISIBLE);
-
-        // TODO: finish edit, send update to RPi
     }
 
     private void switchToMapEdit(){
+        controller.setPauseSensor(true);
         vhControls.setVisible(false);
         vhMapEdit.setVisible(true);
         vhMapEdit.returnToStart();
@@ -425,7 +431,25 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         btMessageAdapter.add(message);
         vhBTChat.scrollToEnd();
 
-        // TODO: decode on receiving message
+        if (message.getType() == BTMessage.Type.INCOMING){
+            // parsing messages
+            String received = message.getContent();
+            String[] parts = received.split("\\|");
+            try{
+                switch (parts[0]){
+                    case "MAP": parseMap(parts); break;
+                    case "MOV": parseMove(parts); break;
+                    case "IMG": parseImage(parts); break;
+                    case "IMGS": parseImages(parts); break;
+                    case "STATUS": vhInfo.tvStatusSub.setText(parts[1]); break;
+                    default:
+                        MdpLog.d(TAG, "Unknown Message: "+received);
+                }
+            } catch (Exception e){
+                MdpLog.d(TAG, "Error Parsing: "+received);
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -445,6 +469,60 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 controller.connectDevice(lastConnect, isSecure);
             }
         }
+    }
+
+    // parse messages
+    private void sendConfigMessage(){
+        Robot bot = map.getRobot();
+        MapAnnotation wp = map.getWayPoint();
+        // goal position will be sent if way-point not set
+        String wpCoord = String.format("%d,%d", 13, 18);;
+        if (wp != null){
+            wpCoord = String.format("%d,%d", wp.getX(), wp.getY());;
+        }
+        String config = String.format("CONFIG|%s|%s|%s|%s|", bot.toString(), wpCoord, map.getPartI(), map.getPartII());
+        controller.sendMessage(config);
+    }
+    private void parseMap(String... params){
+        if (params.length==1){
+            String response = String.format("MAP|%s|%s|%s|",map.getRobot().toString(), map.getPartI(), map.getPartII());
+            controller.sendMessage(response);
+        } else {
+            String[] botCoord = params[1].split(",");
+            int x = Integer.parseInt(botCoord[0]);
+            int y = Integer.parseInt(botCoord[1]);
+            int dir = Integer.parseInt(botCoord[2]);
+            String p1 = params[2];
+            String p2 = "";
+            if (params.length>=4){
+                p2 = params[3];
+            }
+            map.getRobot().set(x,y,dir*90);
+            map.mapFromString(p1,p2);
+            map.notifyChanges();
+        }
+    }
+
+    private void parseMove(String... params){
+        Robot bot = map.getRobot();
+        switch (params[1]){
+            case "F": bot.setPosition( bot.getForwardPosition() ); break;
+            case "B": bot.setPosition( bot.getBackwardPosition() ); break;
+            case "R": bot.turnRight(); break;
+            case "L": bot.turnLeft(); break;
+        }
+        map.notifyChanges();
+    }
+
+    private void parseImage(String... param){
+        MapAnnotation img = MapAnnotation.createImageFromString(param[1]);
+        map.getImages().put(img.getName(), img);
+        map.notifyChanges();
+    }
+
+    private void parseImages(String... params){
+        String strImages = params[1].substring(1, params[1].length()-1);
+        map.imagesFromString(strImages);
     }
 
     // multi-threading tasks

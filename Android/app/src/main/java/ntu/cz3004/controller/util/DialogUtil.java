@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.common.Direction;
+import ntu.cz3004.controller.control.BTRobotController;
 import ntu.cz3004.controller.entity.Map;
 import ntu.cz3004.controller.entity.Robot;
 
@@ -224,7 +225,24 @@ public class DialogUtil {
 
 
 
+    public static void promptDialogTestMessages(Context context, BTRobotController controller){
+        String[] msgs = context.getResources().getStringArray(R.array.test_msg);
+        AlertDialog alert = new MaterialAlertDialogBuilder(context)
+                .setTitle("Test messages")
+                .setItems(msgs, (dialog, which) -> {
+                    String msg = msgs[which];
+                    try{
+                        controller.sendMessage(msg.toString());
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
 
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setCancelable(true)
+                .create();
+        alert.show();
+    }
 
 
 }

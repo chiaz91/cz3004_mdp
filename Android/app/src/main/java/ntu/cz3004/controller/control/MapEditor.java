@@ -135,7 +135,7 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
             case CELL_UNKNOWN: return editCellAs(position, Map.STATE_UNEXPLORED);
             case CELL_EXPLORED: return editCellAs(position, Map.STATE_EXPLORED);
             case CELL_OBSTACLE: return editCellAs(position, Map.STATE_OBSTACLE);
-            default: return true;
+            default: return false;
         }
     }
 

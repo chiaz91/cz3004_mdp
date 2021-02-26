@@ -33,4 +33,8 @@ public class BTChatViewHolder extends MDPViewHolder{
     public void setOnSendClickListener(View.OnClickListener listener){
         btnSend.setOnClickListener(listener);
     }
+
+    public void setOnLongClickSendClickListener(View.OnLongClickListener listener){
+        btnSend.setOnLongClickListener(listener);
+    }
 }
