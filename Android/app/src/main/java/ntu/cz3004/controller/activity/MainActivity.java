@@ -480,12 +480,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         if (wp != null){
             wpCoord = String.format("%d,%d", wp.getX(), wp.getY());;
         }
-        String config = String.format("CONFIG|%s|%s|%s|%s|", bot.toString(), wpCoord, map.getPartI(), map.getPartII());
+        String config = String.format("CONFIG|%s|%s|%s|%s", bot.toString(), wpCoord, map.getPartI(), map.getPartII());
         controller.sendMessage(config);
     }
     private void parseMap(String... params){
         if (params.length==1){
-            String response = String.format("MAP|%s|%s|%s|",map.getRobot().toString(), map.getPartI(), map.getPartII());
+            String response = String.format("MAP|%s|%s|%s",map.getRobot().toString(), map.getPartI(), map.getPartII());
             controller.sendMessage(response);
         } else {
             String[] botCoord = params[1].split(",");
