@@ -286,25 +286,29 @@ public class Map {
         if (p2 != null){
             return p2;
         }
-        String part2 = "1000";
+        StringBuilder binaryBuilder = new StringBuilder("10000000");
         int state = 0;
         for ( int r=0; r<MAX_ROW; r++ ) {
             for ( int c=0; c<MAX_COL; c++ ) {
                 state = cellStates[r][c];
                 if (state!=STATE_UNEXPLORED){
                     switch (state){
-                        case STATE_EXPLORED: part2+=0; break;
-                        case STATE_OBSTACLE: part2+=1; break;
+                        case STATE_EXPLORED: binaryBuilder.append("0"); break;
+                        case STATE_OBSTACLE: binaryBuilder.append("1"); break;
                     }
                 }
             }
         }
 
-        String result = Utility.binaryToHex(part2).toUpperCase();
-        if (result.length()>0){
-            p2 = result.substring(1);
-        } else {
+        if (binaryBuilder.length()==8){
             p2 = "";
+        } else {
+            // pad right to min 8 bits per segment
+            for (int i = 0; i< binaryBuilder.length()%8; i++){
+                binaryBuilder.append("0");
+            }
+            p2 = Utility.binaryToHex(binaryBuilder.toString()).toUpperCase();
+            p2 = p2.substring(2);
         }
         return p2;
     }

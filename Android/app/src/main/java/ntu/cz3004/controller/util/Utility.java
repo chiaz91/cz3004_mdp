@@ -48,25 +48,9 @@ public class Utility {
      * @return hex value (no prefix)
      */
     public static String binaryToHex(String binary){
-        /* Assume binary is 100001, it will break down as 10-0001 and convert as 0x21
-           However, when parsing the map, 0x21 will be converted back as 0010-0001
-           sign extending will cause error in parsing p2
-         */
-//        return new BigInteger(binary, 2).toString(16);
-
-        String nibble;
-        StringBuilder result = new StringBuilder();
-        int length = binary.length();
-        for (int i = 0; i < length ; i+=4) {
-            nibble = binary.substring(i, Math.min(length, i+4));
-            if (nibble.length()<4){
-                nibble = String.format("%-4s", nibble).replaceAll(" ", "0");
-            }
-            String hexLetter = new BigInteger( nibble, 2).toString(16);
-            result.append(hexLetter);
-        }
-        return result.toString();
+        return new BigInteger(binary, 2).toString(16);
     }
+
 
     /**
      * Apply AND operation to check if flags contains mask
