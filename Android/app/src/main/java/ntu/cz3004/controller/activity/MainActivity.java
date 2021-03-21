@@ -436,6 +436,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
 
         if (message.getType() == BTMessage.Type.INCOMING){
             // parsing messages
+            // TODO: split message
             String received = message.getContent();
             String[] parts = received.split("\\|");
             try{
@@ -479,9 +480,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         Robot bot = map.getRobot();
         MapAnnotation wp = map.getWayPoint();
         // goal position will be sent if way-point not set
-        String wpCoord = String.format("%d,%d", 13, 18);;
+        String wpCoord = String.format("%d,%d", 18, 13);;
         if (wp != null){
-            wpCoord = String.format("%d,%d", wp.getX(), wp.getY());;
+            wpCoord = String.format("%d,%d",  wp.getY(), wp.getX());;
         }
         String config = String.format("CONFIG|%s|%s|%s|%s", bot.toString(), wpCoord, map.getPartI(), map.getPartII());
         controller.sendMessage(config);
@@ -491,9 +492,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             String response = String.format("MAP|%s|%s|%s",map.getRobot().toString(), map.getPartI(), map.getPartII());
             controller.sendMessage(response);
         } else {
+            // row,col,dir
             String[] botCoord = params[1].split(",");
-            int x = Integer.parseInt(botCoord[0]);
-            int y = Integer.parseInt(botCoord[1]);
+            int x = Integer.parseInt(botCoord[1]);
+            int y = Integer.parseInt(botCoord[0]);
             int dir = Integer.parseInt(botCoord[2]);
             String p1 = params[2];
             String p2 = "";

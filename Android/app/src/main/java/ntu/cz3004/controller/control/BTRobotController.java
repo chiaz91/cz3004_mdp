@@ -100,15 +100,10 @@ public class BTRobotController extends BluetoothController implements SensorEven
             return false;
         }
         if (enableSimulation){
-            boolean success = mapEditor.robotMoveBack();
-            if (success ){
-                sendMessage(command.down);
-            }
-            return success;
-        } else {
-            sendMessage(command.down);
-            return true;
+            mapEditor.robotTurnBack();
         }
+        sendMessage(command.down);
+        return true;
     }
 
     public boolean left(){

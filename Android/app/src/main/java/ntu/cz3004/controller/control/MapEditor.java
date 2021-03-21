@@ -122,6 +122,12 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         highlightRobot();
     }
 
+    public void robotTurnBack(){
+        map.getRobot().turnBack();
+        map.notifyChanges();
+        highlightRobot();
+    }
+
 
     public void setMode(Mode mode){
         this.mode = mode;

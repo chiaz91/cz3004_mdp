@@ -91,6 +91,6 @@ public class Robot extends MapAnnotation {
 
     @Override
     public String toString() {
-        return String.format("%d,%d,%d",getX(), getY(),getDirection()/90);
+        return String.format("%d,%d,%d", getY(), getX(),getDirection()/90);
     }
 }

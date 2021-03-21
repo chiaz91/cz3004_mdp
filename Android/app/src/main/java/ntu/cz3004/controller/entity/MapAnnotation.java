@@ -87,12 +87,12 @@ public class MapAnnotation {
     public static MapAnnotation createImageFromString(String imgStr){
         MapAnnotation annotation = null;
         try{
-            // assume format is (#,#,#) with no spaces.
+            // assume format is (id,row,col) with no spaces.
             imgStr = imgStr.substring(1, imgStr.length()-1);
             String[] data = imgStr.split(",");
             int id = Integer.parseInt(data[0]);
-            int x =Integer.parseInt(data[1]);
-            int y =Integer.parseInt(data[2]);
+            int x  = Integer.parseInt(data[2]);
+            int y  = Integer.parseInt(data[1]);
             int icon = MapAnnotation.ICON_NONE;
             switch (id){
                 case 1: icon = R.drawable.ic_map_1; break;
