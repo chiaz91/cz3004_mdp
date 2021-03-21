@@ -1,23 +1,18 @@
 package ntu.cz3004.controller.control;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Point;
-import android.text.InputFilter;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputLayout;
-
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.common.Direction;
 import ntu.cz3004.controller.entity.Map;
 import ntu.cz3004.controller.entity.Robot;
 import ntu.cz3004.controller.util.DialogUtil;
+import ntu.cz3004.controller.util.MdpLog;
+import ntu.cz3004.controller.util.PrefUtility;
 import ntu.cz3004.controller.util.Utility;
 import ntu.cz3004.controller.view.MapEditViewHolder;
 import ntu.cz3004.controller.view.MapView;
@@ -65,6 +60,7 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_set_map: DialogUtil.promptEditMapDescriptor(context, map); break;
+            case R.id.btn_map_save: saveMap(); break;
             case R.id.btn_map_reset: resetMap(); break;
         }
     }
@@ -189,7 +185,14 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show();
     }
 
+    private void saveMap(){
+        String saving = String.format("%s|%s|%s", map.getPartI(), map.getPartII(), map.getImages());
+        SharedPreferences pref = PrefUtility.getSharePreferences(mv.getContext());
+        String key = mv.getContext().getString(R.string.key_debug_map);
+        pref.edit().putString(key, saving).apply();
 
+        MdpLog.d("mdp.save", "saving "+saving);
+    }
 
 
 

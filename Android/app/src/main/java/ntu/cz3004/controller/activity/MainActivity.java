@@ -181,17 +181,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             String[] parts = note.split(":");
             btMessageAdapter.add(new BTMessage(BTMessage.Type.OUTGOING, parts[0], parts[1]));
         }
-
-        String debugMap = PrefUtility.getDebugMap(this);
-        MdpLog.d(TAG, "debug map: "+debugMap);
-        String[] mapData = debugMap.split("\\|");
-        try{ // attempt load map data
-            map.mapFromString(mapData[0], mapData[1]);
-        } catch (Exception e){ }
-
-        try{ // attempt load image data
-            map.imagesFromString(mapData[2]);
-        } catch (Exception e){ }
     }
 
     @Override
@@ -441,6 +430,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             // split message
             String[] cmds = received.split("\n");
             for(String command : cmds){
+                MdpLog.d(TAG, "parsing ["+command+"]");
                 String[] parts = command.split("\\|");
                 try{
                     switch (parts[0]){

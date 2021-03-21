@@ -12,7 +12,7 @@ public class MapEditViewHolder extends MDPViewHolder{
     public HorizontalScrollView hsv;
     public RadioGroup rgEditMode;
     public RadioButton rbRobot, rbWayPoint, rbCellUnknown, rbCellExplored, rbCellObstacle;
-    public Button btnMap, btnReset;
+    public Button btnMap, btnSave,  btnReset;
 
     public MapEditViewHolder(View view) {
         super(view);
@@ -24,6 +24,7 @@ public class MapEditViewHolder extends MDPViewHolder{
         rbCellExplored = view.findViewById(R.id.rb_set_explored);
         rbCellObstacle = view.findViewById(R.id.rb_set_obstacle);
         btnMap = view.findViewById(R.id.btn_set_map);
+        btnSave = view.findViewById(R.id.btn_map_save);
         btnReset = view.findViewById(R.id.btn_map_reset);
     }
 
@@ -33,6 +34,7 @@ public class MapEditViewHolder extends MDPViewHolder{
 
     public void setOnClickListener(View.OnClickListener listener){
         btnMap.setOnClickListener(listener);
+        btnSave.setOnClickListener(listener);
         btnReset.setOnClickListener(listener);
     }
 

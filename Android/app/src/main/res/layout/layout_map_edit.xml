@@ -63,6 +63,14 @@
             android:layout_height="wrap_content"
             android:text="@string/edit_map"
             android:drawableTop="@drawable/ic_grid" />
+
+        <Button
+            style="@style/MDPButton"
+            android:id="@+id/btn_map_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:drawableTop="@drawable/ic_save" />
         <Button
             style="@style/MDPButton"
             android:id="@+id/btn_map_reset"

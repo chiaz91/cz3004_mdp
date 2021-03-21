@@ -235,10 +235,14 @@ public class DialogUtil {
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 TextView textView = (TextView) super.getView(position, convertView, parent);
-                textView.setText(String.format("Map %d", position+1));
+
+                textView.setText(position == 0? "Saved": String.format("Map %d", position));
                 return textView;
             }
         };
+
+        String saved = PrefUtility.getDebugMap(context);
+        adapter.add(saved);
         adapter.addAll(maps);
         AlertDialog alert = new MaterialAlertDialogBuilder(context)
                 .setTitle("Import Map")
@@ -260,6 +264,7 @@ public class DialogUtil {
                 .create();
         alert.show();
     }
+
 
 
     public static void promptDialogTestMessages(Context context, BTRobotController controller){
