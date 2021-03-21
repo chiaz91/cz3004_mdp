@@ -2,22 +2,20 @@ package app.entity;
 
 import java.util.Objects;
 
-public class BTMessage {
+public class MDPMessage {
     public enum Type {
-        SYSTEM, INCOMING, OUTGOING;
+        SYSTEM, INFO, INCOMING, OUTGOING;
     }
 
     private Type type;
-//    private Date time;
-    private String sender;
+    private String tag;
     private String content;
     private int count;
 
-    public BTMessage(Type type, String sender, String content) {
+    public MDPMessage(Type type, String tag, String content) {
         this.type = type;
-        this.sender = sender;
+        this.tag = tag;
         this.content = content;
-//        this.time = new Date();
         this.count = 1;
     }
 
@@ -29,20 +27,13 @@ public class BTMessage {
         this.type = type;
     }
 
-//    public Date getTime() {
-//        return time;
-//    }
-//
-//    public void setTime(Date time) {
-//        this.time = time;
-//    }
 
-    public String getSender() {
-        return sender;
+    public String getTag() {
+        return tag;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public String getContent() {
@@ -69,14 +60,14 @@ public class BTMessage {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BTMessage btMessage = (BTMessage) o;
+        MDPMessage btMessage = (MDPMessage) o;
         return type == btMessage.type &&
-                sender.equals(btMessage.sender) &&
+                tag.equals(btMessage.tag) &&
                 content.equals(btMessage.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, sender, content);
+        return Objects.hash(type, tag, content);
     }
 }

@@ -40,6 +40,7 @@ public class MapEditViewHolder extends MDPViewHolder{
 
     public void setOnLongClickListener(View.OnLongClickListener listener){
         btnMap.setOnLongClickListener(listener);
+        btnSave.setOnLongClickListener(listener);
         rbRobot.setOnLongClickListener(listener);
         rbWayPoint.setOnLongClickListener(listener);
         rbCellUnknown.setOnLongClickListener(listener);

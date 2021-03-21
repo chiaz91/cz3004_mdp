@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="release_notes">
-        <item>v1.1.0:BT communication</item>
-        <item>v1.2.0:Map visualization\nBasic interaction controls</item>
-        <item>v1.3.0:Persistent user configurable buttons</item>
-        <item>v1.4.0:Map editing mode</item>
-        <item>v1.5.0:Status information display</item>
-        <item>v1.6.0:Auto/Manual map update</item>
-        <item>v1.7.0:Revised BT connection and display</item>
-        <item>v1.8.0:Robot simulation\nAccelerometer controlling</item>
+    <string-array name="msg_protocol">
+        <item>MOV|0~9:move forward by n+1 moves</item>
+        <item>MOV|A:turn left</item>
+        <item>MOV|D:turn right</item>
+        <item>MOV|Q:turn back</item>
+        <item>IMG|(id,x,y):add image on map</item>
+        <item>IMGS|[(id,x,y)*]:set image list</item>
+        <item>MAP|x,y,dir|p1|p2:update map and robot</item>
+        <item>STATUS|status msg:update status</item>
     </string-array>
 
-    <string-array name="test_msg">
+    <string-array name="msg_test">
         <item>MOV|0</item>
         <item>STATUS|Idling</item>
         <item>IMG|(1,2,3)</item>
@@ -29,6 +29,8 @@
         <item>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF|00000000000000000061F84000800100000003C00080000400084070F8808000000000000800</item>
         <!-- Fastest Path-->
         <item>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF|00200040008000002001C0400380000001000200C78180020000000008011000020004000C00</item>
+        <!-- Image Recognition (6,7,4),(8,7,19),(11,14,7),(13,10,12),(14,0,9) -->
+        <item>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF|00000000000000007061C0400080010001E000400000000200044038F8C00000000000000800|(6,4,7),(8,19,7),(11,7,14),(13,12,10),(14,9,0)</item>
         <item>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF|000000000000888000000000000888000000000000888000000000000888000000000000888|(1,3,3),(2,3,7),(3,3,11),(4,7,3),(5,7,7),(6,7,11),(7,11,3),(8,11,7),(9,11,11),(10,15,3),(11,15,7),(12,15,11),(13,19,3),(14,19,7),(15,19,11)</item>
         <item>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF|0000000000077002A01D402A8055000001D5D6A93C725AA4FD5C80007700A201DC02A807500</item>
     </string-array>

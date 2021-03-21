@@ -28,7 +28,7 @@ import app.common.BluetoothStatusListener;
 import app.common.Constants;
 import app.control.BTRobotController;
 import app.control.MapEditor;
-import app.entity.BTMessage;
+import app.entity.MDPMessage;
 import app.entity.Command;
 import app.entity.Map;
 import app.entity.Robot;
@@ -38,9 +38,9 @@ import app.util.IntentBuilder;
 import app.util.MdpLog;
 import app.util.PrefUtility;
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.adapter.BTMessageAdapter;
+import ntu.cz3004.controller.adapter.MDPMessageAdapter;
 import ntu.cz3004.controller.adapter.MDPPagerAdapter;
-import ntu.cz3004.controller.view.BTChatViewHolder;
+import ntu.cz3004.controller.view.MessagesViewHolder;
 import ntu.cz3004.controller.view.ControlsViewHolder;
 import ntu.cz3004.controller.view.InfoViewHolder;
 import ntu.cz3004.controller.view.MapEditViewHolder;
@@ -54,14 +54,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     private Map map;
     private MapEditor mapEditor;
     // BT chat
-    private BTMessageAdapter btMessageAdapter;
+    private MDPMessageAdapter msgAdapter;
     // views & holder
     private ViewPager pager;
     private View viewMain, viewBtChat;
     private ControlsViewHolder vhControls;
     private MapEditViewHolder vhMapEdit;
     private InfoViewHolder vhInfo;
-    private BTChatViewHolder vhBTChat;
+    private MessagesViewHolder vhMessages;
     // multi-threading
     final Handler handler = new Handler();
     private Runnable taskUpdateMap, taskReconnectBT;
@@ -154,15 +154,15 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     private void initBTChat(){
-        ArrayList<BTMessage> messages = new ArrayList();
-        btMessageAdapter = new BTMessageAdapter(messages);
-        vhBTChat = new BTChatViewHolder(viewBtChat, btMessageAdapter);
-        vhBTChat.setOnSendClickListener((v)->{
-            String msg = vhBTChat.etMessage.getText().toString();
+        ArrayList<MDPMessage> messages = new ArrayList();
+        msgAdapter = new MDPMessageAdapter(messages);
+        vhMessages = new MessagesViewHolder(viewBtChat, msgAdapter);
+        vhMessages.setOnSendClickListener((v)->{
+            String msg = vhMessages.etMessage.getText().toString();
             if (msg!=null && msg.length()>0){
                 if (msg.startsWith("?")){
                     MdpLog.d(TAG,"received simulation message!");
-                    BTMessage btMsg = new BTMessage(BTMessage.Type.INCOMING, "SYS", msg.substring(1));
+                    MDPMessage btMsg = new MDPMessage(MDPMessage.Type.INCOMING, "SYS", msg.substring(1));
                     onCommunicate(btMsg);
                     return;
                 }
@@ -174,18 +174,18 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 }
             }
         });
-        vhBTChat.setOnLongClickSendClickListener((v -> {
-            DialogUtil.promptDialogTestMessages(this, vhBTChat.etMessage);
+        vhMessages.setOnLongClickSendClickListener((v -> {
+            DialogUtil.promptDialogTestMessages(this, vhMessages.etMessage);
             return true;
         }));
     }
 
     private void loadInfoMessages(){
-        btMessageAdapter.add(new BTMessage(BTMessage.Type.SYSTEM, "sys", "AY20/21S2 Group1"));
-        String[] notes = getResources().getStringArray(R.array.release_notes);
+        msgAdapter.add(new MDPMessage(MDPMessage.Type.SYSTEM, "sys", "AY20/21S2 Group1"));
+        String[] notes = getResources().getStringArray(R.array.msg_protocol);
         for(String note: notes){
             String[] parts = note.split(":");
-            btMessageAdapter.add(new BTMessage(BTMessage.Type.OUTGOING, parts[0], parts[1]));
+            msgAdapter.add(new MDPMessage(MDPMessage.Type.INFO,parts[0], parts[1]));
         }
     }
 
@@ -304,8 +304,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         menu.findItem(R.id.action_bt_disconnect).setVisible(controller.isConnected());
         // bt chat menu
         if (pager.getCurrentItem() == 1){
-             menu.findItem(R.id.action_show_received).setChecked(btMessageAdapter.isShowReceived());
-             menu.findItem(R.id.action_show_sent).setChecked(btMessageAdapter.isShowSent());
+             menu.findItem(R.id.action_show_received).setChecked(msgAdapter.isShowReceived());
+             menu.findItem(R.id.action_show_sent).setChecked(msgAdapter.isShowSent());
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -326,20 +326,17 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case R.id.action_bt_reconnect:
                 reconnectLastDevice();
                 return true;
-            case R.id.action_import_map:
-                DialogUtil.promptImportMap(this, map);
-                return true;
             // bt chat menu
             case R.id.action_show_sent:
                 item.setChecked(!item.isChecked());
-                btMessageAdapter.setShowSent(item.isChecked());
+                msgAdapter.setShowSent(item.isChecked());
                 return true;
             case R.id.action_show_received:
                 item.setChecked(!item.isChecked());
-                btMessageAdapter.setShowReceived(item.isChecked());
+                msgAdapter.setShowReceived(item.isChecked());
                 return true;
             case R.id.action_clear_history:
-                btMessageAdapter.clear();
+                msgAdapter.clear();
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -428,11 +425,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     @Override
-    public void onCommunicate(BTMessage message) {
-        btMessageAdapter.add(message);
-        vhBTChat.scrollToEnd();
+    public void onCommunicate(MDPMessage message) {
+        msgAdapter.add(message);
+        vhMessages.scrollToEnd();
 
-        if (message.getType() == BTMessage.Type.INCOMING){
+        if (message.getType() == MDPMessage.Type.INCOMING){
             parseMessage(message.getContent());
         }
     }
@@ -495,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 p2 = params[3];
             }
             map.getRobot().set(x,y,dir*90);
-            map.mapFromString(p1,p2);
+            map.updateMapAs(p1,p2);
             map.notifyChanges();
             mapEditor.highlightRobot();
         }
@@ -527,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
 
     private void parseImages(String... params){
         String strImages = params[1].substring(1, params[1].length()-1);
-        map.imagesFromString(strImages);
+        map.updateImageAs(strImages);
     }
 
     // multi-threading tasks

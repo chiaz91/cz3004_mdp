@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import app.common.BluetoothStatusListener;
 import app.common.Constants;
-import app.entity.BTMessage;
+import app.entity.MDPMessage;
 import app.service.BluetoothChatService;
 
 public class BluetoothController {
@@ -135,7 +135,7 @@ public class BluetoothController {
                         byte[] writeBuf = (byte[]) msg.obj;
                         // construct a string from the buffer
                         String writeMessage = new String(writeBuf);
-                        BTMessage outMessage = new BTMessage(BTMessage.Type.OUTGOING, "Me", writeMessage);
+                        MDPMessage outMessage = new MDPMessage(MDPMessage.Type.OUTGOING, "Me", writeMessage);
                         for (BluetoothStatusListener listener: listeners){
                             listener.onCommunicate(outMessage);
                         }
@@ -146,7 +146,7 @@ public class BluetoothController {
                 case Constants.MESSAGE_READ:
                     // read message object instead of buffer
                     String strMsg = (String) msg.obj;
-                    BTMessage inMessage = new BTMessage(BTMessage.Type.INCOMING, getConnectedDeviceName(), strMsg);
+                    MDPMessage inMessage = new MDPMessage(MDPMessage.Type.INCOMING, getConnectedDeviceName(), strMsg);
                     for (BluetoothStatusListener listener: listeners){
                         listener.onCommunicate(inMessage);
                     }

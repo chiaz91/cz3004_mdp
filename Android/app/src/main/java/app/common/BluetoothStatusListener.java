@@ -1,10 +1,10 @@
 package app.common;
 
-import app.entity.BTMessage;
+import app.entity.MDPMessage;
 
 public interface BluetoothStatusListener {
     void onStateChanges(int state);
-    void onCommunicate(BTMessage message);
+    void onCommunicate(MDPMessage message);
     void onToastMessage(String message);
 
 }

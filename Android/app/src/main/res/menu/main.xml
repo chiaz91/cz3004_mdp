@@ -27,10 +27,4 @@
         android:visible="true"
         android:title="@string/disconnect"
         app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_import_map"
-        android:visible="true"
-        android:title="Import Map"
-        app:showAsAction="never" />
 </menu>

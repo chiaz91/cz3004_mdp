@@ -24,8 +24,9 @@ default value can be set in `res/values/strings_pref.xml` or setting page
 * `MOV|D`: turn robot to its right on 2D map view
 * `MOV|Q`: turn robot to its back on 2D map view
 * `IMG|(id,row,col)`: add a new image on 2D map view
-* `IMGS|[<list of image strings>]`: replace current collection images to received images, the list must be comma separated
-* `MAP|row,col,dir|<MDF.P1>|<MDF.P2>`: to update robot postition and 2D map view
+* `IMGS|[(id,row,col)*]`: replace current collection images to received images, the list must be comma separated
+* `MAP|row,col,dir|<MDF.P1>|<MDF.P2>`: to update robot position and 2D map view
+* `STATUS|<ststus message>`: to update robot status
 
 
 ## Remarks

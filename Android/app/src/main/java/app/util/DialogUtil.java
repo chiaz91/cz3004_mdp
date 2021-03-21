@@ -6,24 +6,24 @@ import android.graphics.Point;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import app.common.Direction;
 import app.entity.Map;
 import app.entity.Robot;
 import ntu.cz3004.controller.R;
+import ntu.cz3004.controller.adapter.MDPMapPagerAdapter;
 
 public class DialogUtil {
 
@@ -114,8 +114,8 @@ public class DialogUtil {
             if (part1.length()==0){
                 part1 = context.getString(R.string.part_one_default);
             }
-            map.mapFromString(part1, part2);
-            map.imagesFromString(strImages);
+            map.updateMapAs(part1, part2);
+            map.updateImageAs(strImages);
             alert.dismiss();
         });
     }
@@ -232,38 +232,30 @@ public class DialogUtil {
         alert.show();
     }
 
-    public static void promptImportMap(Context context, Map map){
-        String[] maps = context.getResources().getStringArray(R.array.map_values);
-        ArrayAdapter<String> adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1){
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                TextView textView = (TextView) super.getView(position, convertView, parent);
 
-                textView.setText(position == 0? "Saved": String.format("Map %d", position));
-                return textView;
-            }
-        };
-
+    public static void promptLoadMap(Context context, Map map){
+        // data
         String saved = PrefUtility.getDebugMap(context);
-        adapter.add(saved);
-        adapter.addAll(maps);
+        String[] maps = context.getResources().getStringArray(R.array.map_values);
+        ArrayList<String> listMap = new ArrayList<>();
+        listMap.add(saved);
+        listMap.addAll(Arrays.asList(maps));
+        MDPMapPagerAdapter adapter = new MDPMapPagerAdapter(listMap);
+
+        // custom view
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_map_load, null);
+        ViewPager pager = view.findViewById(R.id.pager);
+        pager.setAdapter(adapter);
         AlertDialog alert = new MaterialAlertDialogBuilder(context)
-                .setTitle("Import Map")
-                .setAdapter(adapter, (dialog, which) -> {
-                    String[] mdf = adapter.getItem(which).split("\\|");
-
-                    try{ // attempt load map data
-                        map.mapFromString(mdf[0], mdf[1]);
-                    } catch (Exception e){ }
-
-                    try{ // attempt load image data
-                        map.imagesFromString(mdf[2]);
-                    } catch (Exception e){
-                        map.imagesFromString("");
-                    }
-                })
+//                .setTitle("Load Map")
+                .setView(view)
                 .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton("Choose", (dialog, which) -> {
+                    int pos = pager.getCurrentItem();
+                    String mdf = listMap.get(pos);
+                    map.reset();
+                    map.updateAs(mdf);
+                })
                 .setCancelable(true)
                 .create();
         alert.show();
@@ -272,7 +264,7 @@ public class DialogUtil {
 
 
     public static void promptDialogTestMessages(Context context, EditText etMessage){
-        String[] msgs = context.getResources().getStringArray(R.array.test_msg);
+        String[] msgs = context.getResources().getStringArray(R.array.msg_test);
         AlertDialog alert = new MaterialAlertDialogBuilder(context)
                 .setTitle("Test messages")
                 .setItems(msgs, (dialog, which) -> {

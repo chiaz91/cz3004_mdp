@@ -61,7 +61,7 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_set_map: DialogUtil.promptEditMapDescriptor(context, map); break;
-            case R.id.btn_map_save: saveMap(); break;
+            case R.id.btn_map_save: DialogUtil.promptLoadMap(context, map); break;
             case R.id.btn_map_reset: resetMap(); break;
         }
     }
@@ -74,6 +74,7 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
             case R.id.rb_set_unknown: DialogUtil.promptSetAllCellState(context, map, Map.STATE_UNEXPLORED); return true;
             case R.id.rb_set_explored: DialogUtil.promptSetAllCellState(context, map, Map.STATE_EXPLORED); return true;
             case R.id.btn_set_map: copyMapDescriptor(); return true;
+            case R.id.btn_map_save: saveMap(); return true;
         }
         return false;
     }
@@ -199,7 +200,7 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
     }
 
     private void saveMap(){
-        String saving = String.format("%s|%s|%s", map.getPartI(), map.getPartII(), map.getImages());
+        String saving = String.format("%s|%s|%s", map.getPartI(), map.getPartII(), map.getImagesString());
         SharedPreferences pref = PrefUtility.getSharePreferences(mv.getContext());
         String key = mv.getContext().getString(R.string.key_debug_map);
         pref.edit().putString(key, saving).apply();

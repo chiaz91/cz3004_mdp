@@ -8,27 +8,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.adapter.BTMessageAdapter;
+import ntu.cz3004.controller.adapter.MDPMessageAdapter;
 
-public class BTChatViewHolder extends MDPViewHolder{
-    public RecyclerView rvChatHistory;
+public class MessagesViewHolder extends MDPViewHolder{
+    public RecyclerView rvMessages;
     public EditText etMessage;
     public ImageButton btnSend;
 
-    public BTChatViewHolder(View view, BTMessageAdapter adapter){
+    public MessagesViewHolder(View view, MDPMessageAdapter adapter){
         super(view);
-        rvChatHistory = view.findViewById(R.id.rv_messages);
+        rvMessages = view.findViewById(R.id.rv_messages);
         etMessage = view.findViewById(R.id.et_msg);
         btnSend = view.findViewById(R.id.btn_send);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
-        rvChatHistory.setLayoutManager(linearLayoutManager);
-        rvChatHistory.setAdapter(adapter);
+        rvMessages.setLayoutManager(linearLayoutManager);
+        rvMessages.setAdapter(adapter);
     }
 
     public void scrollToEnd(){
-        RecyclerView.Adapter adapter = rvChatHistory.getAdapter();
-        rvChatHistory.scrollToPosition(adapter.getItemCount() -1);
+        RecyclerView.Adapter adapter = rvMessages.getAdapter();
+        rvMessages.scrollToPosition(adapter.getItemCount() -1);
     }
 
     public void setOnSendClickListener(View.OnClickListener listener){

@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -27,7 +28,7 @@ public class Map {
     public static final int STATE_UNEXPLORED = 0;
     public static final int STATE_EXPLORED = 1;
     public static final int STATE_OBSTACLE = 2;
-    private static int[][] cellStates;
+    private int[][] cellStates;
     private Robot robot;
     private MapAnnotation wayPoint;
     private HashMap<String, MapAnnotation> images;
@@ -119,58 +120,64 @@ public class Map {
 
     /**
      * update map status based on map descriptor string
-     * @param explorations part 1 of descriptor that represent exploration status
-     * @param obstacles part 2 of descriptor that represent obstacle status of explored region
+     * @param p1 part 1 of descriptor that represent exploration status
+     * @param p2 part 2 of descriptor that represent obstacle status of explored region
      */
-    public void mapFromString(String explorations, String obstacles) {
+    public void updateMapAs(String p1, String p2) {
         MdpLog.d(TAG, "update map from string");
-        MdpLog.d(TAG, "Explore   : "+explorations);
-        MdpLog.d(TAG, "Obstacles : "+obstacles);
-        String tempP1 = Utility.hexToBinary(explorations);
+        MdpLog.d(TAG, "MDF.P1: "+p1);
+        MdpLog.d(TAG, "MDF.P2: "+p2);
+        String tempP1 = Utility.hexToBinary(p1);
         tempP1 = tempP1.substring(2, tempP1.length() - 2);//remove header and tail
 
-        String tempP2 ="F" + obstacles;//append "F" to prevent 0s being removed during conversion.
+        String tempP2 ="F" + p2;//append "F" to prevent 0s being removed during conversion.
         tempP2 = Utility.hexToBinary(tempP2);
         tempP2 = tempP2.substring(4);//remove "F" in binary
 
-        // read and update exploration states
-        int[][] map = new int[MAX_ROW][MAX_COL];
         int row, col;
-        try {
+        int[][] map = new int[MAX_ROW][MAX_COL];
+        try{ // parse part 1
             for (row = 0; row < MAX_ROW; row++) {
                 for (col = 0; col < MAX_COL; col++) {
                     map[row][col] = Character.getNumericValue(tempP1.charAt(row * MAX_COL + col));
                 }
             }
-        } catch (Exception e) {
-            MdpLog.w(TAG, "parseExploration: Error parsing");
+            // parse successful!
+            // cellStates=map.clone() will fail! as clone don't work well for n-dimension array
+            // cellStates = Arrays.stream(map).map(int[]::clone).toArray(int[][]::new);
+            for (int r = 0; r < MAX_ROW; r++) {
+                cellStates[r] = map[r].clone();
+            }
+            this.p1 = p1;
+        } catch (Exception e){
+            this.p1 = null;
+            MdpLog.w(TAG, "MDF.P1: Error parsing");
+            return;
         }
 
-
-        // read and update obstacles states (only update explored region)
-        int i = 0;
-        for (row = 0; row < MAX_ROW; row++) {
-            for (col = 0; col < MAX_COL; col++) {
-                if (map[row][col] == STATE_EXPLORED) {
-                    try {
+        try{ // parse part 2
+            int i = 0;
+            for (row = 0; row < MAX_ROW; row++) {
+                for (col = 0; col < MAX_COL; col++) {
+                    if (map[row][col] == STATE_EXPLORED) {
                         if (Character.getNumericValue(tempP2.charAt(i)) == 1) {
                             map[row][col] = STATE_OBSTACLE;
                         }
                         i++;
-                    } catch (Exception e) {
-                        MdpLog.w(TAG, "parseObstacle: Error parsing");
-                        break;
                     }
                 }
             }
+            // parse successful!
+            cellStates = map;
+            this.p2 = p2;
+        } catch (Exception e){
+            this.p2 = null;
+            MdpLog.w(TAG, "MDF.P2: Error parsing");
         }
-        cellStates = map;
-        p1 = explorations;
-        p2 = obstacles;
         notifyChanges();
     }
 
-    public void imagesFromString(String strImages){
+    public void updateImageAs(String strImages){
         try{
             MdpLog.d(TAG, "update images from string");
             MdpLog.d(TAG, "Images: "+strImages);
@@ -189,6 +196,27 @@ public class Map {
         } catch (Exception e){
             MdpLog.w(TAG, "parseImages: Error parsing");
             e.printStackTrace();
+        }
+    }
+
+    public void updateAs(String mdf){
+        MdpLog.d(TAG, "updateAs="+mdf);
+        if (mdf.length() == 0){
+            return;
+        }
+        String[] parts = mdf.split("\\|");
+
+        try{
+            updateMapAs(parts[0], parts[1]);
+        } catch (Exception e){
+            MdpLog.d(TAG, "Error parse P1 and P2");
+            return;
+        }
+
+        try{
+            updateImageAs(parts[2]);
+        } catch (Exception e){
+            updateImageAs("");
         }
     }
 
@@ -237,7 +265,7 @@ public class Map {
 
 
     // not used
-    public static int[][] getCellStates() {
+    public int[][] getCellStates() {
         return cellStates;
     }
 
@@ -274,7 +302,7 @@ public class Map {
     /**
      * convert current map status into part 1 of map descriptor
      * @return string that represent exploration status
-     * @see #mapFromString(String, String)
+     * @see #updateMapAs(String, String)
      */
     public String getPartI(){
         if (p1 != null){
@@ -296,7 +324,7 @@ public class Map {
     /**
      * convert current map status into part 2 of map descriptor
      * @return string that represent obstacle status
-     * @see #mapFromString(String, String)
+     * @see #updateMapAs(String, String)
      */
     public String getPartII(){
         if (p2 != null){

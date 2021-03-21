@@ -203,8 +203,9 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         }
     }
     private void doScanningDevices(){
+        doEndScanning();
+
         // start timer
-        handler.removeCallbacks(runnableScanCountdown);
         handler.postDelayed(runnableScanCountdown, DURATION_ONE_SEC);
         curTimerSec = 0;
         updateSubtitle(getString(R.string.discovering, Constants.SCAN_DURATION_SEC));

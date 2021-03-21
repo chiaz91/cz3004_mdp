@@ -40,7 +40,7 @@
 
         <SwitchPreference
             android:key="@string/state_robot_simulation"
-            android:title="Robot simulation"
+            android:title="Robot Simulation"
             android:defaultValue="@bool/state_robot_simulation_default" />
 
         <SwitchPreference
