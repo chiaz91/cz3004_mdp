@@ -19,11 +19,11 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
-import ntu.cz3004.controller.R;
 import app.common.Direction;
 import app.control.BTRobotController;
 import app.entity.Map;
 import app.entity.Robot;
+import ntu.cz3004.controller.R;
 
 public class DialogUtil {
 

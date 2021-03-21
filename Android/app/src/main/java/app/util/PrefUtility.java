@@ -3,8 +3,8 @@ package app.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import ntu.cz3004.controller.R;
 import app.entity.Command;
+import ntu.cz3004.controller.R;
 
 public class PrefUtility {
 

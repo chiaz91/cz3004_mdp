@@ -28,17 +28,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import java.util.Set;
 
-import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.adapter.BTDeviceAdapter;
 import app.common.Constants;
 import app.common.OnRecyclerViewInteractedListener;
 import app.util.DialogUtil;
 import app.util.IntentBuilder;
 import app.util.MdpLog;
 import app.util.Utility;
+import ntu.cz3004.controller.R;
+import ntu.cz3004.controller.adapter.BTDeviceAdapter;
 
 public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteractedListener {
     private static final String TAG = "mdp.frag.bt_devices";

@@ -153,6 +153,10 @@ public class BTRobotController extends BluetoothController implements SensorEven
         sendMessage(command.reqMap);
     }
 
+    public  void sendConfig(){
+        sendMessage(mapEditor.getConfigString());
+    }
+
 
     // Accelerometer related
     public void startSensor(){

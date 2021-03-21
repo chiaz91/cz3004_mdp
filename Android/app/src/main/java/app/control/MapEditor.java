@@ -5,15 +5,16 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.view.View;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
-import ntu.cz3004.controller.R;
 import app.entity.Map;
+import app.entity.MapAnnotation;
 import app.entity.Robot;
 import app.util.DialogUtil;
 import app.util.MdpLog;
 import app.util.PrefUtility;
 import app.util.Utility;
+import ntu.cz3004.controller.R;
+import ntu.cz3004.controller.activity.MainActivity;
 import ntu.cz3004.controller.view.MapEditViewHolder;
 import ntu.cz3004.controller.view.MapView;
 
@@ -178,11 +179,23 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         map.reset();
     }
 
+    public String getConfigString(){
+        Map map = getMap();
+        Robot bot = map.getRobot();
+        MapAnnotation wp = map.getWayPoint();
+        // goal position will be sent if way-point not set
+        String wpCoord = String.format("%d,%d", 18, 13);
+        if (wp != null){
+            wpCoord = String.format("%d,%d",  wp.getY(), wp.getX());
+        }
+        return String.format("CONFIG|%s|%s|%s|%s", bot.toString(), wpCoord, map.getPartI(), map.getPartII());
+    }
+
 
     private void copyMapDescriptor(){
         String strMap = String.format("P1: %s\nP2: %s\nImg: %s", map.getPartI(), map.getPartII(), map.getImagesString());
         Utility.copyToClipboard(context, strMap);
-        Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+        ((MainActivity) mv.getContext()).showToast("Copied to clipboard");
     }
 
     private void saveMap(){
@@ -192,7 +205,7 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         pref.edit().putString(key, saving).apply();
 
         MdpLog.d("mdp.save", "saving "+saving);
-        Toast.makeText(context, "Map saved", Toast.LENGTH_SHORT).show();
+        ((MainActivity) mv.getContext()).showToast("Map saved");
     }
 
 

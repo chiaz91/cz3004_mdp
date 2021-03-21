@@ -19,10 +19,10 @@ import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
 
-import ntu.cz3004.controller.R;
 import app.entity.Map;
 import app.entity.MapAnnotation;
 import app.util.Utility;
+import ntu.cz3004.controller.R;
 
 
 /**

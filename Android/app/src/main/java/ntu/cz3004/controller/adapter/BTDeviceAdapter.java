@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ntu.cz3004.controller.R;
 import app.common.OnRecyclerViewInteractedListener;
+import ntu.cz3004.controller.R;
 
 public class BTDeviceAdapter extends RecyclerView.Adapter {
     private static int VIEW_TYPE_INFO = 0;

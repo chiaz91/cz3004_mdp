@@ -1,11 +1,15 @@
 package ntu.cz3004.controller.view;
 
+import android.text.Html;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import ntu.cz3004.controller.R;
+import java.util.ArrayList;
+
 import app.entity.Map;
+import app.entity.MapAnnotation;
+import ntu.cz3004.controller.R;
 
 public class InfoViewHolder extends MDPViewHolder{
     public CheckBox cbMapEdit;
@@ -38,11 +42,19 @@ public class InfoViewHolder extends MDPViewHolder{
             temp = "(empty)";
         }
         tvMapP2.setText(temp);
-        temp = map.getImagesString();
-        if (temp.length()==0){
+        temp = "";
+        ArrayList<MapAnnotation> imgs = map.getImageList();
+        if (imgs.size()==0){
             temp = "(empty)";
+        } else {
+            for (int i = 0; i <imgs.size() ; i++) {
+                if (i>0){
+                    temp+=",";
+                }
+                temp+=imgs.get(i).toPrettyString();
+            }
         }
-        tvMapImages.setText(temp);
+        tvMapImages.setText(Html.fromHtml(temp));
     }
 
 }

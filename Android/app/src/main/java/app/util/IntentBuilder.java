@@ -6,8 +6,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 
-import ntu.cz3004.controller.activity.DynamicActivity;
 import app.common.Constants;
+import ntu.cz3004.controller.activity.DynamicActivity;
 
 public class IntentBuilder {
 

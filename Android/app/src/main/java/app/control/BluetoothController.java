@@ -8,9 +8,9 @@ import android.os.Message;
 
 import java.util.ArrayList;
 
+import app.common.BluetoothStatusListener;
 import app.common.Constants;
 import app.entity.BTMessage;
-import app.common.BluetoothStatusListener;
 import app.service.BluetoothChatService;
 
 public class BluetoothController {

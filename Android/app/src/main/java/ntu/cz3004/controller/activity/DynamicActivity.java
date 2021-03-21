@@ -1,5 +1,8 @@
 package ntu.cz3004.controller.activity;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,14 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-
-import ntu.cz3004.controller.R;
 import app.common.Constants;
+import app.util.DialogUtil;
+import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.fragment.BTDeviceFragment;
 import ntu.cz3004.controller.fragment.SettingsFragment;
-import app.util.DialogUtil;
 
 public class DynamicActivity extends AppCompatActivity {
 

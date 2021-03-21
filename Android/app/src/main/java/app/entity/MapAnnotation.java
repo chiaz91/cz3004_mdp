@@ -14,7 +14,7 @@ import ntu.cz3004.controller.R;
  * @see Map
  * @see Point
  */
-public class MapAnnotation {
+public class MapAnnotation implements Comparable<MapAnnotation> {
     public static final int ICON_NONE = -1;
     private Point position;
     private int icon;
@@ -78,6 +78,9 @@ public class MapAnnotation {
         return String.format("(%s,%d,%d)",name,position.x,position.y);
     }
 
+    public String toPrettyString(){
+        return String.format("(<font color='#92ffc0'>%s</font>,%d,%d)",name,position.x,position.y );
+    }
 
     /**
      * factory create image annotation based on string given
@@ -119,5 +122,16 @@ public class MapAnnotation {
         }
 
         return annotation;
+    }
+
+    @Override
+    public int compareTo(MapAnnotation o) {
+        try{
+            Integer id1 = Integer.valueOf(this.getName());
+            Integer id2 = Integer.valueOf(o.getName());
+            return id1.compareTo(id2);
+        } catch (Exception e){
+            return this.getName().compareTo(o.getName());
+        }
     }
 }

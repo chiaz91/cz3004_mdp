@@ -1,12 +1,15 @@
 package app.entity;
 
 import android.graphics.Point;
+import android.text.TextUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
-import ntu.cz3004.controller.R;
 import app.util.MdpLog;
 import app.util.Utility;
+import ntu.cz3004.controller.R;
 
 /**
  * Entity to represent the map's status.
@@ -95,6 +98,19 @@ public class Map {
 
     public HashMap<String, MapAnnotation> getImages() {
         return images;
+    }
+
+    public ArrayList<MapAnnotation> getImageList(){
+        ArrayList list = new ArrayList(images.values());
+        Collections.sort(list);
+        return list;
+    }
+
+    public void addImage(String strImage){
+        MapAnnotation img = MapAnnotation.createImageFromString(strImage);
+        images.put(img.getName(), img);
+        strImages = null;
+        notifyChanges();
     }
 
     public void setImages(HashMap<String, MapAnnotation> images) {
@@ -317,16 +333,7 @@ public class Map {
         if (strImages != null){
             return strImages;
         }
-        String result = "";
-        MapAnnotation annotation;
-        for (String key: images.keySet()) {
-            annotation = images.get(key);
-            result += String.format(",(%s,%d,%d)", key, annotation.getX(), annotation.getY());
-        }
-        if (result.length()>0){
-            result = result.substring(1);
-        }
-        strImages = result;
+        strImages = TextUtils.join(",", getImageList());
         return strImages;
     }
 

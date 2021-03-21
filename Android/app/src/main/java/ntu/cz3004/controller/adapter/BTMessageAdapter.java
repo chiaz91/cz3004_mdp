@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ntu.cz3004.controller.R;
 import app.entity.BTMessage;
+import ntu.cz3004.controller.R;
 
 
 public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.MessageViewHolder> {

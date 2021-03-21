@@ -31,7 +31,6 @@ import app.control.MapEditor;
 import app.entity.BTMessage;
 import app.entity.Command;
 import app.entity.Map;
-import app.entity.MapAnnotation;
 import app.entity.Robot;
 import app.service.BluetoothChatService;
 import app.util.DialogUtil;
@@ -161,6 +160,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhBTChat.setOnSendClickListener((v)->{
             String msg = vhBTChat.etMessage.getText().toString();
             if (msg!=null && msg.length()>0){
+                if (msg.startsWith("?")){
+                    MdpLog.d(TAG,"received simulation message!");
+                    parseMessage(msg.substring(1));
+                    return;
+                }
                 // send message
                 if (controller.isConnected()){
                     controller.sendMessage(msg);
@@ -273,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case R.id.btn_ctrl_fastest: controller.fastest(); break;
             case R.id.btn_ctrl_img_search: controller.imgRecognition(); break;
             case R.id.btn_ctrl_get_map: controller.requestMap(); break;
-            case R.id.btn_ctrl_send_map: sendConfigMessage(); break;
+            case R.id.btn_ctrl_send_map: controller.sendConfig(); break;
             default: showSnackbar("work in progress"); break;
         }
     }
@@ -374,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     private Toast toast;
-    private void showToast(String message){
+    public void showToast(String message){
         if(toast != null) {
             toast.cancel();
         }
@@ -382,8 +386,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         toast.show();
     }
 
-    Snackbar snackbar;
-    private  void showSnackbar(String message){
+    private Snackbar snackbar;
+    public  void showSnackbar(String message){
         if (snackbar==null){
             View rootView = findViewById(android.R.id.content);
             snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT);
@@ -452,18 +456,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     // parse messages
-    private void sendConfigMessage(){
-        Robot bot = map.getRobot();
-        MapAnnotation wp = map.getWayPoint();
-        // goal position will be sent if way-point not set
-        String wpCoord = String.format("%d,%d", 18, 13);;
-        if (wp != null){
-            wpCoord = String.format("%d,%d",  wp.getY(), wp.getX());;
-        }
-        String config = String.format("CONFIG|%s|%s|%s|%s", bot.toString(), wpCoord, map.getPartI(), map.getPartII());
-        controller.sendMessage(config);
-    }
-
     private void parseMessage(String received){
         // split message to prevent concatenation of message
         String[] cmds = received.split("\n");
@@ -529,9 +521,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     }
 
     private void parseImage(String... param){
-        MapAnnotation img = MapAnnotation.createImageFromString(param[1]);
-        map.getImages().put(img.getName(), img);
-        map.notifyChanges();
+        map.addImage(param[1]);
     }
 
     private void parseImages(String... params){

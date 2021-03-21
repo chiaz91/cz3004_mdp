@@ -6,6 +6,7 @@ import android.widget.ImageButton;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.adapter.BTMessageAdapter;
 

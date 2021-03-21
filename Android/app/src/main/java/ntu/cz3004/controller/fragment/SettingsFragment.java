@@ -23,12 +23,12 @@ import androidx.preference.SwitchPreference;
 
 import java.io.File;
 
-import ntu.cz3004.controller.BuildConfig;
-import ntu.cz3004.controller.R;
 import app.common.Constants;
 import app.util.IntentBuilder;
 import app.util.MdpLog;
 import app.util.Utility;
+import ntu.cz3004.controller.BuildConfig;
+import ntu.cz3004.controller.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
