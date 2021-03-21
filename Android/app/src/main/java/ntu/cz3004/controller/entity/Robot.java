@@ -32,6 +32,17 @@ public class Robot extends MapAnnotation {
         this.direction = direction;
     }
 
+    public void moveForwardBy(int moves){
+        switch (direction){
+            case Direction.NORTH: setPosition(getX(), Math.min(Map.MAX_ROW-1, getY()+moves)); break;
+            case Direction.SOUTH: setPosition(getX(), Math.max(0, getY()-moves)); break;
+            case Direction.EAST:  setPosition(Math.min(Map.MAX_COL-1, getX()+moves), getY()); break;
+            case Direction.WEST:  setPosition(Math.max(0, getX()-moves) , getY()); break;
+            default:
+                MdpLog.a(TAG, "[moves]DIRECTION INVALID!!! direction="+direction);
+        }
+    }
+
     public void turnRight(){
         direction +=90;
         if (direction>=360){

@@ -64,6 +64,7 @@
             android:dialogTitle="Test Map"
             android:entries="@array/map_titles"
             android:entryValues="@array/map_values"
+            app:isPreferenceVisible="false"
             app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 

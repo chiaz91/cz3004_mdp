@@ -84,6 +84,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_f2" />
+            <ImageButton
+                style="@style/MDPButtonBorderless"
+                android:id="@+id/btn_ctrl_send_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_upload" />
 
             <ImageButton
                 style="@style/MDPButtonBorderless"
@@ -91,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_download" />
+
         </LinearLayout>
     </LinearLayout>
 

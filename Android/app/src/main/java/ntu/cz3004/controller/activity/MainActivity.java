@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 switchToMapEdit();
             } else {
                 switchToControl();
-                sendConfigMessage();
             }
         });
     }
@@ -283,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case R.id.btn_ctrl_fastest: controller.fastest(); break;
             case R.id.btn_ctrl_img_search: controller.imgRecognition(); break;
             case R.id.btn_ctrl_get_map: controller.requestMap(); break;
-
+            case R.id.btn_ctrl_send_map: sendConfigMessage(); break;
             default: showSnackbar("work in progress"); break;
         }
     }
@@ -330,6 +329,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 return true;
             case R.id.action_bt_reconnect:
                 reconnectLastDevice();
+                return true;
+            case R.id.action_import_map:
+                DialogUtil.promptImportMap(this, map);
+                return true;
             // bt chat menu
             case R.id.action_show_sent:
                 item.setChecked(!item.isChecked());
@@ -506,10 +509,18 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
     private void parseMove(String... params){
         Robot bot = map.getRobot();
         switch (params[1]){
-            case "F": bot.setPosition( bot.getForwardPosition() ); break;
-            case "B": bot.setPosition( bot.getBackwardPosition() ); break;
-            case "R": bot.turnRight(); break;
-            case "L": bot.turnLeft(); break;
+            case "A": map.getRobot().turnLeft(); break;
+            case "D": map.getRobot().turnRight(); break;
+            case "Q": map.getRobot().turnBack(); break;
+            default:
+                try{
+                    // move by n+1
+                    int moves = Integer.parseInt(params[1]);
+                    bot.moveForwardBy(moves+1);
+                } catch (Exception e){
+                    MdpLog.e(TAG, "Unknown command for move "+params[1] );
+                    e.printStackTrace();
+                }
         }
         map.notifyChanges();
     }

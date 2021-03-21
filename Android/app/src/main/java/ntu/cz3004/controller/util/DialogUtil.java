@@ -6,9 +6,14 @@ import android.graphics.Point;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -223,6 +228,38 @@ public class DialogUtil {
         alert.show();
     }
 
+    public static void promptImportMap(Context context, Map map){
+        String[] maps = context.getResources().getStringArray(R.array.map_values2);
+        ArrayAdapter<String> adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                TextView textView = (TextView) super.getView(position, convertView, parent);
+                textView.setText(String.format("Map %d", position+1));
+                return textView;
+            }
+        };
+        adapter.addAll(maps);
+        AlertDialog alert = new MaterialAlertDialogBuilder(context)
+                .setTitle("Import Map")
+                .setAdapter(adapter, (dialog, which) -> {
+                    String[] mdf = adapter.getItem(which).split("\\|");
+
+                    try{ // attempt load map data
+                        map.mapFromString(mdf[0], mdf[1]);
+                    } catch (Exception e){ }
+
+                    try{ // attempt load image data
+                        map.imagesFromString(mdf[2]);
+                    } catch (Exception e){
+                        map.imagesFromString("");
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setCancelable(true)
+                .create();
+        alert.show();
+    }
 
 
     public static void promptDialogTestMessages(Context context, BTRobotController controller){

@@ -1,4 +1,10 @@
 # Android MDP Controller
+## Features
+* Support both phone and tablet
+* Comprehensive setting page
+* Comprehensive map editing modes
+* Allow clearing of checklist with another android phone installing the same app
+
 ## Protocol format
 ### Sending
 default value can be set in `res/values/strings_pref.xml` or setting page
@@ -13,10 +19,10 @@ default value can be set in `res/values/strings_pref.xml` or setting page
 * `CONFIG|x,y,dir|wx,wy|<MDF.P1>|<MDF.P2>`: send configuration to algorithm team for setting up fastest path  
   
 ### Receiving
-* `MOV|F`: move robot foward on 2D map view
-* `MOV|B`: move robot backword on 2D map view
-* `MOV|L`: turn robot to its left on 2D map view
-* `MOV|R`: turn robot to its right on 2D map view
+* `MOV|<0-9>`: move robot to forward by **n+1** moves on 2D map view
+* `MOV|A`: turn robot to its left on 2D map view
+* `MOV|D`: turn robot to its right on 2D map view
+* `MOV|Q`: turn robot to its back on 2D map view
 * `IMG|(id,x,y)`: add a new image on 2D map view
 * `IMGS|[<list of image strings>]`: replace current collection images to received images, the list must be comma separated
 * `MAP|x,y,dir|<MDF.P1>|<MDF.P2>`: to update robot postition and 2D map view
