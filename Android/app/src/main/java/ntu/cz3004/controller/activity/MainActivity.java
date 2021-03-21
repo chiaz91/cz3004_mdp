@@ -82,12 +82,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         initMapEdit();
         initBTChat();
         initInfoSheet();
-        loadTestData();
+        loadInfoMessages();
 
         // set up controller
         Command cmd = PrefUtility.getCommand(this);
+        boolean enableSimulation = PrefUtility.isEnableSimulation(this);
         controller = new BTRobotController(this, mapEditor, cmd);
         controller.registerListener(this);
+        controller.setEnableSimulation(enableSimulation);
         controller.setMessageIntervalMs(Constants.MESSAGE_INTERVAL_MS);
         if (!controller.isSupported()){
             DialogUtil.promptBluetoothNotAvailable(this);
@@ -173,8 +175,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         }));
     }
 
-    private void loadTestData(){
-        // TODO remove debug messages
+    private void loadInfoMessages(){
         btMessageAdapter.add(new BTMessage(BTMessage.Type.SYSTEM, "sys", "AY20/21S2 Group1"));
         String[] notes = getResources().getStringArray(R.array.release_notes);
         for(String note: notes){
@@ -427,28 +428,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhBTChat.scrollToEnd();
 
         if (message.getType() == BTMessage.Type.INCOMING){
-            // parsing messages
-            String received = message.getContent();
-            // split message
-            String[] cmds = received.split("\n");
-            for(String command : cmds){
-                MdpLog.d(TAG, "parsing ["+command+"]");
-                String[] parts = command.split("\\|");
-                try{
-                    switch (parts[0]){
-                        case "MAP": parseMap(parts); break;
-                        case "MOV": parseMove(parts); break;
-                        case "IMG": parseImage(parts); break;
-                        case "IMGS": parseImages(parts); break;
-                        case "STATUS": vhInfo.tvStatusSub.setText(parts[1]); break;
-                        default:
-                            MdpLog.d(TAG, "Unknown Message: "+received);
-                    }
-                } catch (Exception e){
-                    MdpLog.d(TAG, "Error Parsing: "+received);
-                    e.printStackTrace();
-                }
-            }
+            parseMessage(message.getContent());
         }
     }
 
@@ -483,6 +463,29 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         String config = String.format("CONFIG|%s|%s|%s|%s", bot.toString(), wpCoord, map.getPartI(), map.getPartII());
         controller.sendMessage(config);
     }
+
+    private void parseMessage(String received){
+        // split message to prevent concatenation of message
+        String[] cmds = received.split("\n");
+        for(String command : cmds){
+            MdpLog.d(TAG, "parsing ["+command+"]");
+            String[] parts = command.split("\\|");
+            try{
+                switch (parts[0]){
+                    case "MAP": parseMap(parts); break;
+                    case "MOV": parseMove(parts); break;
+                    case "IMG": parseImage(parts); break;
+                    case "IMGS": parseImages(parts); break;
+                    case "STATUS": vhInfo.tvStatusSub.setText(parts[1]); break;
+                    default:
+                        MdpLog.d(TAG, "Unknown Message: "+received);
+                }
+            } catch (Exception e){
+                MdpLog.d(TAG, "Error Parsing: "+received);
+                e.printStackTrace();
+            }
+        }
+    }
     private void parseMap(String... params){
         if (params.length==1){
             String response = String.format("MAP|%s|%s|%s",map.getRobot().toString(), map.getPartI(), map.getPartII());
@@ -501,6 +504,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             map.getRobot().set(x,y,dir*90);
             map.mapFromString(p1,p2);
             map.notifyChanges();
+            mapEditor.highlightRobot();
         }
     }
 
@@ -521,6 +525,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 }
         }
         map.notifyChanges();
+        mapEditor.highlightRobot();
     }
 
     private void parseImage(String... param){

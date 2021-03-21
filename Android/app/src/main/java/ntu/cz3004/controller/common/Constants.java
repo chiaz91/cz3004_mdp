@@ -3,7 +3,7 @@ package ntu.cz3004.controller.common;
 public interface Constants {
     int SCAN_DURATION_SEC = 30;
     int DISCOVERABLE_DURATION_SEC = 60;
-    int MESSAGE_INTERVAL_MS = 500;
+    int MESSAGE_INTERVAL_MS = 1000;
     int MAP_UPDATE_INTERVAL_MS = 1500;
     int BT_RECONNECT_INTERVAL_MS = 5000;
 

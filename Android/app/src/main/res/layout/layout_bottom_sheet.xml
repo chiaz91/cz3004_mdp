@@ -50,7 +50,7 @@
                 android:textColor="#8FFF"
                 android:textSize="9sp"
                 android:visibility="visible"
-                android:text="[display robot status]"
+                android:text="[robot status]"
                 tools:ignore="SmallSp" />
 
         </LinearLayout>

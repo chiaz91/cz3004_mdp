@@ -80,9 +80,9 @@ public class BTRobotController extends BluetoothController implements SensorEven
     }
 
     public boolean up(){
-        if (!isConnected()){
-            return false;
-        }
+//        if (!isConnected()){
+//            return false;
+//        }
         if (enableSimulation){
             boolean success = mapEditor.robotMoveFront();
             if (success ){
@@ -96,9 +96,9 @@ public class BTRobotController extends BluetoothController implements SensorEven
     }
 
     public boolean down(){
-        if (!isConnected()){
-            return false;
-        }
+//        if (!isConnected()){
+//            return false;
+//        }
         if (enableSimulation){
             mapEditor.robotTurnBack();
         }
@@ -107,9 +107,9 @@ public class BTRobotController extends BluetoothController implements SensorEven
     }
 
     public boolean left(){
-        if (!isConnected()){
-            return false;
-        }
+//        if (!isConnected()){
+//            return false;
+//        }
         if (enableSimulation){
             mapEditor.robotTurnLeft();
         }
@@ -117,9 +117,9 @@ public class BTRobotController extends BluetoothController implements SensorEven
         return true;
     }
     public boolean right(){
-        if (!isConnected()){
-            return false;
-        }
+//        if (!isConnected()){
+//            return false;
+//        }
         if (enableSimulation){
             mapEditor.robotTurnRight();
         }

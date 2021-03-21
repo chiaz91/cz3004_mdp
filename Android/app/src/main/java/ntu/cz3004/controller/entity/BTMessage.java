@@ -11,7 +11,7 @@ public class BTMessage {
     }
 
     private Type type;
-    private Date time;
+//    private Date time;
     private String sender;
     private String content;
     private int count;
@@ -20,7 +20,7 @@ public class BTMessage {
         this.type = type;
         this.sender = sender;
         this.content = content;
-        this.time = new Date();
+//        this.time = new Date();
         this.count = 1;
     }
 
@@ -32,13 +32,13 @@ public class BTMessage {
         this.type = type;
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
+//    public Date getTime() {
+//        return time;
+//    }
+//
+//    public void setTime(Date time) {
+//        this.time = time;
+//    }
 
     public String getSender() {
         return sender;

@@ -21,7 +21,6 @@ public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.Mess
     private static final String TAG = "mdp.adapter.bt_msg";
     private ArrayList<BTMessage> messages, messagesFiltered;
 //    private OnRecyclerViewInteractedListener listener;
-    private SimpleDateFormat sdf;
     private final int VIEW_TYPE_IN  = 1;
     private final int VIEW_TYPE_OUT = 2;
     private final int VIEW_TYPE_SYS = 3;
@@ -32,7 +31,6 @@ public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.Mess
     public BTMessageAdapter(ArrayList<BTMessage> messages) {
         this.messagesFiltered = new ArrayList<>();
         this.messages = messages;
-        this.sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         doFiltering();
     }
 
@@ -160,19 +158,17 @@ public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.Mess
 
 
     public class UserMessageViewHolder extends MessageViewHolder implements View.OnClickListener {
-        TextView tvSender, tvTimestamp, tvCount;
+        TextView tvSender, tvCount;
         UserMessageViewHolder(View view) {
             super(view);
             tvSender = view.findViewById(R.id.tv_sender);
             tvCount = view.findViewById(R.id.tv_count);
-            tvTimestamp = view.findViewById(R.id.tv_timestamp);
 //            view.setOnClickListener(this);
         }
 
         void updateAs(BTMessage message){
             super.updateAs(message);
             tvSender.setText(message.getSender());
-            tvTimestamp.setText(sdf.format(message.getTime()));
             tvCount.setText(String.format("x %d", message.getCount()));
             tvCount.setVisibility(message.getCount()>1?View.VISIBLE:View.INVISIBLE);
 

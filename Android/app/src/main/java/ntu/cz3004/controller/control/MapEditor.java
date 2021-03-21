@@ -192,6 +192,7 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         pref.edit().putString(key, saving).apply();
 
         MdpLog.d("mdp.save", "saving "+saving);
+        Toast.makeText(context, "Map saved", Toast.LENGTH_SHORT).show();
     }
 
 

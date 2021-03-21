@@ -144,6 +144,10 @@ public class DialogUtil {
                 .setView(view)
                 .setPositiveButton(context.getString(R.string.confirm),null)
                 .setNegativeButton(context.getString(R.string.cancel),null)
+                .setNeutralButton("RESET", (dialog, which) -> {
+                    robot.set(1,1,0);
+                    map.notifyChanges();
+                })
                 .create();
         alert.show();
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
