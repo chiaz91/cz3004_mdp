@@ -10,13 +10,25 @@ android {
         applicationId "ntu.cz3004.controller"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 22
-        versionName "1.8.12"
+        versionCode 23
+        versionName "1.8.13"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm")
         buildConfigField "String", "TIMESTAMP", "\"" + sdf.format(System.currentTimeMillis()) + "\""
+    }
+
+    flavorDimensions "default"
+    productFlavors{
+        client{
+            dimension "default"
+        }
+        full{
+            dimension "default"
+            applicationIdSuffix ".full"
+            versionNameSuffix ".full"
+        }
     }
 
     buildTypes {

@@ -36,7 +36,7 @@ import ntu.cz3004.controller.entity.Map;
 import ntu.cz3004.controller.entity.MapAnnotation;
 import ntu.cz3004.controller.entity.Robot;
 import ntu.cz3004.controller.listener.BluetoothStatusListener;
-import ntu.cz3004.controller.service.BluetoothChatService;
+import service.BluetoothChatService;
 import ntu.cz3004.controller.util.DialogUtil;
 import ntu.cz3004.controller.util.IntentBuilder;
 import ntu.cz3004.controller.util.MdpLog;
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle(getString(R.string.not_connected));
 
         // init ui
         initPager();
@@ -93,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         if (!controller.isSupported()){
             DialogUtil.promptBluetoothNotAvailable(this);
         } else {
+            onStateChanges(controller.getState());
             reconnectLastDevice();
         }
     }
@@ -413,6 +413,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 getSupportActionBar().setSubtitle( getString(R.string.connecting_)) ;
                 break;
             case BluetoothChatService.STATE_LISTEN:
+                getSupportActionBar().setSubtitle("Await for connection");
+                break;
             case BluetoothChatService.STATE_NONE:
                 getSupportActionBar().setSubtitle(getString(R.string.not_connected));
                 break;
@@ -544,7 +546,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 }
             };
         }
-        handler.post(taskUpdateMap);
+        handler.postDelayed(taskUpdateMap, Constants.MAP_UPDATE_INTERVAL_MS);
     }
     public void stopAutoUpdateTask(){
         if (taskUpdateMap != null ){
@@ -568,7 +570,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 }
             };
         }
-        handler.post(taskReconnectBT);
+        handler.postDelayed(taskReconnectBT, Constants.BT_RECONNECT_INTERVAL_MS);
     }
     public void stopBTReconnectTask(){
         if (taskReconnectBT != null){

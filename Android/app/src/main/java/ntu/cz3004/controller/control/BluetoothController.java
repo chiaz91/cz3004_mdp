@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import ntu.cz3004.controller.common.Constants;
 import ntu.cz3004.controller.entity.BTMessage;
 import ntu.cz3004.controller.listener.BluetoothStatusListener;
-import ntu.cz3004.controller.service.BluetoothChatService;
+import service.BluetoothChatService;
 
 public class BluetoothController {
     BluetoothChatService service;
@@ -63,6 +63,10 @@ public class BluetoothController {
 
     public boolean isSupported(){
         return btAdapter != null;
+    }
+
+    public int getState(){
+        return service.getState();
     }
 
     /**
