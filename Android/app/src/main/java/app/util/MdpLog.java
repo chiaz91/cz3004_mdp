@@ -88,4 +88,18 @@ public class MdpLog {
         i(TAG, msg);
     }
 
+
+    public static void logBytes(String tag, byte[] bytes){
+        d(tag, byteToString(bytes));
+    }
+
+    private static String byteToString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[ ");
+        for (byte b : bytes) {
+            sb.append(String.format("0x%02X ", b));
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }

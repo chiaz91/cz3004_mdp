@@ -144,10 +144,9 @@ public class BluetoothController {
 
                     break;
                 case Constants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    BTMessage inMessage = new BTMessage(BTMessage.Type.INCOMING, getConnectedDeviceName(), readMessage);
+                    // read message object instead of buffer
+                    String strMsg = (String) msg.obj;
+                    BTMessage inMessage = new BTMessage(BTMessage.Type.INCOMING, getConnectedDeviceName(), strMsg);
                     for (BluetoothStatusListener listener: listeners){
                         listener.onCommunicate(inMessage);
                     }

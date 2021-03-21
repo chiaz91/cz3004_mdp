@@ -10,8 +10,8 @@ android {
         applicationId "ntu.cz3004.controller"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 26
-        versionName "1.8.16"
+        versionCode 27
+        versionName "1.8.17"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

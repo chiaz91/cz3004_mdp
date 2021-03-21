@@ -162,7 +162,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             if (msg!=null && msg.length()>0){
                 if (msg.startsWith("?")){
                     MdpLog.d(TAG,"received simulation message!");
-                    parseMessage(msg.substring(1));
+                    BTMessage btMsg = new BTMessage(BTMessage.Type.INCOMING, "SYS", msg.substring(1));
+                    onCommunicate(btMsg);
                     return;
                 }
                 // send message

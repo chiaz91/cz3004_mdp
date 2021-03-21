@@ -27,13 +27,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
 import app.common.Constants;
+import app.util.MdpLog;
 
 /**
  * This class does all the work for setting up and managing Bluetooth
@@ -43,7 +43,7 @@ import app.common.Constants;
  */
 public class BluetoothChatService {
     // Debugging
-    private static final String TAG = "BluetoothChatService";
+    private static final String TAG = "mdp.bt.chatservice";
 
     // Unique UUID for this application
     private static final UUID MY_UUID_SECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -375,8 +375,11 @@ public class BluetoothChatService {
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
 
+                    String msg = new String(buffer,0,bytes);
+                    MdpLog.d(TAG, msg);
+
                     // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
+                    mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, msg)
                             .sendToTarget();
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
