@@ -128,10 +128,9 @@
             app:defaultValue="@string/cmd_f2_default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
-            app:title="Stop"
-            app:key="@string/cmd_stop"
-            app:defaultValue="@string/cmd_stop_default"
-            app:isPreferenceVisible="false"
+            app:title="F3"
+            app:key="@string/cmd_f3"
+            app:defaultValue="@string/cmd_f3_default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
             app:title="Request Map Update"

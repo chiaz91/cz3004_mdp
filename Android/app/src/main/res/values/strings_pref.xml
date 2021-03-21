@@ -9,13 +9,13 @@
 
     <!-- Commands -->
     <string name="cmd_up">up</string>
-    <string name="cmd_up_default">W1</string>
+    <string name="cmd_up_default">0</string>
     <string name="cmd_left">left</string>
     <string name="cmd_left__default">A</string>
     <string name="cmd_right">right</string>
     <string name="cmd_right_default">D</string>
     <string name="cmd_down">down</string>
-    <string name="cmd_down_default">S1</string>
+    <string name="cmd_down_default">Q</string>
     <string name="cmd_img_search">img search</string>
     <string name="cmd_img_search_default">IR</string>
     <string name="cmd_explore">explore</string>
@@ -26,6 +26,8 @@
     <string name="cmd_f1_default">f1</string>
     <string name="cmd_f2">f2</string>
     <string name="cmd_f2_default">f2</string>
+    <string name="cmd_f3">f3</string>
+    <string name="cmd_f3_default">f3</string>
     <string name="cmd_stop">stop</string>
     <string name="cmd_stop_default">stop</string>
     <string name="cmd_req_map">req_map</string>

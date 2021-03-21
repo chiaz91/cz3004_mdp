@@ -84,6 +84,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_f2" />
+
+            <ImageButton
+                android:id="@+id/btn_ctrl_f3"
+                style="@style/MDPButtonBorderless.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_f3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <ImageButton
                 style="@style/MDPButtonBorderless"
                 android:id="@+id/btn_ctrl_send_map"

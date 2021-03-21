@@ -134,6 +134,9 @@ public class BTRobotController extends BluetoothController implements SensorEven
     public void f2(){
         sendMessage(command.f2);
     }
+    public void f3(){
+        sendMessage(command.f3);
+    }
     public void explore(){
         sendMessage(command.explore);
     }

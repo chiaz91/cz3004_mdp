@@ -278,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case R.id.btn_ctrl_down: controller.down(); break;
             case R.id.btn_ctrl_f1: controller.f1(); break;
             case R.id.btn_ctrl_f2: controller.f2(); break;
+            case R.id.btn_ctrl_f3: controller.f3(); break;
             case R.id.btn_ctrl_explore: controller.explore(); break;
             case R.id.btn_ctrl_fastest: controller.fastest(); break;
             case R.id.btn_ctrl_img_search: controller.imgRecognition(); break;

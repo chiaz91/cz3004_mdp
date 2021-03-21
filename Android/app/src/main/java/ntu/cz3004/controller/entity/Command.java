@@ -14,6 +14,7 @@ public class Command {
     public String imgRecognition;
     public String f1;
     public String f2;
+    public String f3;
     public String stop;
     public String reqMap;
 
@@ -28,6 +29,7 @@ public class Command {
                 ", fastest='" + fastest + '\'' +
                 ", f1='" + f1 + '\'' +
                 ", f2='" + f2 + '\'' +
+                ", f3='" + f3 + '\'' +
                 ", stop='" + stop + '\'' +
                 ", reqMap='" + reqMap + '\'' +
                 '}';
