@@ -1,16 +1,13 @@
-package ntu.cz3004.controller.util;
+package app.util;
 
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.speech.RecognizerIntent;
-
-import java.util.Locale;
 
 import ntu.cz3004.controller.activity.DynamicActivity;
-import ntu.cz3004.controller.common.Constants;
+import app.common.Constants;
 
 public class IntentBuilder {
 

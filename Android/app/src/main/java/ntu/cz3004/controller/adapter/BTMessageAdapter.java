@@ -9,12 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.entity.BTMessage;
+import app.entity.BTMessage;
 
 
 public class BTMessageAdapter extends RecyclerView.Adapter<BTMessageAdapter.MessageViewHolder> {

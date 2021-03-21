@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.util;
+package app.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,10 +20,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.common.Direction;
-import ntu.cz3004.controller.control.BTRobotController;
-import ntu.cz3004.controller.entity.Map;
-import ntu.cz3004.controller.entity.Robot;
+import app.common.Direction;
+import app.control.BTRobotController;
+import app.entity.Map;
+import app.entity.Robot;
 
 public class DialogUtil {
 
@@ -55,7 +55,7 @@ public class DialogUtil {
     public static void promptBluetoothNotAvailable(Context context){
         AlertDialog alert =  new MaterialAlertDialogBuilder(context)
                 .setTitle("Bluetooth not available")
-                .setMessage("This device does not support bluetooth service.")
+                .setMessage("This device does not support bluetooth app.service.")
                 .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> ((Activity)context).finish())
                 .setCancelable(false)
                 .create();
@@ -289,6 +289,4 @@ public class DialogUtil {
                 .create();
         alert.show();
     }
-
-
 }

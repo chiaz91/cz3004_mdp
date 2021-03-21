@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.listener.OnRecyclerViewInteractedListener;
+import app.common.OnRecyclerViewInteractedListener;
 
 public class BTDeviceAdapter extends RecyclerView.Adapter {
     private static int VIEW_TYPE_INFO = 0;

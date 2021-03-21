@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.control;
+package app.control;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -6,8 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import ntu.cz3004.controller.entity.Command;
-import ntu.cz3004.controller.util.MdpLog;
+import app.entity.Command;
+import app.util.MdpLog;
 
 public class BTRobotController extends BluetoothController implements SensorEventListener {
     private static final String TAG = "mdp.ctrl.bt_robot";

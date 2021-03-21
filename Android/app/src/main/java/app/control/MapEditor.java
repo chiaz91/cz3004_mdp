@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.control;
+package app.control;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,12 +8,12 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.entity.Map;
-import ntu.cz3004.controller.entity.Robot;
-import ntu.cz3004.controller.util.DialogUtil;
-import ntu.cz3004.controller.util.MdpLog;
-import ntu.cz3004.controller.util.PrefUtility;
-import ntu.cz3004.controller.util.Utility;
+import app.entity.Map;
+import app.entity.Robot;
+import app.util.DialogUtil;
+import app.util.MdpLog;
+import app.util.PrefUtility;
+import app.util.Utility;
 import ntu.cz3004.controller.view.MapEditViewHolder;
 import ntu.cz3004.controller.view.MapView;
 
@@ -194,6 +194,8 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         MdpLog.d("mdp.save", "saving "+saving);
         Toast.makeText(context, "Map saved", Toast.LENGTH_SHORT).show();
     }
+
+
 
 
 

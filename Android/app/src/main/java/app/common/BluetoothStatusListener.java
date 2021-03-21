@@ -1,6 +1,6 @@
-package ntu.cz3004.controller.listener;
+package app.common;
 
-import ntu.cz3004.controller.entity.BTMessage;
+import app.entity.BTMessage;
 
 public interface BluetoothStatusListener {
     void onStateChanges(int state);

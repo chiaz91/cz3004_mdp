@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.entity;
+package app.entity;
 
 import android.graphics.Point;
 

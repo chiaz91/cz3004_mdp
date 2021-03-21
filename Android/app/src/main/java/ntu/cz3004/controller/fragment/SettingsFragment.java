@@ -25,10 +25,10 @@ import java.io.File;
 
 import ntu.cz3004.controller.BuildConfig;
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.common.Constants;
-import ntu.cz3004.controller.util.IntentBuilder;
-import ntu.cz3004.controller.util.MdpLog;
-import ntu.cz3004.controller.util.Utility;
+import app.common.Constants;
+import app.util.IntentBuilder;
+import app.util.MdpLog;
+import app.util.Utility;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener,
         Preference.OnPreferenceClickListener {

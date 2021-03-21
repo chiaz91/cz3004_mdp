@@ -1,12 +1,12 @@
-package ntu.cz3004.controller.entity;
+package app.entity;
 
 import android.graphics.Point;
 
 import java.util.HashMap;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.util.MdpLog;
-import ntu.cz3004.controller.util.Utility;
+import app.util.MdpLog;
+import app.util.Utility;
 
 /**
  * Entity to represent the map's status.

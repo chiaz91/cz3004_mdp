@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.control;
+package app.control;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -8,10 +8,10 @@ import android.os.Message;
 
 import java.util.ArrayList;
 
-import ntu.cz3004.controller.common.Constants;
-import ntu.cz3004.controller.entity.BTMessage;
-import ntu.cz3004.controller.listener.BluetoothStatusListener;
-import service.BluetoothChatService;
+import app.common.Constants;
+import app.entity.BTMessage;
+import app.common.BluetoothStatusListener;
+import app.service.BluetoothChatService;
 
 public class BluetoothController {
     BluetoothChatService service;
@@ -71,7 +71,7 @@ public class BluetoothController {
 
     /**
      * checking connection status
-     * @return true if service is connected with bluetooth device
+     * @return true if app.service is connected with bluetooth device
      */
     public boolean isConnected(){
         return service.getState() == BluetoothChatService.STATE_CONNECTED;

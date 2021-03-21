@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.common;
+package app.common;
 
 public interface Constants {
     int SCAN_DURATION_SEC = 30;

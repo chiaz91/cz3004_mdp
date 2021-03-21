@@ -1,10 +1,10 @@
-package ntu.cz3004.controller.entity;
+package app.entity;
 
 import android.graphics.Point;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.common.Direction;
-import ntu.cz3004.controller.util.MdpLog;
+import app.common.Direction;
+import app.util.MdpLog;
 
 public class Robot extends MapAnnotation {
     private static final String TAG = "mdp.robot";

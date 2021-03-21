@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.util;
+package app.util;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -10,13 +10,9 @@ import androidx.core.content.ContextCompat;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.math.BigInteger;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -32,6 +28,7 @@ public class Utility {
         Pattern pattern = Pattern.compile(reqEx, Pattern.CASE_INSENSITIVE);
         return pattern.matcher(str).matches();
     }
+
 
     /**
      * String conversion from hex value to binary value

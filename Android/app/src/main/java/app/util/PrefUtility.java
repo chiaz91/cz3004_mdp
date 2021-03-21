@@ -1,10 +1,10 @@
-package ntu.cz3004.controller.util;
+package app.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.entity.Command;
+import app.entity.Command;
 
 public class PrefUtility {
 

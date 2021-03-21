@@ -1,7 +1,5 @@
 package ntu.cz3004.controller.view;
 
-import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,9 +8,7 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.DragEvent;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -24,10 +20,9 @@ import androidx.core.content.ContextCompat;
 import java.util.HashMap;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.entity.Map;
-import ntu.cz3004.controller.entity.MapAnnotation;
-import ntu.cz3004.controller.util.MdpLog;
-import ntu.cz3004.controller.util.Utility;
+import app.entity.Map;
+import app.entity.MapAnnotation;
+import app.util.Utility;
 
 
 /**

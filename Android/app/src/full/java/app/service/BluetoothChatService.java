@@ -1,4 +1,4 @@
-package service;
+package app.service;
 /* THIS CLASS IS ADOPTED FROM android-BluetoothChat repository
  * URL: https://github.com/googlearchive/android-BluetoothChat
  *
@@ -34,7 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-import ntu.cz3004.controller.common.Constants;
+import app.common.Constants;
 
 /**
  * This class does all the work for setting up and managing Bluetooth
@@ -103,7 +103,7 @@ public class BluetoothChatService {
     }
 
     /**
-     * Start the chat service. Specifically start AcceptThread to begin a
+     * Start the chat app.service. Specifically start AcceptThread to begin a
      * session in listening (server) mode. Called by the Activity onResume()
      */
     public synchronized void start() {
@@ -273,7 +273,7 @@ public class BluetoothChatService {
         // Update UI title
         updateUserInterfaceTitle();
 
-        // Start the service over to restart listening mode
+        // Start the app.service over to restart listening mode
         BluetoothChatService.this.start();
     }
 
@@ -292,7 +292,7 @@ public class BluetoothChatService {
         // Update UI title
         updateUserInterfaceTitle();
 
-        // Start the service over to restart listening mode
+        // Start the app.service over to restart listening mode
         BluetoothChatService.this.start();
     }
 

@@ -5,7 +5,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.entity.Map;
+import app.entity.Map;
 
 public class InfoViewHolder extends MDPViewHolder{
     public CheckBox cbMapEdit;

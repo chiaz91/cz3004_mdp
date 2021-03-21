@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.util;
+package app.util;
 
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;

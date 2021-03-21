@@ -1,11 +1,5 @@
 package ntu.cz3004.controller.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
@@ -20,27 +14,33 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
+import app.common.BluetoothStatusListener;
+import app.common.Constants;
+import app.control.BTRobotController;
+import app.control.MapEditor;
+import app.entity.BTMessage;
+import app.entity.Command;
+import app.entity.Map;
+import app.entity.MapAnnotation;
+import app.entity.Robot;
+import app.service.BluetoothChatService;
+import app.util.DialogUtil;
+import app.util.IntentBuilder;
+import app.util.MdpLog;
+import app.util.PrefUtility;
 import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.adapter.BTMessageAdapter;
 import ntu.cz3004.controller.adapter.MDPPagerAdapter;
-import ntu.cz3004.controller.common.Constants;
-import ntu.cz3004.controller.control.BTRobotController;
-import ntu.cz3004.controller.control.MapEditor;
-import ntu.cz3004.controller.entity.BTMessage;
-import ntu.cz3004.controller.entity.Command;
-import ntu.cz3004.controller.entity.Map;
-import ntu.cz3004.controller.entity.MapAnnotation;
-import ntu.cz3004.controller.entity.Robot;
-import ntu.cz3004.controller.listener.BluetoothStatusListener;
-import service.BluetoothChatService;
-import ntu.cz3004.controller.util.DialogUtil;
-import ntu.cz3004.controller.util.IntentBuilder;
-import ntu.cz3004.controller.util.MdpLog;
-import ntu.cz3004.controller.util.PrefUtility;
 import ntu.cz3004.controller.view.BTChatViewHolder;
 import ntu.cz3004.controller.view.ControlsViewHolder;
 import ntu.cz3004.controller.view.InfoViewHolder;

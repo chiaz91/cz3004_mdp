@@ -1,8 +1,5 @@
-package ntu.cz3004.controller.entity;
+package app.entity;
 
-import androidx.annotation.Nullable;
-
-import java.util.Date;
 import java.util.Objects;
 
 public class BTMessage {
