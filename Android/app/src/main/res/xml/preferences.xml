@@ -35,8 +35,6 @@
             android:enabled="true"
             app:useSimpleSummaryProvider="true"/>
 
-
-
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -154,5 +152,10 @@
             android:persistent="false"
             android:title="Build"/>
 
+        <Preference
+            android:key="share_apk"
+            android:summary="Share as zip file"
+            android:persistent="false"
+            android:title="Share App"/>
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
