@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +21,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import app.common.Direction;
-import app.control.BTRobotController;
 import app.entity.Map;
 import app.entity.Robot;
 import ntu.cz3004.controller.R;
@@ -233,7 +233,7 @@ public class DialogUtil {
     }
 
     public static void promptImportMap(Context context, Map map){
-        String[] maps = context.getResources().getStringArray(R.array.map_values2);
+        String[] maps = context.getResources().getStringArray(R.array.map_values);
         ArrayAdapter<String> adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1){
             @NonNull
             @Override
@@ -271,14 +271,14 @@ public class DialogUtil {
 
 
 
-    public static void promptDialogTestMessages(Context context, BTRobotController controller){
+    public static void promptDialogTestMessages(Context context, EditText etMessage){
         String[] msgs = context.getResources().getStringArray(R.array.test_msg);
         AlertDialog alert = new MaterialAlertDialogBuilder(context)
                 .setTitle("Test messages")
                 .setItems(msgs, (dialog, which) -> {
                     String msg = msgs[which];
                     try{
-                        controller.sendMessage(msg.toString());
+                        etMessage.setText(msg);
                     } catch (Exception e){
                         e.printStackTrace();
                     }

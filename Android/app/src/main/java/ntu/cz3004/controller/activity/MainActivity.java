@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             }
         });
         vhBTChat.setOnLongClickSendClickListener((v -> {
-            DialogUtil.promptDialogTestMessages(this, controller);
+            DialogUtil.promptDialogTestMessages(this, vhBTChat.etMessage);
             return true;
         }));
     }

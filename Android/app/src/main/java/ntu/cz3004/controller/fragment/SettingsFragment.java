@@ -34,15 +34,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         Preference.OnPreferenceClickListener {
     private static final String TAG = "mdp.frag.setting";
     private BluetoothAdapter btAdapter;
-    private SwitchPreference prefBtEnabled;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        requireActivity().registerReceiver(btStateChangedReceiver, filter);
-    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -64,10 +56,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         // bluetooth functions
         btAdapter = BluetoothAdapter.getDefaultAdapter();
-        prefBtEnabled = findPreference("bt_enabled");
-        prefBtEnabled.setChecked(btAdapter.isEnabled());
-        prefBtEnabled.setOnPreferenceChangeListener((preference, newValue) -> false);
-        prefBtEnabled.setOnPreferenceClickListener(this);
         findPreference("bt_discoverable").setOnPreferenceClickListener(this);
         findPreference("bt_last_address").setOnPreferenceChangeListener((preference, newValue) -> {
             if (Utility.validate(Utility.BT_ADDRESS, (String) newValue)){
@@ -95,26 +83,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onPause() {
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
-
-    }
-
-    @Override
-    public void onDestroy() {
-        requireActivity().unregisterReceiver(btStateChangedReceiver);
-        super.onDestroy();
     }
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
 
         switch (preference.getKey()){
-            case "bt_enabled":
-                if(btAdapter.isEnabled()){
-                    btAdapter.disable();
-                } else {
-                    btAdapter.enable();
-                }
-                break;
             case "bt_discoverable":
                 if (btAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
                     startActivityForResult(IntentBuilder.enableBtDiscoverable(), Constants.REQUEST_DISCOVER_BT);
@@ -124,8 +98,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
         return true;
     }
-
-
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -141,28 +113,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
         toast.show();
     }
-
-
-
-    private final BroadcastReceiver btStateChangedReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-                switch (state) {
-                    case BluetoothAdapter.STATE_TURNING_ON:
-                    case BluetoothAdapter.STATE_ON:
-                        prefBtEnabled.setChecked(true);
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_OFF:
-                    case BluetoothAdapter.STATE_OFF:
-                        prefBtEnabled.setChecked(false);
-                        break;
-                }
-            }
-        }
-    };
 
     private void shareApkAsZip()  {
         File srcFile = new File(getContext().getApplicationInfo().publicSourceDir);

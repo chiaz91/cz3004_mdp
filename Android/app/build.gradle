@@ -27,7 +27,6 @@ android {
         full{
             dimension "default"
             applicationIdSuffix ".full"
-            versionNameSuffix ".full"
         }
     }
 
@@ -37,9 +36,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "mdp_control_v${variant.versionName}_${variant.name}.apk"
+        }
     }
 
 }

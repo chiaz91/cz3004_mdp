@@ -69,7 +69,6 @@ public class PrefUtility {
         command.f1 = sharedPref.getString(context.getString(R.string.cmd_f1), context.getString(R.string.cmd_f1_default));
         command.f2 = sharedPref.getString(context.getString(R.string.cmd_f2), context.getString(R.string.cmd_f2_default));
         command.f3 = sharedPref.getString(context.getString(R.string.cmd_f3), context.getString(R.string.cmd_f3_default));
-        command.stop = sharedPref.getString(context.getString(R.string.cmd_stop), context.getString(R.string.cmd_stop_default));
         command.reqMap = sharedPref.getString(context.getString(R.string.cmd_req_map), context.getString(R.string.cmd_req_map_default));
         return command;
     }

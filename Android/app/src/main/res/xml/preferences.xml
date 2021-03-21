@@ -8,13 +8,6 @@
         app:icon="@drawable/ic_bluetooth">
 
         <SwitchPreference
-            android:key="bt_enabled"
-            android:title="Enabled"
-            android:defaultValue="false"
-            android:persistent="false"
-            app:isPreferenceVisible="false"/>
-
-        <SwitchPreference
             android:key="@string/state_bluetooth_retry"
             android:title="Auto Reconnect"
             android:defaultValue="@bool/state_bluetooth_retry_default" />
@@ -34,7 +27,6 @@
             app:key="@string/bt_last_address"
             android:enabled="true"
             app:useSimpleSummaryProvider="true"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -56,14 +48,6 @@
             android:title="Use Accelerometer"
             android:defaultValue="@bool/state_use_accelerometer_default"/>
 
-        <ListPreference
-            android:key="@string/key_debug_map"
-            android:title="Test Map"
-            android:dialogTitle="Test Map"
-            android:entries="@array/map_titles"
-            android:entryValues="@array/map_values"
-            app:isPreferenceVisible="false"
-            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
 

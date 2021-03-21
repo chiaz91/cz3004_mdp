@@ -208,9 +208,4 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         ((MainActivity) mv.getContext()).showToast("Map saved");
     }
 
-
-
-
-
-
 }
