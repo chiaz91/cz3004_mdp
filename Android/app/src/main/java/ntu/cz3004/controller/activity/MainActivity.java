@@ -437,22 +437,25 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
 
         if (message.getType() == BTMessage.Type.INCOMING){
             // parsing messages
-            // TODO: split message
             String received = message.getContent();
-            String[] parts = received.split("\\|");
-            try{
-                switch (parts[0]){
-                    case "MAP": parseMap(parts); break;
-                    case "MOV": parseMove(parts); break;
-                    case "IMG": parseImage(parts); break;
-                    case "IMGS": parseImages(parts); break;
-                    case "STATUS": vhInfo.tvStatusSub.setText(parts[1]); break;
-                    default:
-                        MdpLog.d(TAG, "Unknown Message: "+received);
+            // split message
+            String[] cmds = received.split("\n");
+            for(String command : cmds){
+                String[] parts = command.split("\\|");
+                try{
+                    switch (parts[0]){
+                        case "MAP": parseMap(parts); break;
+                        case "MOV": parseMove(parts); break;
+                        case "IMG": parseImage(parts); break;
+                        case "IMGS": parseImages(parts); break;
+                        case "STATUS": vhInfo.tvStatusSub.setText(parts[1]); break;
+                        default:
+                            MdpLog.d(TAG, "Unknown Message: "+received);
+                    }
+                } catch (Exception e){
+                    MdpLog.d(TAG, "Error Parsing: "+received);
+                    e.printStackTrace();
                 }
-            } catch (Exception e){
-                MdpLog.d(TAG, "Error Parsing: "+received);
-                e.printStackTrace();
             }
         }
     }
