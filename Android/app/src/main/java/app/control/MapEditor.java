@@ -184,12 +184,11 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         Map map = getMap();
         Robot bot = map.getRobot();
         MapAnnotation wp = map.getWayPoint();
-        // goal position will be sent if way-point not set
-        String wpCoord = String.format("%d,%d", 18, 13);
+//        String wpCoord = String.format("%d,%d", Map.MAX_COL-2, Map.MAX_ROW-2);
+        String wpCoord = "-";
         if (wp != null){
-            wpCoord = String.format("%d,%d",  wp.getY(), wp.getX());
+            wpCoord = String.format("%d,%d",  wp.getX(), wp.getY());
         }
-        // TODO: row,col ==> x,y
         return String.format("CONFIG|%s|%s|%s|%s", bot.toString(), wpCoord, map.getPartI(), map.getPartII());
     }
 

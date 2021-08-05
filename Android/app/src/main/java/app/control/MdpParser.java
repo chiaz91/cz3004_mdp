@@ -58,10 +58,9 @@ public class MdpParser {
         if (params.length==1){
             listener.onReceivedMapRequest();
         } else {
-            // TODO: row,col,dir ==> x,y,dir
             String[] botCoord = params[1].split(",");
-            int x = Integer.parseInt(botCoord[1]);
-            int y = Integer.parseInt(botCoord[0]);
+            int x = Integer.parseInt(botCoord[0]);
+            int y = Integer.parseInt(botCoord[1]);
             int dir = Integer.parseInt(botCoord[2]);
             String p1 = params[2];
             String p2 = "";
