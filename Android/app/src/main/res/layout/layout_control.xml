@@ -99,18 +99,25 @@
             android:orientation="horizontal">
 
             <ImageButton
-                style="@style/MDPButtonBorderless"
+                style="@style/MDPButtonBorderless.Large"
                 android:id="@+id/btn_ctrl_send_map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_upload" />
 
             <ImageButton
-                style="@style/MDPButtonBorderless"
+                style="@style/MDPButtonBorderless.Large"
                 android:id="@+id/btn_ctrl_get_map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_download" />
+
+            <ImageButton
+                style="@style/MDPButtonBorderless.Large"
+                android:id="@+id/btn_ctrl_speech"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_microphone" />
 
         </LinearLayout>
     </LinearLayout>

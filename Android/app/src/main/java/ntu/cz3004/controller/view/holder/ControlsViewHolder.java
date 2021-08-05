@@ -6,7 +6,7 @@ import android.widget.ImageButton;
 import ntu.cz3004.controller.R;
 
 public class ControlsViewHolder extends MDPViewHolder {
-    public ImageButton btnUp, btnDown, btnLeft, btnRight, btnFastest, btnExplore, btnImgRecognition, btnF1, btnF2,  btnF3, btnGetMap, btnSendMap;
+    public ImageButton btnUp, btnDown, btnLeft, btnRight, btnFastest, btnExplore, btnImgRecognition, btnF1, btnF2,  btnF3, btnGetMap, btnSendMap, btnSpeech;
 
     public ControlsViewHolder(View view){
         super(view);
@@ -22,6 +22,7 @@ public class ControlsViewHolder extends MDPViewHolder {
         btnF3 = view.findViewById(R.id.btn_ctrl_f3);
         btnGetMap = view.findViewById(R.id.btn_ctrl_get_map);
         btnSendMap = view.findViewById(R.id.btn_ctrl_send_map);
+        btnSpeech = view.findViewById(R.id.btn_ctrl_speech);
     }
 
     public void setOnClickListener(View.OnClickListener listener){
@@ -37,5 +38,6 @@ public class ControlsViewHolder extends MDPViewHolder {
         btnF3.setOnClickListener(listener);
         btnGetMap.setOnClickListener(listener);
         btnSendMap.setOnClickListener(listener);
+        btnSpeech.setOnClickListener(listener);
     }
 }

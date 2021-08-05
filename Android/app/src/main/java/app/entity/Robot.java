@@ -33,14 +33,7 @@ public class Robot extends MapAnnotation {
     }
 
     public void moveForwardBy(int moves){
-        switch (direction){
-            case Direction.NORTH: setPosition(getX(), Math.min(Map.MAX_ROW-1, getY()+moves)); break;
-            case Direction.SOUTH: setPosition(getX(), Math.max(0, getY()-moves)); break;
-            case Direction.EAST:  setPosition(Math.min(Map.MAX_COL-1, getX()+moves), getY()); break;
-            case Direction.WEST:  setPosition(Math.max(0, getX()-moves) , getY()); break;
-            default:
-                MdpLog.a(TAG, "[moves]DIRECTION INVALID!!! direction="+direction);
-        }
+        setPosition(getForwardPosition(moves));
     }
 
     public void turnRight(){
@@ -71,14 +64,18 @@ public class Robot extends MapAnnotation {
     }
 
     public Point getForwardPosition(){
+        return getForwardPosition(1);
+    }
+
+    public Point getForwardPosition(int moves){
         switch (direction){
-            case Direction.NORTH: return new Point( getX(), Math.min(Map.MAX_ROW-1, getY()+1));
-            case Direction.SOUTH: return new Point( getX(), Math.max(0, getY()-1));
-            case Direction.EAST:  return new Point( Math.min(Map.MAX_COL-1, getX()+1), getY());
-            case Direction.WEST:  return new Point( Math.max(0, getX()-1) , getY());
+            case Direction.NORTH: return new Point(getX(), Math.min(Map.MAX_ROW-1, getY()+moves));
+            case Direction.SOUTH: return new Point(getX(), Math.max(0, getY()-moves));
+            case Direction.EAST:  return new Point(Math.min(Map.MAX_COL-1, getX()+moves), getY());
+            case Direction.WEST:  return new Point(Math.max(0, getX()-moves) , getY());
             default:
                 MdpLog.a(TAG, "DIRECTION INVALID!!! direction="+direction);
-                return new Point(getX(), getY());
+                return getPosition();
         }
     }
 

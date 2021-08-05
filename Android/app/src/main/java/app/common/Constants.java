@@ -12,6 +12,7 @@ public interface Constants {
     int REQUEST_DISCOVER_BT = 1002;
     int REQUEST_PICK_BT_DEVICE = 1003;
     int REQUEST_SETTING = 1004;
+    int REQUEST_SPEECH_INPUT = 1005;
     int REQUEST_LOCATION_PERMISSION = 2001;
 
     // intent extra

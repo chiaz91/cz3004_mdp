@@ -6,6 +6,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.speech.RecognizerIntent;
+
+import java.util.Locale;
 
 import app.common.Constants;
 import ntu.cz3004.controller.activity.DynamicActivity;
@@ -55,6 +58,21 @@ public class IntentBuilder {
         return new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
                 .putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, Constants.DISCOVERABLE_DURATION_SEC);
     }
+
+    /**
+     * Create intent that request system to convert audio message to string
+     * <p>use {@link Activity#startActivityForResult(Intent, int)} for request</p>
+     * <p>string message will be return in onActivityResult with {@link RecognizerIntent#EXTRA_RESULTS}</p>
+     * @param hint
+     * @return
+     */
+    public static Intent speechInput(String hint){
+        return new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+                .putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                .putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+                .putExtra(RecognizerIntent.EXTRA_PROMPT, hint);
+    }
+
 
     public static Intent shareApk(Uri apkUri){
         return new Intent(Intent.ACTION_SEND)

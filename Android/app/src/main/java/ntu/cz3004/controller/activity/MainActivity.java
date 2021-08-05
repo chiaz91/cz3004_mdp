@@ -1,10 +1,12 @@
 package ntu.cz3004.controller.activity;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -262,6 +264,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhInfo.tvStatusSub.setVisibility(View.GONE);
     }
 
+    private void requestSpeech(){
+        try {
+            startActivityForResult(IntentBuilder.speechInput( getString(R.string.speech_cmd_hint)), Constants.REQUEST_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            showToast(getString(R.string.speech_not_supported));
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -279,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case R.id.btn_ctrl_img_search: controller.imgRecognition(); break;
             case R.id.btn_ctrl_get_map: controller.requestMap(); break;
             case R.id.btn_ctrl_send_map: controller.sendConfig(); break;
+            case R.id.btn_ctrl_speech: requestSpeech(); break;
             default: showSnackbar("work in progress"); break;
         }
     }
@@ -368,6 +379,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 controller.setCommand(cmd);
                 controller.setEnableSimulation(enableSimulation);
                 break;
+
+            case Constants.REQUEST_SPEECH_INPUT: {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    ArrayList<String> messages = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    MdpLog.d(TAG, messages.toString());
+
+                    controller.readStringCommand( messages.toArray(new String[messages.size()]) );
+                }
+                break;
+            }
 
             default:
                 super.onActivityResult(requestCode, resultCode, data);

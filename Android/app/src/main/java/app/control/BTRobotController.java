@@ -158,6 +158,49 @@ public class BTRobotController extends BluetoothController implements SensorEven
     }
 
 
+    public void readStringCommand(String... messages){
+        boolean handled = true;
+        // as audio recognition return list of strings, for loop is used to find first recognisable command
+        for (String text:messages) {
+            switch (text.toLowerCase()){
+                case "turn left":
+                case "left":
+                    left();
+                    break;
+                case "turn right":
+                case "right":
+                    right();
+                    break;
+                case "move forward":
+                case "forward":
+                    up();
+                    break;
+                case "turn back":
+                case "back":
+                    down();
+                    break;
+                case "fastest":
+                    fastest();
+                    break;
+                case "exploration":
+                    explore();
+                    break;
+                case "image recognition":
+                    imgRecognition();
+                    break;
+                default:
+                    handled = false;
+            }
+            if (handled){
+                break;
+            }
+        }
+        if (!handled){
+            MdpLog.d(TAG, "Unable to recognize any command ");
+        }
+    }
+
+
     // Accelerometer related
     public void startSensor(){
         if(enableAccelerometer){

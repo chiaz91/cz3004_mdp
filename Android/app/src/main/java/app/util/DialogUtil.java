@@ -140,8 +140,8 @@ public class DialogUtil {
 
         // init
         Robot robot = map.getRobot();
-        inputX.getEditText().setText( ""+robot.getX());
-        inputY.getEditText().setText( ""+robot.getY());
+        inputX.getEditText().setText(String.format("%d", robot.getX()));
+        inputY.getEditText().setText(String.format("%d", robot.getY()));
         switch (robot.getDirection()){
             case Direction.NORTH: rgDir.check(R.id.rb_dir_north); break;
             case Direction.SOUTH: rgDir.check(R.id.rb_dir_south); break;
