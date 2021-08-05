@@ -15,7 +15,7 @@ public class Robot extends MapAnnotation {
     }
 
     public Robot(int x, int y, int direction) {
-        super(x,y, R.drawable.ic_robot, "robot");
+        super(x,y, R.drawable.ic_robot, "robot", true);
         this.direction = direction;
     }
 

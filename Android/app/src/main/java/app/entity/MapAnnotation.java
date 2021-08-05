@@ -19,15 +19,17 @@ public class MapAnnotation implements Comparable<MapAnnotation> {
     private Point position;
     private int icon;
     private String name;
+    private boolean draggable;
 
-    public MapAnnotation(int x, int y,  int icon, String name) {
+    public MapAnnotation(int x, int y,  int icon, String name, boolean draggable) {
         this.position = new Point(x, y);
         this.icon = icon;
         this.name = name;
+        this.draggable = draggable;
     }
 
     public MapAnnotation(int x, int y, String name) {
-        this(x, y, ICON_NONE, name);
+        this(x, y, ICON_NONE, name, false);
     }
 
     /**
@@ -72,6 +74,13 @@ public class MapAnnotation implements Comparable<MapAnnotation> {
         this.name = name;
     }
 
+    public boolean isDraggable() {
+        return draggable;
+    }
+
+    public void setDraggable(boolean draggable) {
+        this.draggable = draggable;
+    }
 
     @Override
     public String toString() {
@@ -114,7 +123,7 @@ public class MapAnnotation implements Comparable<MapAnnotation> {
                 case 14: icon = R.drawable.ic_map_14; break;
                 case 15: icon = R.drawable.ic_map_15; break;
             }
-            annotation = new MapAnnotation(x,y,icon,data[0]);
+            annotation = new MapAnnotation(x,y,icon,data[0],false);
         } catch (Exception e){
             // encounter issue when parsing
             e.printStackTrace();

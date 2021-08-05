@@ -83,7 +83,7 @@ public class Map {
         if (!isSafeMove(row, col, true)){
             return false;
         }
-        wayPoint = new MapAnnotation(col, row, R.drawable.ic_way_point, "way point");
+        wayPoint = new MapAnnotation(col, row, R.drawable.ic_way_point, "way point", true);
         notifyChanges();
         return true;
     }

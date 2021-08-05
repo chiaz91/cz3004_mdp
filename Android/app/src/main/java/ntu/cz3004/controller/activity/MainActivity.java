@@ -253,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhControls.setVisible(true);
         vhMapEdit.setVisible(false);
         mapEditor.setMode(MapEditor.Mode.NONE);
+        mv.setDraggable(false);
         vhInfo.tvStatusMain.setText(R.string.controller_cap);
         vhInfo.tvStatusSub.setVisibility(View.VISIBLE);
     }
@@ -263,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhMapEdit.setVisible(true);
         vhMapEdit.returnToStart();
         mapEditor.setMode(MapEditor.Mode.ROBOT);
+        mv.setDraggable(true);
         vhInfo.tvStatusMain.setText(getString(R.string.map_edition_cap));
         vhInfo.tvStatusSub.setVisibility(View.GONE);
     }

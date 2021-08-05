@@ -1,5 +1,7 @@
 package ntu.cz3004.controller.view;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,7 +10,9 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.DragEvent;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -21,6 +25,7 @@ import java.util.HashMap;
 
 import app.entity.Map;
 import app.entity.MapAnnotation;
+import app.util.MdpLog;
 import app.util.Utility;
 import ntu.cz3004.controller.R;
 
@@ -43,7 +48,7 @@ import ntu.cz3004.controller.R;
  * @see Map
  * @see MapAnnotation
  */
-public class MapView extends LinearLayout {
+public class MapView extends LinearLayout implements  View.OnLongClickListener, View.OnDragListener {
     private static String TAG = "mdp.view.map_view";
     public static final int FLAG_NONE = 0;
     public static final int FLAG_COLOR_VALID = 1;
@@ -57,6 +62,7 @@ public class MapView extends LinearLayout {
     private MapAnnotation endPoint;
     private HashMap<String, ImageView> imgLookup;
     private Paint paintLabel;
+    private boolean draggable = false;
 
 
     public MapView(Context context) {
@@ -95,6 +101,14 @@ public class MapView extends LinearLayout {
         createGrid();
     }
 
+    public boolean isDraggable() {
+        return draggable;
+    }
+
+    public void setDraggable(boolean draggable) {
+        this.draggable = draggable;
+    }
+
     /**
      * Preparation of grid that represent the map, bottom left is origin point
      * <ul>
@@ -122,6 +136,7 @@ public class MapView extends LinearLayout {
                 cell.setLayoutParams(layoutParams);
                 cell.setBackgroundColor(Color.GRAY);
                 cell.setTag(new Point(c, r));
+                cell.setOnDragListener(this);
                 row.addView(cell);
             }
         }
@@ -264,8 +279,9 @@ public class MapView extends LinearLayout {
             imgView = new ImageView(getContext());
             imgView.setLayoutParams(params);
             imgView.setImageResource(annotation.getIcon());
-            imgView.setImageResource(annotation.getIcon());
+            imgView.setOnLongClickListener( annotation.isDraggable()?this:null );
 //            imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+
             imgLookup.put(annotation.getName(), imgView);
         }
         imgView.setTag(annotation);
@@ -463,4 +479,103 @@ public class MapView extends LinearLayout {
         }
         // To be fix: calculation of space is wrong as margin of each cell is not considered
     }
+
+    /**
+     * {@inheritDoc}
+     * <p>long click is used to trigger drag action of {@link ImageView} that represent a draggable {@link MapAnnotation}</p>
+     * @see View#startDragAndDrop(ClipData, DragShadowBuilder, Object, int)
+     */
+    @Override
+    public boolean onLongClick(View v) {
+        if (!draggable){
+            return false;
+        }
+
+        try{
+            MapAnnotation annotation = (MapAnnotation) v.getTag();
+            ClipData.Item item = new ClipData.Item( annotation.getName());
+            String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+            ClipData data = new ClipData(annotation.toString(), mimeTypes, item);
+
+            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+            // sdk >= 24, change to v.startDragAndDrop
+            v.startDrag(data, shadowBuilder, v, 0);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>handling movement of {@link MapAnnotation} by drag and drop event</p>
+     * @see View#startDragAndDrop(ClipData, DragShadowBuilder, Object, int)
+     */
+    @Override
+    public boolean onDrag(View view, DragEvent event) {
+        int action = event.getAction();
+        Point position = (Point) view.getTag();
+        switch (action) {
+            case DragEvent.ACTION_DRAG_STARTED:
+                if (event.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                    return true;
+                }
+                return false;
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+                if ( map!=null && map.isSafeMove(position.y, position.x, true)){
+                    int flags = FLAG_COLOR_VALID|FLAG_HIGHLIGHT_SURROUNDING|FLAG_HIGHLIGHT_TO_AXIS;
+                    setSelection(position, flags);
+                } else {
+                    int flags = FLAG_COLOR_WARN |FLAG_HIGHLIGHT_SURROUNDING|FLAG_HIGHLIGHT_TO_AXIS;
+                    setSelection(position, flags);
+                }
+                return true;
+
+            case DragEvent.ACTION_DRAG_LOCATION:
+                return true;
+
+            case DragEvent.ACTION_DRAG_EXITED:
+                setSelection(null);
+                return true;
+
+            case DragEvent.ACTION_DROP:
+                ClipData.Item item = event.getClipData().getItemAt(0);
+                String dragData = item.getText().toString();
+                MdpLog.d(TAG, "Dragged data is " + dragData);
+
+                // moving view to new location
+                View draggingView = (View) event.getLocalState();
+                FrameLayout containerOld = (FrameLayout) draggingView.getParent();
+                FrameLayout containerNew = (FrameLayout) view;
+                if ( map==null || !map.isSafeMove(position.y, position.x, true)){
+                    MdpLog.d(TAG, "unable to drop");
+                    setSelection(null);
+                    return false;
+                }
+                containerOld.removeView(draggingView);
+                containerNew.addView(draggingView);
+                // update annotation position
+                MapAnnotation annotation = (MapAnnotation) draggingView.getTag();
+                MdpLog.d(TAG, "Before: "+annotation.toString());
+                annotation.setPosition( position );
+                MdpLog.d(TAG, "After: "+annotation.toString());
+                map.notifyChanges();
+                setSelection(null);
+                return true;
+
+            case DragEvent.ACTION_DRAG_ENDED:
+                if (event.getResult())
+                    MdpLog.d(TAG, "The drop was handled.");
+                else
+                    MdpLog.d(TAG, "The drop didn't work.");
+                return true;
+            default:
+                MdpLog.e(TAG, "Unknown drag action");
+                break;
+        }
+        return false;
+    }
+
+
 }
