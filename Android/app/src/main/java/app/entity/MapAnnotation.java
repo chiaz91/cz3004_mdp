@@ -90,6 +90,7 @@ public class MapAnnotation implements Comparable<MapAnnotation> {
     public static MapAnnotation createImageFromString(String imgStr){
         MapAnnotation annotation = null;
         try{
+            // TODO: (id,row,col) ==> (id,x,y)
             // assume format is (id,row,col) with no spaces.
             imgStr = imgStr.substring(1, imgStr.length()-1);
             String[] data = imgStr.split(",");

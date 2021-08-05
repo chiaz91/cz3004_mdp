@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.adapter;
+package ntu.cz3004.controller.view.adapter;
 
 import android.bluetooth.BluetoothDevice;
 import android.view.LayoutInflater;

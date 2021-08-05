@@ -10,12 +10,12 @@ import app.entity.Map;
 import app.entity.MapAnnotation;
 import app.entity.Robot;
 import app.util.DialogUtil;
+import app.util.IOUtility;
 import app.util.MdpLog;
 import app.util.PrefUtility;
-import app.util.Utility;
 import ntu.cz3004.controller.R;
 import ntu.cz3004.controller.activity.MainActivity;
-import ntu.cz3004.controller.view.MapEditViewHolder;
+import ntu.cz3004.controller.view.holder.MapEditViewHolder;
 import ntu.cz3004.controller.view.MapView;
 
 /** Assist in map editing
@@ -189,13 +189,14 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         if (wp != null){
             wpCoord = String.format("%d,%d",  wp.getY(), wp.getX());
         }
+        // TODO: row,col ==> x,y
         return String.format("CONFIG|%s|%s|%s|%s", bot.toString(), wpCoord, map.getPartI(), map.getPartII());
     }
 
 
     private void copyMapDescriptor(){
         String strMap = String.format("P1: %s\nP2: %s\nImg: %s", map.getPartI(), map.getPartII(), map.getImagesString());
-        Utility.copyToClipboard(context, strMap);
+        IOUtility.copyToClipboard(context, strMap);
         ((MainActivity) mv.getContext()).showToast("Copied to clipboard");
     }
 

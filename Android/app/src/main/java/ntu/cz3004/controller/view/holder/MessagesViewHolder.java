@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.view;
+package ntu.cz3004.controller.view.holder;
 
 import android.view.View;
 import android.widget.EditText;
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.adapter.MDPMessageAdapter;
+import ntu.cz3004.controller.view.adapter.MDPMessageAdapter;
 
 public class MessagesViewHolder extends MDPViewHolder{
     public RecyclerView rvMessages;

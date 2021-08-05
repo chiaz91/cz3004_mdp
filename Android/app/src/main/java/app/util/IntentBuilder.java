@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 
 import app.common.Constants;
 import ntu.cz3004.controller.activity.DynamicActivity;
@@ -53,5 +54,12 @@ public class IntentBuilder {
     public static Intent enableBtDiscoverable(){
         return new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
                 .putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, Constants.DISCOVERABLE_DURATION_SEC);
+    }
+
+    public static Intent shareApk(Uri apkUri){
+        return new Intent(Intent.ACTION_SEND)
+                .setType("application/zip")
+                .putExtra(Intent.EXTRA_STREAM, apkUri)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 }

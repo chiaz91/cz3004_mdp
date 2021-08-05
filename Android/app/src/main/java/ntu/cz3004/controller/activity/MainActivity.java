@@ -28,8 +28,8 @@ import app.common.BluetoothStatusListener;
 import app.common.Constants;
 import app.control.BTRobotController;
 import app.control.MapEditor;
-import app.entity.MDPMessage;
 import app.entity.Command;
+import app.entity.MDPMessage;
 import app.entity.Map;
 import app.entity.Robot;
 import app.service.BluetoothChatService;
@@ -38,13 +38,13 @@ import app.util.IntentBuilder;
 import app.util.MdpLog;
 import app.util.PrefUtility;
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.adapter.MDPMessageAdapter;
-import ntu.cz3004.controller.adapter.MDPPagerAdapter;
-import ntu.cz3004.controller.view.MessagesViewHolder;
-import ntu.cz3004.controller.view.ControlsViewHolder;
-import ntu.cz3004.controller.view.InfoViewHolder;
-import ntu.cz3004.controller.view.MapEditViewHolder;
 import ntu.cz3004.controller.view.MapView;
+import ntu.cz3004.controller.view.adapter.MDPMessageAdapter;
+import ntu.cz3004.controller.view.adapter.MDPPagerAdapter;
+import ntu.cz3004.controller.view.holder.ControlsViewHolder;
+import ntu.cz3004.controller.view.holder.InfoViewHolder;
+import ntu.cz3004.controller.view.holder.MapEditViewHolder;
+import ntu.cz3004.controller.view.holder.MessagesViewHolder;
 
 public class MainActivity extends AppCompatActivity implements BluetoothStatusListener, Map.OnMapChangedListener, View.OnClickListener {
     private static final String TAG = "mdp.act.main";
@@ -445,9 +445,9 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             Intent intent = IntentBuilder.enableBluetooth();
             startActivityForResult(intent, Constants.REQUEST_ENABLE_BT);
         } else {
-            String lastConnect = PrefUtility.getLastConnectedBtDevice(MainActivity.this);
+            String lastConnect = PrefUtility.getLastConnectedBtDevice(this);
             if (lastConnect!=null && controller.shouldReconnect()){
-                boolean isSecure = PrefUtility.isSecureConnection(MainActivity.this);
+                boolean isSecure = PrefUtility.isSecureConnection(this);
                 controller.connectDevice(lastConnect, isSecure);
             }
         }
@@ -481,7 +481,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             String response = String.format("MAP|%s|%s|%s",map.getRobot().toString(), map.getPartI(), map.getPartII());
             controller.sendMessage(response);
         } else {
-            // row,col,dir
+            // TODO: row,col,dir ==> x,y,dir
             String[] botCoord = params[1].split(",");
             int x = Integer.parseInt(botCoord[1]);
             int y = Integer.parseInt(botCoord[0]);

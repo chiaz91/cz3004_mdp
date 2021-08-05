@@ -89,8 +89,13 @@ public class Robot extends MapAnnotation {
         return position;
     }
 
+    public void reset(){
+        set(1,1,0);
+    }
+
     @Override
     public String toString() {
+        // TODO: row,col,dir ==> x,y,dir
         return String.format("%d,%d,%d", getY(), getX(),getDirection()/90);
     }
 }

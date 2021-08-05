@@ -22,13 +22,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Set;
 
@@ -39,7 +36,7 @@ import app.util.IntentBuilder;
 import app.util.MdpLog;
 import app.util.Utility;
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.adapter.BTDeviceAdapter;
+import ntu.cz3004.controller.view.adapter.BTDeviceAdapter;
 
 public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteractedListener {
     private static final String TAG = "mdp.frag.bt_devices";
@@ -85,8 +82,6 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         View view = inflater.inflate(R.layout.layout_select_device, container, false);
 
 
-
-        // for paired devices
         RecyclerView rvDevices  = view.findViewById(R.id.rv_bt_devices);
         rvDevices.setLayoutManager(new LinearLayoutManager(getContext()));
         btDeviceAdapter = new BTDeviceAdapter();

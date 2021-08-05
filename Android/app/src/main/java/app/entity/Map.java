@@ -102,7 +102,7 @@ public class Map {
     }
 
     public ArrayList<MapAnnotation> getImageList(){
-        ArrayList list = new ArrayList(images.values());
+        ArrayList<MapAnnotation> list = new ArrayList(images.values());
         Collections.sort(list);
         return list;
     }
@@ -143,7 +143,7 @@ public class Map {
                 }
             }
             // parse successful!
-            // cellStates=map.clone() will fail! as clone don't work well for n-dimension array
+            // cellStates = map.clone() will fail! as clone don't work well for n-dimension array
             // cellStates = Arrays.stream(map).map(int[]::clone).toArray(int[][]::new);
             for (int r = 0; r < MAX_ROW; r++) {
                 cellStates[r] = map[r].clone();
@@ -178,9 +178,9 @@ public class Map {
     }
 
     public void updateImageAs(String strImages){
+        MdpLog.d(TAG, "update images from string");
+        MdpLog.d(TAG, "Images: "+strImages);
         try{
-            MdpLog.d(TAG, "update images from string");
-            MdpLog.d(TAG, "Images: "+strImages);
             HashMap<String, MapAnnotation> newImages = new HashMap<>();
             String[] data = strImages.split("(?<=\\))(,\\s*)(?=\\()");
             for (String img: data){
@@ -370,8 +370,7 @@ public class Map {
      */
     public void reset(){
         setAllCellAs(STATE_UNEXPLORED);
-        robot.setPosition(new Point(1,1));
-        robot.setDirection(0);
+        robot.reset();
         wayPoint=null;
         images.clear();
         p1 = null;

@@ -3,7 +3,6 @@ package app.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Point;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ import app.common.Direction;
 import app.entity.Map;
 import app.entity.Robot;
 import ntu.cz3004.controller.R;
-import ntu.cz3004.controller.adapter.MDPMapPagerAdapter;
+import ntu.cz3004.controller.view.adapter.MDPMapPagerAdapter;
 
 public class DialogUtil {
 
@@ -56,7 +55,7 @@ public class DialogUtil {
     public static void promptBluetoothNotAvailable(Context context){
         AlertDialog alert =  new MaterialAlertDialogBuilder(context)
                 .setTitle("Bluetooth not available")
-                .setMessage("This device does not support bluetooth app.service.")
+                .setMessage("This device does not support bluetooth service.")
                 .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> ((Activity)context).finish())
                 .setCancelable(false)
                 .create();
@@ -156,7 +155,7 @@ public class DialogUtil {
                 .setPositiveButton(context.getString(R.string.confirm),null)
                 .setNegativeButton(context.getString(R.string.cancel),null)
                 .setNeutralButton("RESET", (dialog, which) -> {
-                    robot.set(1,1,0);
+                    robot.reset();
                     map.notifyChanges();
                 })
                 .create();
@@ -195,7 +194,6 @@ public class DialogUtil {
             }
 
             // update robot
-            robot.setPosition(new Point(x,y));
             int dir = Direction.NORTH;
             switch (rgDir.getCheckedRadioButtonId()){
                 case R.id.rb_dir_north: dir=Direction.NORTH; break;
@@ -203,7 +201,7 @@ public class DialogUtil {
                 case R.id.rb_dir_west: dir=Direction.WEST; break;
                 case R.id.rb_dir_east: dir=Direction.EAST; break;
             }
-            robot.setDirection(dir);
+            robot.set(x,y,dir);
             map.notifyChanges();
             alert.dismiss();
         });

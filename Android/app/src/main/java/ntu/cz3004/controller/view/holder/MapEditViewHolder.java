@@ -1,4 +1,4 @@
-package ntu.cz3004.controller.view;
+package ntu.cz3004.controller.view.holder;
 
 import android.view.View;
 import android.widget.Button;
