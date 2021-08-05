@@ -33,7 +33,7 @@ public class Robot extends MapAnnotation {
     }
 
     public void moveForwardBy(int moves){
-        setPosition(getForwardPosition(moves));
+        setPosition(getPosition(moves));
     }
 
     public void turnRight(){
@@ -64,10 +64,15 @@ public class Robot extends MapAnnotation {
     }
 
     public Point getForwardPosition(){
-        return getForwardPosition(1);
+        return getPosition(1);
     }
 
-    public Point getForwardPosition(int moves){
+    /**
+     * get position of robot with respect to number of moves.
+     * @param moves positive for forward movement, negative for backward movement
+     * @return relative position with respect to moves
+     */
+    public Point getPosition(int moves){
         switch (direction){
             case Direction.NORTH: return new Point(getX(), Math.min(Map.MAX_ROW-1, getY()+moves));
             case Direction.SOUTH: return new Point(getX(), Math.max(0, getY()-moves));
@@ -80,10 +85,7 @@ public class Robot extends MapAnnotation {
     }
 
     public Point getBackwardPosition(){
-        turnBack();
-        Point position = getForwardPosition();
-        turnBack();
-        return position;
+        return getPosition(-1);
     }
 
     public void reset(){

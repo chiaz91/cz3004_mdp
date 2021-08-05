@@ -51,7 +51,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             if (Utility.validate(Utility.BT_ADDRESS, (String) newValue)){
                 return true;
             } else {
-                showToast("Invalid Bluetooth address");
+                showToast(getString(R.string.bluetooth_invalid_address));
                 return false;
             }
         });
@@ -86,7 +86,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 if (btAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
                     startActivityForResult(IntentBuilder.enableBtDiscoverable(), Constants.REQUEST_DISCOVER_BT);
                 } else {
-                    showToast("in discoverable mode");
+                    showToast(getString(R.string.discoverable_running));
                 }
                 break;
         }

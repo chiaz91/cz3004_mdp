@@ -29,8 +29,8 @@ public class DialogUtil {
 
     public static void promptExitAppWarming(Context context){
         AlertDialog alert = new MaterialAlertDialogBuilder(context)
-            .setTitle("Exiting")
-            .setMessage("Map data and bluetooth connection will be lost")
+            .setTitle(context.getString(R.string.exiting))
+            .setMessage(context.getString(R.string.exiting_msg))
             .setPositiveButton(R.string.confirm, (dialog, which) -> {
                 ((Activity)context).finish();
             })
@@ -54,8 +54,8 @@ public class DialogUtil {
 
     public static void promptBluetoothNotAvailable(Context context){
         AlertDialog alert =  new MaterialAlertDialogBuilder(context)
-                .setTitle("Bluetooth not available")
-                .setMessage("This device does not support bluetooth service.")
+                .setTitle(context.getString(R.string.no_bluetooth))
+                .setMessage(context.getString(R.string.no_bluetooth_msg))
                 .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> ((Activity)context).finish())
                 .setCancelable(false)
                 .create();
@@ -65,7 +65,7 @@ public class DialogUtil {
     public static void promptPermissionForScanDevice(Context context, DialogInterface.OnClickListener clickListener){
         AlertDialog alert = new MaterialAlertDialogBuilder(context)
                 .setTitle(context.getString(R.string.permission_required))
-                .setMessage(context.getString(R.string.permission_reason_for_scan))
+                .setMessage(context.getString(R.string.permission_scan_reason))
                 .setPositiveButton(context.getString(R.string.confirm), clickListener)
                 .setNegativeButton(context.getString(R.string.cancel), null)
                 .create();
@@ -99,7 +99,7 @@ public class DialogUtil {
         inputImages.getEditText().setFilters(filers);
 
         AlertDialog alert = new MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.set_map_descriptor_title)
+                .setTitle(R.string.map_descriptor)
                 .setView(view)
                 .setPositiveButton(context.getString(R.string.confirm),null)
                 .setNegativeButton(context.getString(R.string.cancel),null)
@@ -130,7 +130,7 @@ public class DialogUtil {
         });
     }
 
-    // dialogs
+
     public static void promptEditRobot(Context context, Map map){
         LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.dialog_input_robot, null);
@@ -154,7 +154,7 @@ public class DialogUtil {
                 .setView(view)
                 .setPositiveButton(context.getString(R.string.confirm),null)
                 .setNegativeButton(context.getString(R.string.cancel),null)
-                .setNeutralButton("RESET", (dialog, which) -> {
+                .setNeutralButton(context.getString(R.string.reset), (dialog, which) -> {
                     robot.reset();
                     map.notifyChanges();
                 })
@@ -189,7 +189,7 @@ public class DialogUtil {
                 return;
             }
             if (!map.isSafeMove(y, x, true)){
-                Toast.makeText(context, R.string.msg_invalid_robot_position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.robot_invalid_position_msg, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -208,12 +208,12 @@ public class DialogUtil {
     }
     public static void promptClearWayPoint(Context context, Map map){
         if (map.getWayPoint() == null){
-            Toast.makeText(context, R.string.msg_way_point_not_set,Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.way_point_not_set,Toast.LENGTH_SHORT).show();
             return;
         }
         AlertDialog alert = new MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.clear_way_point_title)
-                .setMessage(R.string.clear_way_point_msg)
+                .setTitle(R.string.way_point_remove_title)
+                .setMessage(R.string.way_point_remove_msg)
                 .setPositiveButton(R.string.confirm, (dialog, which) -> {
                     map.clearWayPoint();
                 })
@@ -259,7 +259,7 @@ public class DialogUtil {
 //                .setTitle("Load Map")
                 .setView(view)
                 .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton("Choose", (dialog, which) -> {
+                .setPositiveButton(context.getString(R.string.choose), (dialog, which) -> {
                     int pos = pager.getCurrentItem();
                     String mdf = listMap.get(pos);
                     map.reset();

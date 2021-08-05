@@ -98,15 +98,15 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         return success;
     }
 
-    public boolean robotMoveBack(){
-        Robot robot = map.getRobot();
-        Point nextPosition = robot.getBackwardPosition();
-        boolean success = moveRobotTo(nextPosition, false);
-        if (success){
-            highlightRobot();
-        }
-        return success;
-    }
+//    public boolean robotMoveBack(){
+//        Robot robot = map.getRobot();
+//        Point nextPosition = robot.getBackwardPosition();
+//        boolean success = moveRobotTo(nextPosition, false);
+//        if (success){
+//            highlightRobot();
+//        }
+//        return success;
+//    }
 
     public void robotTurnLeft(){
         map.getRobot().turnLeft();
@@ -196,7 +196,7 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
     private void copyMapDescriptor(){
         String strMap = String.format("P1: %s\nP2: %s\nImg: %s", map.getPartI(), map.getPartII(), map.getImagesString());
         IOUtility.copyToClipboard(context, strMap);
-        ((MainActivity) mv.getContext()).showToast("Copied to clipboard");
+        showToast(mv.getContext(), R.string.map_copied_msg);
     }
 
     private void saveMap(){
@@ -206,7 +206,12 @@ public class MapEditor implements View.OnClickListener, View.OnLongClickListener
         pref.edit().putString(key, saving).apply();
 
         MdpLog.d("mdp.save", "saving "+saving);
-        ((MainActivity) mv.getContext()).showToast("Map saved");
+        showToast(mv.getContext(), R.string.map_saved_msg);
+    }
+
+    private void showToast(Context context, int resId){
+        String msg = context.getString(resId);
+        ((MainActivity) context).showToast(msg);
     }
 
 }

@@ -169,7 +169,7 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
         if (btAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             startActivityForResult(IntentBuilder.enableBtDiscoverable(), Constants.REQUEST_DISCOVER_BT);
         } else {
-            showToast("In discoverable mode");
+            showToast(getString(R.string.discoverable_running));
         }
     }
 

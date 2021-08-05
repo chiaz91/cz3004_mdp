@@ -54,16 +54,6 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_explore" />
 
-
-
-
-            <ImageButton
-                android:id="@+id/btn_ctrl_stop"
-                style="@style/MDPButtonBorderless.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_cross"
-                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout

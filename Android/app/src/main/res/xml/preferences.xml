@@ -4,48 +4,48 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        app:title="Bluetooth"
+        app:title="@string/bluetooth"
         app:icon="@drawable/ic_bluetooth">
 
         <SwitchPreference
             android:key="@string/state_bluetooth_retry"
-            android:title="Auto Reconnect"
+            android:title="@string/bluetooth_retry"
             android:defaultValue="@bool/state_bluetooth_retry_default" />
 
         <SwitchPreference
             android:key="@string/state_secure_connection"
-            android:title="Secure Connection"
+            android:title="@string/bluetooth_secure_connection"
             android:defaultValue="@bool/state_bluetooth_retry_default" />
 
         <Preference
             android:key="bt_discoverable"
-            android:title="Enable Discoverable Mode"
+            android:title="@string/bluetooth_discoverable"
             android:persistent="false" />
 
         <EditTextPreference
-            app:title="Last Connected Device"
             app:key="@string/bt_last_address"
+            app:title="@string/bluetooth_last_device"
             android:enabled="true"
             app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="Controls"
+        app:title="@string/controls"
         app:icon="@drawable/ic_controller">
 
         <SwitchPreference
             android:key="@string/state_auto_update"
-            android:title="Auto Map Update"
+            android:title="@string/map_auto_update"
             android:defaultValue="@bool/state_auto_update_default" />
 
         <SwitchPreference
             android:key="@string/state_robot_simulation"
-            android:title="Robot Simulation"
+            android:title="@string/robot_simulation"
             android:defaultValue="@bool/state_robot_simulation_default" />
 
         <SwitchPreference
             android:key="@string/state_use_accelerometer"
-            android:title="Use Accelerometer"
+            android:title="@string/use_accelerometer"
             android:defaultValue="@bool/state_use_accelerometer_default"/>
 
     </PreferenceCategory>
@@ -53,93 +53,93 @@
 
 
     <PreferenceCategory
-        app:title="Direction"
+        app:title="@string/direction"
         app:icon="@drawable/ic_dir_all">
 
         <EditTextPreference
-            app:title="Up"
             app:key="@string/cmd_up"
+            app:title="@string/up"
             app:defaultValue="@string/cmd_up_default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
-            app:title="Left"
             app:key="@string/cmd_left"
+            app:title="@string/left"
             app:defaultValue="@string/cmd_left__default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
-            app:title="Right"
             app:key="@string/cmd_right"
+            app:title="@string/right"
             app:defaultValue="@string/cmd_right_default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
-            app:title="Down"
             app:key="@string/cmd_down"
+            app:title="@string/down"
             app:defaultValue="@string/cmd_down_default"
             app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="Actions"
+        app:title="@string/actions"
         app:icon="@drawable/ic_code">
 
         <EditTextPreference
-            app:title="Explore"
             app:key="@string/cmd_explore"
+            app:title="@string/exploration"
             app:defaultValue="@string/cmd_explore_default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
-        app:title="Fastest"
-        app:key="@string/cmd_fastest"
-        app:defaultValue="@string/cmd_fastest_default"
-        app:useSimpleSummaryProvider="true"/>
-
-        <EditTextPreference
-            app:title="Image Recognition"
-            app:key="@string/cmd_img_search"
-            app:defaultValue="@string/cmd_img_search_default"
+            app:key="@string/cmd_fastest"
+            app:title="@string/fastest"
+            app:defaultValue="@string/cmd_fastest_default"
             app:useSimpleSummaryProvider="true"/>
 
         <EditTextPreference
-            app:title="F1"
+            app:key="@string/cmd_img_recognition"
+            app:title="@string/image_recognition"
+            app:defaultValue="@string/cmd_img_recognition_default"
+            app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
             app:key="@string/cmd_f1"
+            app:title="@string/f1"
             app:defaultValue="@string/cmd_f1_default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
-            app:title="F2"
             app:key="@string/cmd_f2"
+            app:title="@string/f2"
             app:defaultValue="@string/cmd_f2_default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
-            app:title="F3"
             app:key="@string/cmd_f3"
+            app:title="@string/f3"
             app:defaultValue="@string/cmd_f3_default"
             app:useSimpleSummaryProvider="true"/>
         <EditTextPreference
-            app:title="Request Map Update"
             app:key="@string/cmd_req_map"
+            app:title="@string/req_map_update"
             app:defaultValue="@string/cmd_req_map_default"
             app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="About"
+        app:title="@string/about"
         app:icon="@drawable/ic_info">
 
         <Preference
             android:key="info_version"
+            android:title="@string/version"
             android:selectable="false"
-            android:persistent="false"
-            android:title="Version"/>
+            android:persistent="false"/>
         <Preference
             android:key="info_build"
+            android:title="@string/build"
             android:selectable="false"
-            android:persistent="false"
-            android:title="Build"/>
+            android:persistent="false"/>
 
         <Preference
             android:key="share_apk"
-            android:summary="Share as zip file"
-            android:persistent="false"
-            android:title="Share App"/>
+            android:title="@string/share_app"
+            android:summary="@string/share_as_zip"
+            android:persistent="false"/>
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

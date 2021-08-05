@@ -65,7 +65,7 @@ public class PrefUtility {
         command.down = sharedPref.getString(context.getString(R.string.cmd_down), context.getString(R.string.cmd_down_default));
         command.explore = sharedPref.getString(context.getString(R.string.cmd_explore), context.getString(R.string.cmd_explore_default));
         command.fastest = sharedPref.getString(context.getString(R.string.cmd_fastest), context.getString(R.string.cmd_fastest_default));
-        command.imgRecognition = sharedPref.getString(context.getString(R.string.cmd_img_search), context.getString(R.string.cmd_img_search_default));
+        command.imgRecognition = sharedPref.getString(context.getString(R.string.cmd_img_recognition), context.getString(R.string.cmd_img_recognition_default));
         command.f1 = sharedPref.getString(context.getString(R.string.cmd_f1), context.getString(R.string.cmd_f1_default));
         command.f2 = sharedPref.getString(context.getString(R.string.cmd_f2), context.getString(R.string.cmd_f2_default));
         command.f3 = sharedPref.getString(context.getString(R.string.cmd_f3), context.getString(R.string.cmd_f3_default));

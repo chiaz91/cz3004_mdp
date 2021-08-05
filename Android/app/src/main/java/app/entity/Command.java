@@ -26,6 +26,7 @@ public class Command {
                 ", down='" + down + '\'' +
                 ", explore='" + explore + '\'' +
                 ", fastest='" + fastest + '\'' +
+                ", imgRecognition='" + imgRecognition + '\'' +
                 ", f1='" + f1 + '\'' +
                 ", f2='" + f2 + '\'' +
                 ", f3='" + f3 + '\'' +

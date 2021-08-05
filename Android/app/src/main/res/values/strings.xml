@@ -3,7 +3,21 @@
     <string name="activity_setting">Setting</string>
     <string name="activity_bt_devices">Bluetooth Devices</string>
 
-    <string name="share_app_title">Share app…</string>
+    <!-- Common Term -->
+    <string name="robot">Robot</string>
+    <string name="way_point">Way Point</string>
+    <string name="map_descriptor">Map Descriptor</string>
+    <string name="position">Position</string>
+    <!--    <string name="direction">Direction</string>-->
+    <string name="invalid">Invalid</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="choose">Choose</string>
+    <string name="map_edition_cap">MAP EDITION</string>
+    <string name="controller_cap">CONTROLLER</string>
+
+
     <string name="pick_device">Bluetooth device</string>
     <string name="setting">Setting</string>
     <string name="reconnect_last_device">Reconnect last device</string>
@@ -11,52 +25,76 @@
     <string name="show_msg_sent">Show sent</string>
     <string name="show_msg_received">Show received</string>
     <string name="clear_history">Clear history</string>
-    <string name="records">Records</string>
-    <string name="robot">Robot</string>
-    <string name="way_point">Way Point</string>
-    <string name="map">Map</string>
-    <string name="map_edition_cap">MAP EDITION</string>
-    <string name="status_cap">STATUS</string>
-    <string name="explore_cap">EXPLORE</string>
-    <string name="fastest_cap">FASTEST</string>
-    <string name="refresh">Refresh</string>
-    <string name="discoverable">Discoverable</string>
-    <string name="discovering">Discovering (%1$d) …</string>
-    <string name="paired_devices">Paired</string>
-    <string name="nearby_devices">Nearby</string>
+    <string name="await_for_connection">Await for connection</string>
     <string name="no_device_found">No device found</string>
     <string name="not_connected">Not connected.</string>
     <string name="connecting_">Connecting…</string>
     <string name="connected_to__device_">Connected to %1$s</string>
-    <string name="ctrl_accelerometer">Accelerometer</string>
-    <string name="ctrl_auto_update">Auto update</string>
-    <string name="hint_bt_chat_input">Enter message</string>
+    <string name="refresh">Refresh</string>
+    <string name="discoverable">Discoverable</string>
+    <string name="discoverable_running">In discoverable mode …</string>
+    <string name="discovering">Discovering (%1$d) …</string>
 
-    <!--  Dialog  -->
-    <string name="confirm">Confirm</string>
-    <string name="cancel">Cancel</string>
+
+    <!-- Setting -->
+    <string name="bluetooth">Bluetooth</string>
+    <string name="bluetooth_retry">Auto Reconnect</string>
+    <string name="bluetooth_secure_connection">Secure Connection</string>
+    <string name="bluetooth_discoverable">Enable Discoverable Mode</string>
+    <string name="bluetooth_last_device">Last Connected Device</string>
+    <string name="bluetooth_invalid_address">Invalid Bluetooth address</string>
+    <string name="controls">Controls</string>
+    <string name="map_auto_update">Auto Map Update</string>
+    <string name="robot_simulation">Robot Simulation</string>
+    <string name="use_accelerometer">Use Accelerometer</string>
+    <string name="direction">Direction</string>
+    <string name="up">Up</string>
+    <string name="down">Down</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+    <string name="actions">Actions</string>
+    <string name="exploration">Explore</string>
+    <string name="fastest">Fastest</string>
+    <string name="image_recognition">Image Recognition</string>
+    <string name="f1">F1</string>
+    <string name="f2">F2</string>
+    <string name="f3">F3</string>
+    <string name="req_map_update">Request Map Update</string>
+    <string name="about">About</string>
+    <string name="version">Version</string>
+    <string name="build">Build</string>
+    <string name="share_app">Share App</string>
+    <string name="share_as_zip">Share as zip file</string>
+    <string name="share_app_title">Share app…</string>
+
+
+    <!--  Messages  -->
+    <string name="work_in_progress">Work in progress</string>
+    <string name="bluetooth_not_enable">Bluetooth is not enabled.</string>
     <string name="page_not_found">Page not found</string>
-    <string name="page_not_found_msg">Specified page is not found</string>
+    <string name="page_not_found_msg">Specified page is not found.</string>
+    <string name="exiting">Exiting</string>
+    <string name="exiting_msg">Map data and Bluetooth connection will be lost</string>
+    <string name="no_bluetooth">Bluetooth not available</string>
+    <string name="no_bluetooth_msg">This device does not support Bluetooth service.</string>
     <string name="permission_required">Permission required</string>
-    <string name="permission_reason_for_scan">Location permission is required to find nearby devices.</string>
-    <string name="set_robot_dir_title">Robot direction</string>
-    <string name="clear_way_point_title">Way point</string>
-    <string name="clear_way_point_msg">Remove way point from the map</string>
+    <string name="permission_scan_reason">Location permission is required to find nearby devices.</string>
+    <string name="speech_cmd_hint">Listening to command</string>
+    <string name="speech_not_supported">Speech not supported</string>
+    <string name="robot_invalid_position_msg">Robot cannot move to this position</string>
+    <string name="way_point_not_set">Way point is not set</string>
+    <string name="way_point_remove_title">Way point</string>
+    <string name="way_point_remove_msg">Remove way point from the map</string>
     <string name="set_all_cells_as_title">Change all cells</string>
     <string name="set_all_cells_as_msg">All cell will be changed to \'%1$s\' state?</string>
-    <string name="set_map_descriptor_title">Map Descriptor</string>
-    <string name="invalid">Invalid</string>
+    <string name="map_saved_msg">Map saved!</string>
+    <string name="map_copied_msg">Copied to clipboard</string>
     <string name="dir_up">U</string>
     <string name="dir_down">D</string>
     <string name="dir_left">L</string>
     <string name="dir_right">R</string>
     <string name="error_parsing">Error parsing</string>
-    <string name="msg_invalid_robot_position">Robot cannot move to this position</string>
-    <string name="msg_way_point_not_set">Way point is not set</string>
-    <string name="speech_cmd_hint">Listening to command</string>
-    <string name="speech_not_supported">Speech not supported</string>
-    <string name="position">Position</string>
-    <string name="direction">Direction</string>
+    <string name="hint_bt_chat_input">Enter message</string>
     <string name="hint_coordinate_x">X</string>
     <string name="hint_coordinate_y">Y</string>
     <string name="hint_part_one">Part I</string>
@@ -72,14 +110,8 @@
     <string name="edit_cell_explored">EXPLORED\nCELL</string>
     <string name="edit_cell_obstacle">OBSTACLE\nCELL</string>
     <string name="edit_map">MAP</string>
-    <string name="edit_images">IMAGES</string>
+    <string name="edit_save_load">S/L</string>
     <string name="edit_reset_map">RESET</string>
     <string name="part_one_default">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</string>
 
-    <!-- Debug -->
-    <string name="test_long_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed elementum tempus egestas sed sed risus pretium quam. Luctus venenatis lectus magna fringilla urna porttitor rhoncus dolor. Laoreet sit amet cursus sit amet dictum sit amet justo. Facilisi nullam vehicula ipsum a arcu cursus vitae congue mauris. Vivamus arcu felis bibendum ut tristique et egestas quis ipsum. Ultrices in iaculis nunc sed augue lacus viverra vitae. Euismod nisi porta lorem mollis aliquam ut. At risus viverra adipiscing at in tellus integer feugiat. Posuere lorem ipsum dolor sit amet. Eget mauris pharetra et ultrices neque ornare aenean euismod elementum. Bibendum est ultricies integer quis auctor elit sed vulputate. Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam. Enim nulla aliquet porttitor lacus luctus accumsan. Vulputate sapien nec sagittis aliquam malesuada. Netus et malesuada fames ac turpis. Erat nam at lectus urna. Odio ut sem nulla pharetra. Semper auctor neque vitae tempus quam pellentesque nec nam aliquam. Posuere urna nec tincidunt praesent semper.</string>
-    <string name="test_pii_1">00000000000000007061C0400080010001E000400000000200044438F8C0000000000000080</string>
-    <string name="test_pii_2">0000000001C000000000003870100000000400080010FE3004000000006100C020004000800</string>
-    <string name="test_images_1">(7,7,6),(1,6,9),(4,3,18),(11,14,15),(13,11,11)</string>
-    <string name="test_images_2">(1,0,6),(2,1,6),(3,2,6),(4,2,7),(5,0,12),(6,1,12),(7,2,12),(8,2,13),(9,3,17),(10,3,18),(11,3,19),(12,8,15),(13,9,15),(14,8,16),(15,9,16)</string>
 </resources>

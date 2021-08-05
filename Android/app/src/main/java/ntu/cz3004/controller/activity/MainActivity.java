@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 if (controller.isConnected()){
                     controller.sendMessage(msg);
                 }else {
-                    showToast("device not connect");
+                    showToast(getString(R.string.not_connected));
                 }
             }
         });
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhControls.setVisible(true);
         vhMapEdit.setVisible(false);
         mapEditor.setMode(MapEditor.Mode.NONE);
-        vhInfo.tvStatusMain.setText("Controller");
+        vhInfo.tvStatusMain.setText(R.string.controller_cap);
         vhInfo.tvStatusSub.setVisibility(View.VISIBLE);
     }
 
@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhMapEdit.setVisible(true);
         vhMapEdit.returnToStart();
         mapEditor.setMode(MapEditor.Mode.ROBOT);
-        vhInfo.tvStatusMain.setText("Map Editing");
+        vhInfo.tvStatusMain.setText(getString(R.string.map_edition_cap));
         vhInfo.tvStatusSub.setVisibility(View.GONE);
     }
 
@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             case R.id.btn_ctrl_get_map: controller.requestMap(); break;
             case R.id.btn_ctrl_send_map: controller.sendConfig(); break;
             case R.id.btn_ctrl_speech: requestSpeech(); break;
-            default: showSnackbar("work in progress"); break;
+            default: showSnackbar(getString(R.string.work_in_progress)); break;
         }
     }
 
@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 getSupportActionBar().setSubtitle( getString(R.string.connecting_)) ;
                 break;
             case BluetoothChatService.STATE_LISTEN:
-                getSupportActionBar().setSubtitle("Await for connection");
+                getSupportActionBar().setSubtitle(getString(R.string.await_for_connection));
                 break;
             case BluetoothChatService.STATE_NONE:
                 getSupportActionBar().setSubtitle(getString(R.string.not_connected));
@@ -555,7 +555,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 public void run() {
                     MdpLog.d("mdp.threads", "bt reconnect");
                     if (!controller.isEnabled()){
-                        showToast("bluetooth is not enabled.");
+                        showToast(getString(R.string.bluetooth_not_enable));
                     } else {
                         reconnectLastDevice();
                     }
