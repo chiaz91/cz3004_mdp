@@ -30,6 +30,7 @@ import app.common.BluetoothStatusListener;
 import app.common.Constants;
 import app.control.BTRobotController;
 import app.control.MapEditor;
+import app.control.MdpParser;
 import app.entity.Command;
 import app.entity.MDPMessage;
 import app.entity.Map;
@@ -48,9 +49,10 @@ import ntu.cz3004.controller.view.holder.InfoViewHolder;
 import ntu.cz3004.controller.view.holder.MapEditViewHolder;
 import ntu.cz3004.controller.view.holder.MessagesViewHolder;
 
-public class MainActivity extends AppCompatActivity implements BluetoothStatusListener, Map.OnMapChangedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements BluetoothStatusListener, Map.OnMapChangedListener, View.OnClickListener, MdpParser.OnParseResultListener {
     private static final String TAG = "mdp.act.main";
     private BTRobotController controller;
+    private MdpParser mdpParser;
     // map
     private MapView mv;
     private Map map;
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
             onStateChanges(controller.getState());
             reconnectLastDevice();
         }
+        mdpParser = new MdpParser(this);
     }
 
     private void initPager(){
@@ -380,15 +383,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
                 controller.setEnableSimulation(enableSimulation);
                 break;
 
-            case Constants.REQUEST_SPEECH_INPUT: {
+            case Constants.REQUEST_SPEECH_INPUT:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     ArrayList<String> messages = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     MdpLog.d(TAG, messages.toString());
-
-                    controller.readStringCommand( messages.toArray(new String[messages.size()]) );
+                    mdpParser.parseSpeechCommands( messages.toArray(new String[messages.size()]));
                 }
                 break;
-            }
 
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -451,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         vhMessages.scrollToEnd();
 
         if (message.getType() == MDPMessage.Type.INCOMING){
-            parseMessage(message.getContent());
+            mdpParser.parseMessage(message.getContent());
         }
     }
 
@@ -474,78 +475,56 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         }
     }
 
-    // parse messages
-    private void parseMessage(String received){
-        // split message to prevent concatenation of message
-        String[] cmds = received.split("\n");
-        for(String command : cmds){
-            MdpLog.d(TAG, "parsing ["+command+"]");
-            String[] parts = command.split("\\|");
-            try{
-                switch (parts[0]){
-                    case "MAP": parseMap(parts); break;
-                    case "MOV": parseMove(parts); break;
-                    case "IMG": parseImage(parts); break;
-                    case "IMGS": parseImages(parts); break;
-                    case "STATUS": vhInfo.tvStatusSub.setText(parts[1]); break;
-                    default:
-                        MdpLog.d(TAG, "Unknown Message: "+received);
-                }
-            } catch (Exception e){
-                MdpLog.d(TAG, "Error Parsing: "+received);
-                e.printStackTrace();
-            }
-        }
-    }
-    private void parseMap(String... params){
-        if (params.length==1){
-            String response = String.format("MAP|%s|%s|%s",map.getRobot().toString(), map.getPartI(), map.getPartII());
-            controller.sendMessage(response);
-        } else {
-            // TODO: row,col,dir ==> x,y,dir
-            String[] botCoord = params[1].split(",");
-            int x = Integer.parseInt(botCoord[1]);
-            int y = Integer.parseInt(botCoord[0]);
-            int dir = Integer.parseInt(botCoord[2]);
-            String p1 = params[2];
-            String p2 = "";
-            if (params.length>=4){
-                p2 = params[3];
-            }
-            map.getRobot().set(x,y,dir*90);
-            map.updateMapAs(p1,p2);
-            map.notifyChanges();
-            mapEditor.highlightRobot();
-        }
+    // parsing messages
+    @Override
+    public void onReceivedStatus(String status) {
+        vhInfo.tvStatusSub.setText(status);
     }
 
-    private void parseMove(String... params){
+    @Override
+    public void onReceivedMapRequest() {
+        String response = String.format("MAP|%s|%s|%s",map.getRobot().toString(), map.getPartI(), map.getPartII());
+        controller.sendMessage(response);
+    }
+
+    @Override
+    public void onReceivedMapUpdate(int x, int y, int direction, String p1, String p2) {
+        map.getRobot().set(x,y,direction);
+        map.updateMapAs(p1,p2);
+        map.notifyChanges();
+        mapEditor.highlightRobot();
+    }
+
+    @Override
+    public void onReceivedMove(MdpParser.MoveType type, int numMove) {
         Robot bot = map.getRobot();
-        switch (params[1]){
-            case "A": map.getRobot().turnLeft(); break;
-            case "D": map.getRobot().turnRight(); break;
-            case "Q": map.getRobot().turnBack(); break;
-            default:
-                try{
-                    // move by n+1
-                    int moves = Integer.parseInt(params[1]);
-                    bot.moveForwardBy(moves+1);
-                } catch (Exception e){
-                    MdpLog.e(TAG, "Unknown command for move "+params[1] );
-                    e.printStackTrace();
-                }
+        switch (type){
+            case FORWARD:bot.moveForwardBy(numMove); break;
+            case TURN_BACK:bot.turnBack(); break;
+            case TURN_LEFT:bot.turnLeft(); break;
+            case TURN_RIGHT:bot.turnRight(); break;
         }
         map.notifyChanges();
         mapEditor.highlightRobot();
     }
 
-    private void parseImage(String... param){
-        map.addImage(param[1]);
+    @Override
+    public void onReceivedNavigation(MdpParser.NavigationType type) {
+        switch (type){
+            case EXPLORATION: controller.explore(); break;
+            case FASTEST_PATH: controller.fastest(); break;
+            case IMAGE_RECOGNITION: controller.imgRecognition(); break;
+        }
     }
 
-    private void parseImages(String... params){
-        String strImages = params[1].substring(1, params[1].length()-1);
-        map.updateImageAs(strImages);
+    @Override
+    public void onReceivedNewImage(String strImage) {
+        map.addImage(strImage);
+    }
+
+    @Override
+    public void onReceivedNewImageSet(String strImage) {
+        map.updateImageAs(strImage);
     }
 
     // multi-threading tasks
@@ -586,6 +565,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothStatusLi
         }
         handler.postDelayed(taskReconnectBT, Constants.BT_RECONNECT_INTERVAL_MS);
     }
+
     public void stopBTReconnectTask(){
         if (taskReconnectBT != null){
             handler.removeCallbacks(taskReconnectBT);
