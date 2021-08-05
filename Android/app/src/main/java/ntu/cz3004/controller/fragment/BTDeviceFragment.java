@@ -3,7 +3,6 @@ package ntu.cz3004.controller.fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -23,10 +22,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Set;
 
@@ -224,22 +226,13 @@ public class BTDeviceFragment extends Fragment implements OnRecyclerViewInteract
             doScanningDevices();
         } else {
             if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)){
-                promptPermissionForScanDevice();
+                DialogUtil.promptPermissionForScanDevice(getContext(), (dialog, which) -> {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, Constants.REQUEST_LOCATION_PERMISSION);
+                });
             } else {
                 requestPermissions( new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION}, Constants.REQUEST_LOCATION_PERMISSION );
             }
         }
-    }
-
-    private void promptPermissionForScanDevice(){
-        new AlertDialog.Builder(getContext())
-                .setTitle(getString(R.string.permission_required))
-                .setMessage(getString(R.string.permission_reason_for_scan))
-                .setPositiveButton(getString(R.string.confirm),(dialog, which) -> {
-                    requestPermissions( new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION}, Constants.REQUEST_LOCATION_PERMISSION );
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
     }
 
     @Override

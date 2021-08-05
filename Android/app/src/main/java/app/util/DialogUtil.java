@@ -2,6 +2,7 @@ package app.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
@@ -58,6 +59,16 @@ public class DialogUtil {
                 .setMessage("This device does not support bluetooth app.service.")
                 .setPositiveButton(context.getString(R.string.confirm), (dialog, which) -> ((Activity)context).finish())
                 .setCancelable(false)
+                .create();
+        alert.show();
+    }
+
+    public static void promptPermissionForScanDevice(Context context, DialogInterface.OnClickListener clickListener){
+        AlertDialog alert = new MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.permission_required))
+                .setMessage(context.getString(R.string.permission_reason_for_scan))
+                .setPositiveButton(context.getString(R.string.confirm), clickListener)
+                .setNegativeButton(context.getString(R.string.cancel), null)
                 .create();
         alert.show();
     }
